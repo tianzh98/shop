@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gll.shop.mapper.SysResourceMapper">
+
+    <resultMap id="BaseResultMap" type="com.gll.shop.entity.SysResourcePO">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="type" column="type" jdbcType="CHAR"/>
+            <result property="menuCode" column="menu_code" jdbcType="VARCHAR"/>
+            <result property="pid" column="pid" jdbcType="VARCHAR"/>
+            <result property="serialNo" column="serial_no" jdbcType="DECIMAL"/>
+            <result property="title" column="title" jdbcType="VARCHAR"/>
+            <result property="url" column="url" jdbcType="VARCHAR"/>
+            <result property="permission" column="permission" jdbcType="VARCHAR"/>
+            <result property="componentName" column="component_name" jdbcType="VARCHAR"/>
+            <result property="componentPath" column="component_path" jdbcType="VARCHAR"/>
+            <result property="resStatus" column="res_status" jdbcType="CHAR"/>
+            <result property="icon" column="icon" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="creator" column="creator" jdbcType="VARCHAR"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="updater" column="updater" jdbcType="VARCHAR"/>
+            <result property="rowVersion" column="row_version" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,type,menu_code,
+        pid,serial_no,title,
+        url,permission,component_name,
+        component_path,res_status,icon,
+        create_time,creator,update_time,
+        updater,row_version
+    </sql>
+</mapper>
