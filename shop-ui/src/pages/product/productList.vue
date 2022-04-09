@@ -134,6 +134,7 @@
     },
     created() {
       this.getColumns();
+      this.getTableData();
       this.getENData();
     },
     activated() {
@@ -148,10 +149,10 @@
           });
       },
       getENData: function () {
-        let that = this;
-        this.$root.$children[0].getDataDic("ENUserStatus").then(res => {
-          that.list.userStatusCodeArrayList = res;
-        });
+        // let that = this;
+        // this.$root.$children[0].getDataDic("ENUserStatus").then(res => {
+        //   that.list.userStatusCodeArrayList = res;
+        // });
       },
       getTableData: function (page) {
         this.searchData.pageNum = page ? page : 1;

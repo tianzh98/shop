@@ -57,7 +57,6 @@ public class AuthService {
 
     public ResultContext<LoginResult> login(String accountOrEmailOrPhone, String password) {
 
-        // ----------------可以不调用------------------------
         SysUserPO userInfo = sysUserService.getUser(accountOrEmailOrPhone);
 
         if (userInfo == null) {

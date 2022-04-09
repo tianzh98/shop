@@ -279,6 +279,10 @@
             if (action === "confirm") {
               common.logOut().then(() => {
                 localCache.deleteCache("userInfo");
+                // 清除tag信息，只保留首页，下一次登录直接进首页
+                localCache.deleteSession("tagLists") ;
+                localCache.deleteSession("keepList");
+                localCache.deleteSession("activeInfo");
                 that.$router.push("/Login");
               });
             }
