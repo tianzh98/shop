@@ -28,5 +28,5 @@ export const getPerms = data => {
   });
 };
 export const getColumns = data => {
-  return hyRequest.post({ url: "/tableConfig/getSortedFieldConfig.pub", data });
+  return hyRequest.post({ url: "/tableConfig/getSortedFieldConfig", data });
 };

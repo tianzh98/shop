@@ -1,4 +1,4 @@
-//package com.gll.shop.satoken;
+//package com.gll.shop.config.satoken;
 //
 //import cn.dev33.satoken.stp.StpInterface;
 //import com.gll.shop.service.auth.AuthService;

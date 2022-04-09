@@ -1,11 +1,11 @@
 package com.gll.shop.controller;
 
-import cn.dev33.satoken.annotation.SaCheckPermission;
+import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.json.JSONArray;
 import com.gll.shop.common.beans.ResultContext;
-import com.gll.shop.entity.rest.LoginResult;
+import com.gll.shop.entity.auth.LoginResult;
 import com.gll.shop.service.auth.AuthService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +35,9 @@ public class AuthController {
 
     /**
      * 登录
+     * 注意接受参数必须是 json对象。 而不能单用String类型接受。 因为前端是传的json字符串
      *
-     * @param loginInputDTO
+     * @param loginInfo
      * @return
      * @throws Exception
      */
@@ -55,7 +56,6 @@ public class AuthController {
     /**
      * 登录
      *
-     * @param loginInputDTO
      * @return
      * @throws Exception
      */
@@ -65,16 +65,15 @@ public class AuthController {
         return ResultContext.success(null);
     }
 
+    @SaCheckLogin
     @PostMapping("/queryUserMenu")
     public ResultContext<JSONArray> queryUserMenu() {
-        StpUtil.checkLogin();
         return authService.queryUserMenu();
     }
 
-    @SaCheckPermission("a")
+    @SaCheckLogin
     @PostMapping("/queryUserPermission")
     public ResultContext<JSONArray> queryUserPermission() {
-        StpUtil.checkLogin();
         return authService.queryUserPermission();
     }
 

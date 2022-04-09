@@ -35,7 +35,7 @@ public class GlobalException {
      * @throws Exception
      */
     @ResponseBody
-    @ExceptionHandler
+    @ExceptionHandler(value = {NotLoginException.class, NotRoleException.class, NotPermissionException.class, DisableLoginException.class})
     public ResultContext<String> handlerException(Exception e, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
 

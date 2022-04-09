@@ -16,12 +16,12 @@ import com.gll.shop.entity.SysResourcePO;
 import com.gll.shop.entity.SysRoleResPO;
 import com.gll.shop.entity.SysUserPO;
 import com.gll.shop.entity.SysUserRolePO;
-import com.gll.shop.entity.rest.LoginResult;
+import com.gll.shop.entity.auth.LoginResult;
 import com.gll.shop.mapper.SysResourceMapper;
 import com.gll.shop.mapper.SysRoleMapper;
 import com.gll.shop.mapper.SysRoleResMapper;
 import com.gll.shop.mapper.SysUserRoleMapper;
-import com.gll.shop.service.SysUserService;
+import com.gll.shop.service.user.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package com.gll.shop.entity.rest;
+package com.gll.shop.entity.auth;
 
 import com.gll.shop.entity.SysUserPO;
 import lombok.AllArgsConstructor;
