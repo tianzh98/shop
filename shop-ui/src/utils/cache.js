@@ -1,5 +1,4 @@
 class LocalCache {
-
   isLogin() {
     let token = this.getCookie("token");
     let userId = this.getCache("userInfo")?.id;
@@ -28,22 +27,22 @@ class LocalCache {
 
   getCache(key) {
     const value = window.localStorage.getItem(key);
-    if (value && value !== 'undefined') {
+    if (value && value !== "undefined") {
       return JSON.parse(value);
     }
   }
 
   getCookie(key) {
     const value = window.$cookies.get(key);
-    if (value && value !== 'undefined') {
+    if (value && value !== "undefined") {
       return JSON.parse(value);
     }
-    return null
+    return null;
   }
 
   getSession(key) {
     const value = window.sessionStorage.getItem(key);
-    if (value && value !== 'undefined') {
+    if (value && value !== "undefined") {
       return JSON.parse(value);
     }
   }

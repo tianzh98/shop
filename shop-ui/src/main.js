@@ -6,21 +6,22 @@ import router from "./router";
 import VueCookies from "vue-cookies";
 import component from "./components";
 import api from "./http";
-import "@assets/fonts/iconfont.css";
-import "@assets/styles/basic.less";
+import "@/assets/fonts/iconfont.css";
+import "@/assets/styles/basic.less";
 import App from "./App.vue";
 import store from "./store";
 import columns from "@/utils/columns";
 import Clipboard from "v-clipboard";
 import "@/utils/directive.js";
-
+import element from "element-ui";
 Vue.config.productionTip = false;
 Vue.use(Clipboard);
 Vue.use(component);
 Vue.use(api);
 Vue.use(VueCookies);
-Vue.prototype.$columns = columns;
+Vue.use(element);
 
+Vue.prototype.$columns = columns;
 new Vue({
   router,
   store,

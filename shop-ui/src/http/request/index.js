@@ -113,7 +113,7 @@ class HYRequest {
   }
 
   post(config) {
-    return this.request({ ...config, method: "POST"});
+    return this.request({ ...config, method: "POST" });
   }
 
   delete(config) {

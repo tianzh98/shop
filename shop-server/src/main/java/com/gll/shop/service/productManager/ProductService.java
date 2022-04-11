@@ -1,4 +1,4 @@
-package com.gll.shop.service.product;
+package com.gll.shop.service.productManager;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;

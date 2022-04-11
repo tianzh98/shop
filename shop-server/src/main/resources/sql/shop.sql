@@ -11,7 +11,7 @@
  Target Server Version : 80016
  File Encoding         : 65001
 
- Date: 09/04/2022 15:38:47
+ Date: 11/04/2022 08:36:04
 */
 
 SET NAMES utf8mb4;
@@ -24,7 +24,7 @@ DROP TABLE IF EXISTS `album`;
 CREATE TABLE `album`  (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `cover_pic` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `cover_pic` longblob NULL,
   `pic_count` int(11) NULL DEFAULT NULL,
   `sort` int(11) NULL DEFAULT NULL,
   `description` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
@@ -38,7 +38,7 @@ DROP TABLE IF EXISTS `album_pic`;
 CREATE TABLE `album_pic`  (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `album_id` bigint(20) NULL DEFAULT NULL,
-  `pic` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `pic` longblob NULL COMMENT '图片',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '画册图片表' ROW_FORMAT = Dynamic;
 
@@ -100,7 +100,7 @@ CREATE TABLE `cart_item`  (
   `product_sn` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `product_attr` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '商品销售属性:[{\"key\":\"颜色\",\"value\":\"颜色\"},{\"key\":\"容量\",\"value\":\"4G\"}]',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '购物车表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '购物车表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for order
@@ -152,7 +152,7 @@ CREATE TABLE `order`  (
   `comment_time` datetime(0) NULL DEFAULT NULL COMMENT '评价时间',
   `modify_time` datetime(0) NULL DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '订单表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '订单表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for order_item
@@ -181,7 +181,7 @@ CREATE TABLE `order_item`  (
   `gift_growth` int(11) NULL DEFAULT 0,
   `product_attr` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '商品销售属性:[{\"key\":\"颜色\",\"value\":\"颜色\"},{\"key\":\"容量\",\"value\":\"4G\"}]',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '订单中所包含的商品' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '订单中所包含的商品' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for product
@@ -231,7 +231,7 @@ CREATE TABLE `product`  (
   `brand_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '品牌名称',
   `product_category_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '商品分类名称',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 37 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商品信息' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 45 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商品信息' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of product
@@ -240,6 +240,14 @@ INSERT INTO `product` VALUES (1, 49, 7, 0, 0, '银色星芒刺绣网纱底裤', 
 INSERT INTO `product` VALUES (2, 49, 7, 0, 0, '银色星芒刺绣网纱底裤2', 'http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/images/20180522/web.png', 'No86578', 1, 1, 1, 1, 1, 1, 0, 100.00, NULL, 0, 100, NULL, '111', '111', 120.00, 100, 20, '件', 1000.00, 0, NULL, '银色星芒刺绣网纱底裤2', '银色星芒刺绣网纱底裤', NULL, '银色星芒刺绣网纱底裤', '银色星芒刺绣网纱底裤', '<p>银色星芒刺绣网纱底裤</p>', '<p>银色星芒刺绣网纱底裤</p>', NULL, NULL, NULL, 0, '七匹狼', '外套');
 INSERT INTO `product` VALUES (3, 1, 7, 0, 0, '银色星芒刺绣网纱底裤3', 'http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/images/20180522/web.png', 'No86579', 1, 1, 1, 1, 1, 1, 0, 100.00, NULL, 0, 100, NULL, '111', '111', 120.00, 100, 20, '件', 1000.00, 0, NULL, '银色星芒刺绣网纱底裤3', '银色星芒刺绣网纱底裤', NULL, '银色星芒刺绣网纱底裤', '银色星芒刺绣网纱底裤', '银色星芒刺绣网纱底裤', '银色星芒刺绣网纱底裤', NULL, NULL, NULL, 0, '万和', '外套');
 INSERT INTO `product` VALUES (4, 1, 7, 0, 0, '银色星芒刺绣网纱底裤4', 'http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/images/20180522/web.png', 'No86580', 1, 1, 1, 1, 1, 1, 0, 100.00, NULL, 0, 100, NULL, '111', '111', 120.00, 100, 20, '件', 1000.00, 0, NULL, '银色星芒刺绣网纱底裤4', '银色星芒刺绣网纱底裤', NULL, '银色星芒刺绣网纱底裤', '银色星芒刺绣网纱底裤', '银色星芒刺绣网纱底裤', '银色星芒刺绣网纱底裤', NULL, NULL, NULL, 0, '万和', '外套');
+INSERT INTO `product` VALUES (37, 1, 7, 0, 0, '银色星芒刺绣网纱底裤5', 'http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/images/20180522/web.png', 'No86581', 1, 1, 1, 1, 1, 1, 0, 100.00, NULL, 0, 100, NULL, '111', '111', 120.00, 100, 20, '件', 1000.00, 0, NULL, '银色星芒刺绣网纱底裤4', '银色星芒刺绣网纱底裤', NULL, '银色星芒刺绣网纱底裤', '银色星芒刺绣网纱底裤', '银色星芒刺绣网纱底裤', '银色星芒刺绣网纱底裤', NULL, NULL, NULL, 0, '万和', '外套');
+INSERT INTO `product` VALUES (38, 1, 7, 0, 0, '银色星芒刺绣网纱底裤6', 'http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/images/20180522/web.png', 'No86582', 1, 1, 1, 1, 1, 1, 0, 100.00, NULL, 0, 100, NULL, '111', '111', 120.00, 100, 20, '件', 1000.00, 0, NULL, '银色星芒刺绣网纱底裤4', '银色星芒刺绣网纱底裤', NULL, '银色星芒刺绣网纱底裤', '银色星芒刺绣网纱底裤', '银色星芒刺绣网纱底裤', '银色星芒刺绣网纱底裤', NULL, NULL, NULL, 0, '万和', '外套');
+INSERT INTO `product` VALUES (39, 1, 7, 0, 0, '银色星芒刺绣网纱底裤7', 'http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/images/20180522/web.png', 'No86583', 1, 1, 1, 1, 1, 1, 0, 100.00, NULL, 0, 100, NULL, '111', '111', 120.00, 100, 20, '件', 1000.00, 0, NULL, '银色星芒刺绣网纱底裤4', '银色星芒刺绣网纱底裤', NULL, '银色星芒刺绣网纱底裤', '银色星芒刺绣网纱底裤', '银色星芒刺绣网纱底裤', '银色星芒刺绣网纱底裤', NULL, NULL, NULL, 0, '万和', '外套');
+INSERT INTO `product` VALUES (40, 1, 7, 0, 0, '银色星芒刺绣网纱底裤8', 'http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/images/20180522/web.png', 'No86584', 1, 1, 1, 1, 1, 1, 0, 100.00, NULL, 0, 100, NULL, '111', '111', 120.00, 100, 20, '件', 1000.00, 0, NULL, '银色星芒刺绣网纱底裤4', '银色星芒刺绣网纱底裤', NULL, '银色星芒刺绣网纱底裤', '银色星芒刺绣网纱底裤', '银色星芒刺绣网纱底裤', '银色星芒刺绣网纱底裤', NULL, NULL, NULL, 0, '万和', '外套');
+INSERT INTO `product` VALUES (41, 1, 7, 0, 0, '银色星芒刺绣网纱底裤9', 'http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/images/20180522/web.png', 'No86585', 1, 1, 1, 1, 1, 1, 0, 100.00, NULL, 0, 100, NULL, '111', '111', 120.00, 100, 20, '件', 1000.00, 0, NULL, '银色星芒刺绣网纱底裤4', '银色星芒刺绣网纱底裤', NULL, '银色星芒刺绣网纱底裤', '银色星芒刺绣网纱底裤', '银色星芒刺绣网纱底裤', '银色星芒刺绣网纱底裤', NULL, NULL, NULL, 0, '万和', '外套');
+INSERT INTO `product` VALUES (42, 1, 7, 0, 0, '银色星芒刺绣网纱底裤10', 'http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/images/20180522/web.png', 'No86586', 1, 1, 1, 1, 1, 1, 0, 100.00, NULL, 0, 100, NULL, '111', '111', 120.00, 100, 20, '件', 1000.00, 0, NULL, '银色星芒刺绣网纱底裤4', '银色星芒刺绣网纱底裤', NULL, '银色星芒刺绣网纱底裤', '银色星芒刺绣网纱底裤', '银色星芒刺绣网纱底裤', '银色星芒刺绣网纱底裤', NULL, NULL, NULL, 0, '万和', '外套');
+INSERT INTO `product` VALUES (43, 1, 7, 0, 0, '银色星芒刺绣网纱底裤11', 'http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/images/20180522/web.png', 'No86587', 1, 1, 1, 1, 1, 1, 0, 100.00, NULL, 0, 100, NULL, '111', '111', 120.00, 100, 20, '件', 1000.00, 0, NULL, '银色星芒刺绣网纱底裤4', '银色星芒刺绣网纱底裤', NULL, '银色星芒刺绣网纱底裤', '银色星芒刺绣网纱底裤', '银色星芒刺绣网纱底裤', '银色星芒刺绣网纱底裤', NULL, NULL, NULL, 0, '万和', '外套');
+INSERT INTO `product` VALUES (44, 1, 7, 0, 0, '银色星芒刺绣网纱底裤12', 'http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/images/20180522/web.png', 'No86588', 1, 1, 1, 1, 1, 1, 0, 100.00, NULL, 0, 100, NULL, '111', '111', 120.00, 100, 20, '件', 1000.00, 0, NULL, '银色星芒刺绣网纱底裤4', '银色星芒刺绣网纱底裤', NULL, '银色星芒刺绣网纱底裤', '银色星芒刺绣网纱底裤', '银色星芒刺绣网纱底裤', '银色星芒刺绣网纱底裤', NULL, NULL, NULL, 0, '万和', '外套');
 
 -- ----------------------------
 -- Table structure for product_attribute
@@ -412,9 +420,9 @@ INSERT INTO `product_attribute_value` VALUES (232, 26, 48, '3000');
 DROP TABLE IF EXISTS `product_category`;
 CREATE TABLE `product_category`  (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `parent_id` bigint(20) NULL DEFAULT NULL COMMENT '上机分类的编号：0表示一级分类',
+  `parent_id` bigint(20) NULL DEFAULT NULL COMMENT '上机分类的编号：1表示一级分类',
   `name` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `level` int(1) NULL DEFAULT NULL COMMENT '分类级别：0->1级；1->2级',
+  `level` int(1) NULL DEFAULT NULL COMMENT '分类级别：1->1级；2->2级',
   `product_count` int(11) NULL DEFAULT NULL,
   `product_unit` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `nav_status` int(1) NULL DEFAULT NULL COMMENT '是否显示在导航栏：0->不显示；1->显示',
@@ -429,42 +437,42 @@ CREATE TABLE `product_category`  (
 -- ----------------------------
 -- Records of product_category
 -- ----------------------------
-INSERT INTO `product_category` VALUES (1, 0, '服装', 0, 100, '件', 1, 1, 1, NULL, '服装', '服装分类');
-INSERT INTO `product_category` VALUES (2, 0, '手机数码', 0, 100, '件', 1, 1, 1, NULL, '手机数码', '手机数码');
-INSERT INTO `product_category` VALUES (3, 0, '家用电器', 0, 100, '件', 1, 1, 1, NULL, '家用电器', '家用电器');
-INSERT INTO `product_category` VALUES (4, 0, '家具家装', 0, 100, '件', 1, 1, 1, NULL, '家具家装', '家具家装');
-INSERT INTO `product_category` VALUES (5, 0, '汽车用品', 0, 100, '件', 1, 1, 1, NULL, '汽车用品', '汽车用品');
-INSERT INTO `product_category` VALUES (7, 1, '外套', 1, 100, '件', 1, 1, 0, '', '外套', '外套');
-INSERT INTO `product_category` VALUES (8, 1, 'T恤', 1, 100, '件', 1, 1, 0, 'http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/images/20180522/web.png', 'T恤', 'T恤');
-INSERT INTO `product_category` VALUES (9, 1, '休闲裤', 1, 100, '件', 1, 1, 0, NULL, '休闲裤', '休闲裤');
-INSERT INTO `product_category` VALUES (10, 1, '牛仔裤', 1, 100, '件', 1, 1, 0, NULL, '牛仔裤', '牛仔裤');
-INSERT INTO `product_category` VALUES (11, 1, '衬衫', 1, 100, '件', 1, 1, 0, NULL, '衬衫', '衬衫分类');
-INSERT INTO `product_category` VALUES (13, 12, '家电子分类1', 1, 1, 'string', 0, 1, 0, 'string', 'string', 'string');
-INSERT INTO `product_category` VALUES (14, 12, '家电子分类2', 1, 1, 'string', 0, 1, 0, 'string', 'string', 'string');
-INSERT INTO `product_category` VALUES (19, 2, '手机通讯', 1, 0, '件', 0, 0, 0, '', '手机通讯', '手机通讯');
-INSERT INTO `product_category` VALUES (29, 1, '男鞋', 1, 0, '', 0, 0, 0, '', '', '');
-INSERT INTO `product_category` VALUES (30, 2, '手机配件', 1, 0, '', 0, 0, 0, '', '手机配件', '手机配件');
-INSERT INTO `product_category` VALUES (31, 2, '摄影摄像', 1, 0, '', 0, 0, 0, '', '', '');
-INSERT INTO `product_category` VALUES (32, 2, '影音娱乐', 1, 0, '', 0, 0, 0, '', '', '');
-INSERT INTO `product_category` VALUES (33, 2, '数码配件', 1, 0, '', 0, 0, 0, '', '', '');
-INSERT INTO `product_category` VALUES (34, 2, '智能设备', 1, 0, '', 0, 0, 0, '', '', '');
-INSERT INTO `product_category` VALUES (35, 3, '电视', 1, 0, '', 0, 0, 0, '', '', '');
-INSERT INTO `product_category` VALUES (36, 3, '空调', 1, 0, '', 0, 0, 0, '', '', '');
-INSERT INTO `product_category` VALUES (37, 3, '洗衣机', 1, 0, '', 0, 0, 0, '', '', '');
-INSERT INTO `product_category` VALUES (38, 3, '冰箱', 1, 0, '', 0, 0, 0, '', '', '');
-INSERT INTO `product_category` VALUES (39, 3, '厨卫大电', 1, 0, '', 0, 0, 0, '', '', '');
-INSERT INTO `product_category` VALUES (40, 3, '厨房小电', 1, 0, '', 0, 0, 0, '', '', '');
-INSERT INTO `product_category` VALUES (41, 3, '生活电器', 1, 0, '', 0, 0, 0, '', '', '');
-INSERT INTO `product_category` VALUES (42, 3, '个护健康', 1, 0, '', 0, 0, 0, '', '', '');
-INSERT INTO `product_category` VALUES (43, 4, '厨房卫浴', 1, 0, '', 0, 0, 0, '', '', '');
-INSERT INTO `product_category` VALUES (44, 4, '灯饰照明', 1, 0, '', 0, 0, 0, '', '', '');
-INSERT INTO `product_category` VALUES (45, 4, '五金工具', 1, 0, '', 0, 0, 0, '', '', '');
-INSERT INTO `product_category` VALUES (46, 4, '卧室家具', 1, 0, '', 0, 0, 0, '', '', '');
-INSERT INTO `product_category` VALUES (47, 4, '客厅家具', 1, 0, '', 0, 0, 0, '', '', '');
-INSERT INTO `product_category` VALUES (48, 5, '全新整车', 1, 0, '', 0, 0, 0, '', '', '');
-INSERT INTO `product_category` VALUES (49, 5, '车载电器', 1, 0, '', 0, 0, 0, '', '', '');
-INSERT INTO `product_category` VALUES (50, 5, '维修保养', 1, 0, '', 0, 0, 0, '', '', '');
-INSERT INTO `product_category` VALUES (51, 5, '汽车装饰', 1, 0, '', 0, 0, 0, '', '', '');
+INSERT INTO `product_category` VALUES (1, 0, '服装', 1, 100, '件', 1, 1, 1, NULL, '服装', '服装分类');
+INSERT INTO `product_category` VALUES (2, 0, '手机数码', 1, 100, '件', 1, 1, 1, NULL, '手机数码', '手机数码');
+INSERT INTO `product_category` VALUES (3, 0, '家用电器', 1, 100, '件', 1, 1, 1, NULL, '家用电器', '家用电器');
+INSERT INTO `product_category` VALUES (4, 0, '家具家装', 1, 100, '件', 1, 1, 1, NULL, '家具家装', '家具家装');
+INSERT INTO `product_category` VALUES (5, 0, '汽车用品', 1, 100, '件', 1, 1, 1, NULL, '汽车用品', '汽车用品');
+INSERT INTO `product_category` VALUES (7, 1, '外套', 2, 100, '件', 1, 1, 0, '', '外套', '外套');
+INSERT INTO `product_category` VALUES (8, 1, 'T恤', 2, 100, '件', 1, 1, 0, 'http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/images/20180522/web.png', 'T恤', 'T恤');
+INSERT INTO `product_category` VALUES (9, 1, '休闲裤', 2, 100, '件', 1, 1, 0, NULL, '休闲裤', '休闲裤');
+INSERT INTO `product_category` VALUES (10, 1, '牛仔裤', 2, 100, '件', 1, 1, 0, NULL, '牛仔裤', '牛仔裤');
+INSERT INTO `product_category` VALUES (11, 1, '衬衫', 2, 100, '件', 1, 1, 0, NULL, '衬衫', '衬衫分类');
+INSERT INTO `product_category` VALUES (13, 12, '家电子分类1', 2, 1, 'string', 0, 1, 0, 'string', 'string', 'string');
+INSERT INTO `product_category` VALUES (14, 12, '家电子分类2', 2, 1, 'string', 0, 1, 0, 'string', 'string', 'string');
+INSERT INTO `product_category` VALUES (19, 2, '手机通讯', 2, 0, '件', 0, 0, 0, '', '手机通讯', '手机通讯');
+INSERT INTO `product_category` VALUES (29, 1, '男鞋', 2, 0, '', 0, 0, 0, '', '', '');
+INSERT INTO `product_category` VALUES (30, 2, '手机配件', 2, 0, '', 0, 0, 0, '', '手机配件', '手机配件');
+INSERT INTO `product_category` VALUES (31, 2, '摄影摄像', 2, 0, '', 0, 0, 0, '', '', '');
+INSERT INTO `product_category` VALUES (32, 2, '影音娱乐', 2, 0, '', 0, 0, 0, '', '', '');
+INSERT INTO `product_category` VALUES (33, 2, '数码配件', 2, 0, '', 0, 0, 0, '', '', '');
+INSERT INTO `product_category` VALUES (34, 2, '智能设备', 2, 0, '', 0, 0, 0, '', '', '');
+INSERT INTO `product_category` VALUES (35, 3, '电视', 2, 0, '', 0, 0, 0, '', '', '');
+INSERT INTO `product_category` VALUES (36, 3, '空调', 2, 0, '', 0, 0, 0, '', '', '');
+INSERT INTO `product_category` VALUES (37, 3, '洗衣机', 2, 0, '', 0, 0, 0, '', '', '');
+INSERT INTO `product_category` VALUES (38, 3, '冰箱', 2, 0, '', 0, 0, 0, '', '', '');
+INSERT INTO `product_category` VALUES (39, 3, '厨卫大电', 2, 0, '', 0, 0, 0, '', '', '');
+INSERT INTO `product_category` VALUES (40, 3, '厨房小电', 2, 0, '', 0, 0, 0, '', '', '');
+INSERT INTO `product_category` VALUES (41, 3, '生活电器', 2, 0, '', 0, 0, 0, '', '', '');
+INSERT INTO `product_category` VALUES (42, 3, '个护健康', 2, 0, '', 0, 0, 0, '', '', '');
+INSERT INTO `product_category` VALUES (43, 4, '厨房卫浴', 2, 0, '', 0, 0, 0, '', '', '');
+INSERT INTO `product_category` VALUES (44, 4, '灯饰照明', 2, 0, '', 0, 0, 0, '', '', '');
+INSERT INTO `product_category` VALUES (45, 4, '五金工具', 2, 0, '', 0, 0, 0, '', '', '');
+INSERT INTO `product_category` VALUES (46, 4, '卧室家具', 2, 0, '', 0, 0, 0, '', '', '');
+INSERT INTO `product_category` VALUES (47, 4, '客厅家具', 2, 0, '', 0, 0, 0, '', '', '');
+INSERT INTO `product_category` VALUES (48, 5, '全新整车', 2, 0, '', 0, 0, 0, '', '', '');
+INSERT INTO `product_category` VALUES (49, 5, '车载电器', 2, 0, '', 0, 0, 0, '', '', '');
+INSERT INTO `product_category` VALUES (50, 5, '维修保养', 2, 0, '', 0, 0, 0, '', '', '');
+INSERT INTO `product_category` VALUES (51, 5, '汽车装饰', 2, 0, '', 0, 0, 0, '', '', '');
 
 -- ----------------------------
 -- Table structure for receive_address
@@ -509,12 +517,16 @@ CREATE TABLE `sys_default_table_config`  (
 -- ----------------------------
 -- Records of sys_default_table_config
 -- ----------------------------
-INSERT INTO `sys_default_table_config` VALUES (1, '/product/queryProductList', 'name', '商品名称', '1', 1, 'name');
-INSERT INTO `sys_default_table_config` VALUES (2, '/product/queryProductList', 'productSn', '货号', '1', 1, '');
-INSERT INTO `sys_default_table_config` VALUES (3, '/product/queryProductList', 'description', '商品描述', '1', 1, '');
-INSERT INTO `sys_default_table_config` VALUES (4, '/product/queryProductList', 'originalPrice', '原价', '1', 1, '');
-INSERT INTO `sys_default_table_config` VALUES (5, '/product/queryProductList', 'price', '售价', '1', 1, '');
-INSERT INTO `sys_default_table_config` VALUES (6, '/product/queryProductList', 'brandName', '品牌名称', '1', 1, '');
+INSERT INTO `sys_default_table_config` VALUES (1, '/product/getProductList', 'name', '商品名称', '1', 1, 'name');
+INSERT INTO `sys_default_table_config` VALUES (2, '/product/getProductList', 'productSn', '货号', '1', 1, '');
+INSERT INTO `sys_default_table_config` VALUES (3, '/product/getProductList', 'description', '商品描述', '1', 1, '');
+INSERT INTO `sys_default_table_config` VALUES (4, '/product/getProductList', 'originalPrice', '原价', '1', 1, '');
+INSERT INTO `sys_default_table_config` VALUES (5, '/product/getProductList', 'price', '售价', '1', 1, '');
+INSERT INTO `sys_default_table_config` VALUES (6, '/product/getProductList', 'brandName', '品牌名称', '1', 1, '');
+INSERT INTO `sys_default_table_config` VALUES (7, '/product/getProductCateList', 'name', '分类名称', '1', 1, 'name');
+INSERT INTO `sys_default_table_config` VALUES (8, '/product/getProductCateList', 'productUnit', '数量单位', '1', 3, '');
+INSERT INTO `sys_default_table_config` VALUES (9, '/product/getProductCateList', 'description', '描述', '1', 4, '');
+INSERT INTO `sys_default_table_config` VALUES (10, '/product/getProductCateList', 'levelShow', '分类等级', '1', 2, NULL);
 
 -- ----------------------------
 -- Table structure for sys_resource
@@ -524,7 +536,7 @@ CREATE TABLE `sys_resource`  (
   `id` int(36) NOT NULL AUTO_INCREMENT COMMENT '主键id',
   `type` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '类型（1、目录；2、菜单；3、按钮）',
   `menu_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '菜单code',
-  `pid` varchar(36) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '父级id',
+  `pid` int(36) NULL DEFAULT NULL COMMENT '父级id',
   `serial_no` decimal(10, 2) NULL DEFAULT NULL COMMENT '排序',
   `title` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '标题（目录名称、菜单名称、按钮名称）',
   `url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '路由地址（目录和菜单）',
@@ -544,16 +556,12 @@ CREATE TABLE `sys_resource`  (
 -- ----------------------------
 -- Records of sys_resource
 -- ----------------------------
-INSERT INTO `sys_resource` VALUES (1, '1', 'home', '0', 1.00, '首页', '/home', NULL, NULL, NULL, '0', 'icon-home', '2022-04-01 22:56:18', '1', '2022-04-01 22:56:21', '1', 1);
-INSERT INTO `sys_resource` VALUES (2, '1', 'sys_manage', '0', 1000.00, '商品管理', '/admin', NULL, NULL, NULL, '0', 'system', NULL, NULL, NULL, NULL, 1);
-INSERT INTO `sys_resource` VALUES (3, '2', 'user', '2', 1001.00, '商品列表', '/productList', 'user:list', 'user-manage', 'admin/user/user-manage', '0', 'user', NULL, NULL, NULL, NULL, 1);
-INSERT INTO `sys_resource` VALUES (4, '2', 'resource', '2', 1003.00, '商品分类', 'resource-manage', 'resource:list', 'resource-manage', 'admin/resource/resource-manage', '0', 'people', NULL, NULL, NULL, NULL, 1);
-INSERT INTO `sys_resource` VALUES (5, '2', 'role', '2', 1002.00, '角色管理', 'role-manage', 'role:list', 'role-manage', 'admin/role/role-manage', '0', 'role', NULL, NULL, NULL, NULL, 1);
-INSERT INTO `sys_resource` VALUES (6, '2', 'interface_doc', '2', 1011.00, '接口文档', 'http://localhost:8999/doc.html', NULL, NULL, NULL, '0', 'nested', NULL, NULL, NULL, NULL, 1);
-INSERT INTO `sys_resource` VALUES (7, '2', 'dep', '2', 1004.00, '部门管理', 'dept-manage', 'dept:list', 'dept-manage', 'admin/dept/dept-manage', '0', 'nested', NULL, NULL, NULL, NULL, 1);
-INSERT INTO `sys_resource` VALUES (8, '3', NULL, '3', 1002.10, '角色添加', NULL, 'Add', NULL, NULL, '0', NULL, NULL, NULL, NULL, NULL, 1);
-INSERT INTO `sys_resource` VALUES (9, '3', NULL, '3', 1002.15, '角色修改', NULL, 'role:update', NULL, NULL, '0', NULL, NULL, NULL, NULL, NULL, 1);
-INSERT INTO `sys_resource` VALUES (10, '3', NULL, '3', 1002.20, '角色删除', NULL, 'role:delete', NULL, NULL, '0', NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `sys_resource` VALUES (1, '1', 'home', 0, 1.00, '首页', '/home', NULL, NULL, NULL, '0', 'icon-home', '2022-04-01 22:56:18', '1', '2022-04-01 22:56:21', '1', 1);
+INSERT INTO `sys_resource` VALUES (2, '1', 'product', 0, 2.00, '商品', '', NULL, NULL, NULL, '0', 'icon-stage', NULL, NULL, NULL, NULL, 1);
+INSERT INTO `sys_resource` VALUES (3, '2', 'productList', 2, 1.00, '商品列表', '/product/productList', 'Add', 'user-manage', 'admin/user/user-manage', '0', 'user', NULL, NULL, NULL, NULL, 1);
+INSERT INTO `sys_resource` VALUES (5, '2', 'role', 2, 3.00, '商品分类', '/product/productCate', 'role:list', 'role-manage', 'admin/role/role-manage', '0', 'role', NULL, NULL, NULL, NULL, 1);
+INSERT INTO `sys_resource` VALUES (6, '2', 'interface_doc', 2, 4.00, '商品类型', 'http://localhost:8999/doc.html', NULL, NULL, NULL, '0', 'nested', NULL, NULL, NULL, NULL, 1);
+INSERT INTO `sys_resource` VALUES (7, '2', 'dep', 2, 5.00, '品牌管理', 'dept-manage', 'dept:list', 'dept-manage', 'admin/dept/dept-manage', '0', 'nested', NULL, NULL, NULL, NULL, 1);
 
 -- ----------------------------
 -- Table structure for sys_role

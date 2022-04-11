@@ -13,10 +13,10 @@ module.exports = {
   rules: {
     "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
     "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
-    'no-nested-ternary': 0, // 禁止嵌套三元表达式
-    'no-else-return': 0,
-    'no-extra-boolean-cast':0,
-    "eqeqeq":2
+    "no-nested-ternary": 0, // 禁止嵌套三元表达式
+    "no-else-return": 0,
+    "no-extra-boolean-cast": 0,
+    eqeqeq: 2
   },
   overrides: [
     {

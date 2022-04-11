@@ -7,7 +7,7 @@ export const getMenuList = data => {
 };
 export const loginDo = data => {
   return hyRequest.post({
-    url: "/auth/login",
+    url: "/auth/logIn",
     data,
     headers: { token: localCache.getCookie("token") }
   });

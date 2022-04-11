@@ -4,10 +4,11 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import lombok.Data;
 
 /**
  * 资源表
@@ -15,7 +16,7 @@ import lombok.Data;
  */
 @TableName(value ="sys_resource")
 @Data
-public class SysResourcePO implements Serializable {
+public class SysResource implements Serializable {
     /**
      * 主键id
      */
@@ -35,7 +36,7 @@ public class SysResourcePO implements Serializable {
     /**
      * 父级id
      */
-    private String pid;
+    private Integer pid;
 
     /**
      * 排序

@@ -1,4 +1,4 @@
-package com.gll.shop.controller;
+package com.gll.shop.controller.admin.user;
 
 /**
  * @author gaoll

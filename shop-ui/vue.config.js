@@ -10,12 +10,7 @@ module.exports = {
   // webpack配置
   chainWebpack: config => {
     //loader配置
-    config.resolve.alias
-      .set("@", resolve("src"))
-      .set("@assets", resolve("src/assets"))
-      .set("@utils", resolve("src/utils"))
-      .set("@http", resolve("src/http"))
-      .set("@pages", resolve("src/pages"));
+    config.resolve.alias.set("@", resolve("src"));
     if (!debug) {
       const cdn = {
         css: ["//unpkg.com/element-ui@2.13.1/lib/theme-chalk/index.css"],
@@ -38,10 +33,10 @@ module.exports = {
         .use("image-webpack-loader")
         .loader("image-webpack-loader")
         .options({
-          mozjpeg: {progressive: true, quality: 65},
-          optipng: {enabled: false},
-          pngquant: {quality: [0.65, 0.9], speed: 4},
-          gifsicle: {interlaced: false}
+          mozjpeg: { progressive: true, quality: 65 },
+          optipng: { enabled: false },
+          pngquant: { quality: [0.65, 0.9], speed: 4 },
+          gifsicle: { interlaced: false }
           // webp: { quality: 75 }
         });
     }

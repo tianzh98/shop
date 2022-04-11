@@ -9,7 +9,7 @@
         <div class="menuNormal">
           <div class="menuTop">
             <div v-show="!isCollapsed">
-<!--              <img :src="logo" />-->
+              <!--              <img :src="logo" />-->
               <span>online shopping</span>
             </div>
             <i
@@ -33,6 +33,7 @@
       <v-head
         :name="userName"
         :collapsed="isCollapsed"
+        :routeMatched="routeMatched"
         @on-collapsedSider="collapsedSider"
       ></v-head>
       <Tag
@@ -60,10 +61,12 @@ import VSidebar from "@/components/navbar/v-sidebar";
 import VHead from "@/components/v-head";
 import * as common from "@/http/implement/common";
 import localCache from "@/utils/cache";
+
 export default {
   name: "index",
   data() {
     return {
+      routeMatched: null,
       Modal: false, // modify pwd pop
       userName: "admin", // login accout
       userId: "", // userid
@@ -78,7 +81,7 @@ export default {
       selectMenuId: "",
       tagindex: -1,
       isRouterAlive: false,
-      logo: require("@assets/images/logo.png"),
+      logo: require("@/assets/images/logo.png"),
       hasPerms: false,
       tagLists: [],
       keepList: [],
@@ -90,6 +93,7 @@ export default {
     VSidebar
   },
   created() {
+    this.getRouteMatched();
     this.getPerms();
     this.getMenuList(); // get menu data
   },
@@ -109,6 +113,7 @@ export default {
     },
     $route: {
       handler(to) {
+        this.getRouteMatched();
         this.tagLists.map(item => {
           if (item.url === to.path) {
             item.name = to.name;
@@ -126,6 +131,9 @@ export default {
     }
   },
   methods: {
+    getRouteMatched() {
+      this.routeMatched = this.$route.matched;
+    },
     showUserName(val) {
       this.userName = val;
     },
@@ -219,14 +227,16 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-/deep/.el-main {
+/deep/ .el-main {
   padding: 0px;
 }
+
 @media screen and (max-width: 1200px) {
   .el-main {
     width: 1240px;
   }
 }
+
 .menuTop {
   img {
     vertical-align: middle;

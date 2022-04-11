@@ -10,7 +10,7 @@
     "test:unit": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e",
     "unit": "jest --config test/unit/jest.config.js --coverage",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint --fix"
   },
   "dependencies": {
     "@babel/runtime": "^7.12.5",
@@ -54,12 +54,7 @@
     "v-clipboard": "^2.2.3",
     "vue-template-compiler": "^2.6.11"
   },
-  "husky": {
-    "hooks": {
-      "commit-msg": "commitlint -e $HUSKY_GIT_PARAMS",
-      "pre-commit": "lint-staged"
-    }
-  },
+
   "browserslist": [
     "> 1%",
     "last 2 versions",

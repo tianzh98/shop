@@ -14,7 +14,7 @@
         ref="myTable"
         :tableData="tableData"
         :columns="columns"
-        :uniqueID="'urid'"
+        :uniqueID="'id'"
         :current="searchData.pageNum"
         :pageSize="searchData.pageSize"
         :total="total"
@@ -31,7 +31,7 @@
   </div>
 </template>
 <script>
-import * as user from "@/http/implement/user";
+import * as product from "@/http/implement/product";
 
 export default {
   name: "user",
@@ -40,25 +40,36 @@ export default {
       searchForm: [
         {
           type: "Input",
-          label: "用户名称",
-          prop: "userName",
+          label: "商品名称",
+          prop: "name",
           placeholder: "请输入",
           clearable: true
         },
         {
           type: "Input",
-          label: "用户账号",
-          prop: "mobile",
+          label: "商品货号",
+          prop: "productSn",
           clearable: true,
           placeholder: "请输入"
         },
         {
           type: "Select",
-          label: "用户状态",
-          prop: "userStatusCodeArray",
-          multiple: true,
+          label: "商品分类",
+          prop: "productCategoryId",
+          multiple: false,
           change: value => {
-            this.searchData.userStatusCodeArray = value;
+            this.searchData.productCategoryId = value;
+            this.getTableData();
+          },
+          placeholder: "请选择"
+        },
+        {
+          type: "Select",
+          label: "商品品牌",
+          prop: "brandId",
+          multiple: false,
+          change: value => {
+            this.searchData.brandId = value;
             this.getTableData();
           },
           placeholder: "请选择"
@@ -66,25 +77,22 @@ export default {
       ],
       searchHandle: [
         {
-          label: "查询",
-          page: "user",
+          label: "重置",
+          page: "productList",
           type: "primary",
           handle: () => {
-            this.getTableData();
+            this.searchData.productCategoryId = "";
+            this.searchData.name = "";
+            this.searchData.productSn = "";
+            this.searchData.brandId = "";
           }
         },
         {
-          perm: true,
-          label: "新增",
+          label: "查询",
+          page: "productList",
           type: "primary",
-          size: "small",
-          page: "user",
-          btn: "Add",
           handle: () => {
-            this.$router.push({
-              path: "/user/add",
-              query: { state: "add" }
-            });
+            this.getTableData();
           }
         }
       ],
@@ -92,14 +100,14 @@ export default {
       total: 0,
       tableHandles: [
         {
-          label: "新增",
+          label: "添加",
           type: "primary",
           size: "small",
-          page: "user",
+          page: "productList",
           btn: "Add",
           handle: () => {
             this.$router.push({
-              path: "/user/add",
+              path: "/product/productDetail",
               query: { state: "add" }
             });
           }
@@ -112,20 +120,23 @@ export default {
       columns: [],
       selection: [],
       dialogVisible: false,
+
+      // searchData 表格查询条件参数
       searchData: {
         pageNum: this.$route.query.pageNum
           ? parseInt(this.$route.query.pageNum)
           : 1,
         pageSize: 200,
-        userName: "",
-        mobile: "",
-        orgName: "",
-        userStatusCodeArray: []
-      } //search data
+        productCategoryId: "",
+        name: "",
+        productSn: "",
+        brandId: ""
+      }
     };
   },
   created() {
     this.getColumns();
+    this.getTableData();
     this.getENData();
   },
   activated() {
@@ -134,21 +145,21 @@ export default {
   methods: {
     getColumns: function() {
       this.$root.$children[0]
-        .getColumns("/order/agent/queryList.pub")
+        .getColumns("/product/getProductList")
         .then(res => {
           this.columns = this.$columns(res, true);
         });
     },
     getENData: function() {
-      let that = this;
-      this.$root.$children[0].getDataDic("ENUserStatus").then(res => {
-        that.list.userStatusCodeArrayList = res;
-      });
+      // let that = this;
+      // this.$root.$children[0].getDataDic("ENUserStatus").then(res => {
+      //   that.list.userStatusCodeArrayList = res;
+      // });
     },
     getTableData: function(page) {
       this.searchData.pageNum = page ? page : 1;
-      user.getUserList(this.searchData).then(res => {
-        this.tableData = res.data.rows;
+      product.getProductList(this.searchData).then(res => {
+        this.tableData = res.data.records;
         this.total = res.data.total;
       });
     },

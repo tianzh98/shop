@@ -9,8 +9,8 @@
         :icon="item.icon"
         :disabled="item.disable ? edit : false"
         @click="item.handle()"
-        >{{ item.label }}</el-button
-      >
+        >{{ item.label }}
+      </el-button>
     </div>
     <div class="Rtable">
       <div ref="tableBox" class="my-table">
@@ -23,11 +23,12 @@
           :border="border"
           :height="tableHeight"
           :fit="fit"
-          size="small"
+          size="medium "
           :show-header="showHeader"
           :default-sort="defaultSort"
           :highlight-current-row="highlightCurrentRow"
           :current-row-key="currentRowKey"
+          :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
           v-loading="loading"
           @select="selectChange"
           @select-all="selectALL"
@@ -66,7 +67,8 @@
             :resizable="item.resize ? item.resize : true"
             :align="item.align ? item.align : 'left'"
             :header-align="item.headerAlign ? item.headerAlign : 'left'"
-            ><div v-if="scope.row.edit" slot-scope="scope">
+          >
+            <div v-if="scope.row.edit" slot-scope="scope">
               <Ecol
                 :item="{
                   ...scope,
@@ -76,8 +78,8 @@
             </div>
             <div v-else>
               <span>{{ scope.row[item.prop] }}</span>
-            </div></el-table-column
-          >
+            </div>
+          </el-table-column>
           <slot name="operationColumns"></slot>
         </el-table>
       </div>
@@ -549,7 +551,11 @@ export default {
   computed: {
     permBtns: function() {
       return this.tableHandles.filter(item => {
-        return this.hasPerms(item.page, item.btn);
+        // 如果按钮需要权限控制，则校验权限
+        if (item.perm) {
+          return this.hasPerms(item.page, item.btn);
+        }
+        return true;
       });
     },
     bottomSelectionRow() {
@@ -577,9 +583,11 @@ export default {
 .rtable-box {
   padding: 15px;
   background-color: #fff;
+
   .el-table {
     color: #333;
     min-height: 100px;
+
     thead th {
       color: #333;
       background-color: #f3f9fc;
@@ -591,8 +599,10 @@ export default {
 .el-table--small th {
   padding: 7px 0;
 }
+
 .ces-handle {
   text-align: left;
+
   .el-button--small {
     font-size: 12px;
     margin-bottom: 15px;
@@ -608,14 +618,18 @@ export default {
 .el-table__expand-icon {
   font-size: 12px !important;
 }
+
 .my-page-wrap {
   position: relative;
   float: right;
+
   .el-pagination__sizes {
     float: left;
   }
+
   .el-pagination {
     padding: 5px 20px 5px 0px;
+
     .el-select .el-input {
       margin: 0;
     }
@@ -623,6 +637,7 @@ export default {
 }
 .el-table thead {
   color: #667180;
+
   th > .cell {
     white-space: nowrap;
   }
@@ -630,8 +645,17 @@ export default {
 .el-table tbody {
   color: #353b4b;
 }
+
 .summary {
   height: 38px;
+}
+.el-table .warning-row {
+  background: oldlace;
+}
+
+.el-table .success-row {
+  color: green;
+  background: #f0f9eb;
 }
 .my-page-sum {
   height: 28px;
@@ -650,20 +674,25 @@ export default {
   font-size: 12px;
   text-align: left;
 }
+
 a {
   color: #4070fc;
 }
+
 .operation {
   color: #4070fc;
   cursor: pointer;
 }
+
 .cell-class {
   padding: 2px 0 !important;
 }
+
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
+
 ::-webkit-scrollbar-track {
   box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
@@ -671,13 +700,16 @@ a {
   background-color: #fff;
   display: none;
 }
+
 ::-webkit-scrollbar-thumb {
   border-radius: 10px;
   background-color: lightgray;
 }
+
 .table-main {
   padding: 5px 10px 20px !important;
 }
+
 .el-tooltip__popper {
   max-width: 500px;
 }

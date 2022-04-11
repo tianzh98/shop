@@ -12,7 +12,7 @@ import com.gll.shop.common.beans.ResultContext;
 import com.gll.shop.common.constant.Constant;
 import com.gll.shop.common.enums.ENResourcesType;
 import com.gll.shop.common.enums.ENUserStatus;
-import com.gll.shop.entity.SysResourcePO;
+import com.gll.shop.entity.SysResource;
 import com.gll.shop.entity.SysRoleResPO;
 import com.gll.shop.entity.SysUserPO;
 import com.gll.shop.entity.SysUserRolePO;
@@ -91,14 +91,14 @@ public class AuthService {
         }
         // 去资源表里 把菜单信息拿到
         // 先拿目录
-        List<SysResourcePO> sysResourcePoList = sysResourceMapper.selectList(Wrappers.<SysResourcePO>lambdaQuery()
-                .in(SysResourcePO::getId, resIds)
-                .eq(SysResourcePO::getType, ENResourcesType.CATALOGUE.value)
-                .orderByAsc(SysResourcePO::getSerialNo));
+        List<SysResource> sysResourceList = sysResourceMapper.selectList(Wrappers.<SysResource>lambdaQuery()
+                .in(SysResource::getId, resIds)
+                .eq(SysResource::getType, ENResourcesType.CATALOGUE.value)
+                .orderByAsc(SysResource::getSerialNo));
 
-        sysResourcePoList.forEach(sysResourcePo -> {
+        sysResourceList.forEach(sysResource -> {
             // 获取目录 以及其子菜单
-            JSONObject content = getFromSysResource(sysResourcePo);
+            JSONObject content = getFromSysResource(sysResource);
 
             jsonArray.add(content);
         });
@@ -121,22 +121,26 @@ public class AuthService {
         return resIds;
     }
 
-    private JSONObject getFromSysResource(SysResourcePO sysresourcepo) {
+    private JSONObject getFromSysResource(SysResource sysresourcepo) {
         JSONObject jsonObject = new JSONObject();
         jsonObject.set("icon", sysresourcepo.getIcon());
         jsonObject.set("id", sysresourcepo.getId());
         jsonObject.set("serialNo", sysresourcepo.getSerialNo());
         jsonObject.set("title", sysresourcepo.getTitle());
         jsonObject.set("url", sysresourcepo.getUrl());
+        if (ENResourcesType.MENU.value.equals(sysresourcepo.getType()) && null != sysresourcepo.getPid()) {
+            jsonObject.set("pid", sysresourcepo.getPid());
+        }
 
         JSONArray menuArray = new JSONArray();
         // 查看底下有无菜单
-        List<SysResourcePO> menus = sysResourceMapper.selectList(Wrappers.<SysResourcePO>lambdaQuery()
-                .eq(SysResourcePO::getPid, sysresourcepo.getId())
-                .eq(SysResourcePO::getType, ENResourcesType.MENU.value)
-                .orderByAsc(SysResourcePO::getSerialNo));
+        List<SysResource> menus = sysResourceMapper.selectList(Wrappers.<SysResource>lambdaQuery()
+                .eq(SysResource::getPid, sysresourcepo.getId())
+                .eq(SysResource::getType, ENResourcesType.MENU.value)
+                .orderByAsc(SysResource::getSerialNo));
 
         menus.forEach(menuRes -> {
+            // 递归
             menuArray.add(getFromSysResource(menuRes));
         });
         jsonObject.set("childrenNode", menuArray);
@@ -148,16 +152,16 @@ public class AuthService {
         List<String> resIds = getLoginUserResIds();
 
         // 拿到所有按钮
-        List<SysResourcePO> sysResourcePoList = sysResourceMapper.selectList(Wrappers.<SysResourcePO>lambdaQuery()
-                .in(SysResourcePO::getId, resIds)
-                .eq(SysResourcePO::getType, ENResourcesType.BUTTON.value)
-                .orderByAsc(SysResourcePO::getSerialNo));
+        List<SysResource> sysResourceList = sysResourceMapper.selectList(Wrappers.<SysResource>lambdaQuery()
+                .in(SysResource::getId, resIds)
+                .eq(SysResource::getType, ENResourcesType.BUTTON.value)
+                .orderByAsc(SysResource::getSerialNo));
 
         // 找到它们父亲的menuCode, 并分类
         // 按钮的父亲 一定要是 菜单  不能是目录
-        Map<String, List<SysResourcePO>> menuCodeResMap = sysResourcePoList.stream().collect(Collectors.groupingBy(sysResourcePO -> {
-            SysResourcePO sysResourcePO1 = sysResourceMapper.selectById(sysResourcePO.getPid());
-            return sysResourcePO1.getMenuCode();
+        Map<String, List<SysResource>> menuCodeResMap = sysResourceList.stream().collect(Collectors.groupingBy(sysResource -> {
+            SysResource sysResource1 = sysResourceMapper.selectById(sysResource.getPid());
+            return sysResource1.getMenuCode();
         }));
 
         JSONArray jsonArray = new JSONArray();

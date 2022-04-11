@@ -3,7 +3,7 @@
     <el-form class="loginFrom" :model="loginData" :rules="rules" ref="ruleForm">
       <el-form-item class="login-item">
         <div class="logo">
-<!--          <img :src="loginLogo" alt="logo" />-->
+          <!--          <img :src="loginLogo" alt="logo" />-->
           <span>online shopping</span>
         </div>
       </el-form-item>
@@ -41,12 +41,12 @@
 <script>
 // import * as useable from "@utils/common";
 import * as common from "@/http/implement/common";
-import localCache from "@utils/cache";
+import localCache from "@/utils/cache";
 export default {
   name: "login",
   data() {
     return {
-      loginLogo: require("@assets/images/logo.png"),
+      loginLogo: require("@/assets/images/logo.png"),
       loginData: {
         mobile: "",
         verificationCode: "",

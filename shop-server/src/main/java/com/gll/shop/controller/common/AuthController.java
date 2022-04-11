@@ -1,4 +1,4 @@
-package com.gll.shop.controller;
+package com.gll.shop.controller.common;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.stp.StpUtil;
@@ -34,15 +34,13 @@ public class AuthController {
 
 
     /**
-     * 登录
      * 注意接受参数必须是 json对象。 而不能单用String类型接受。 因为前端是传的json字符串
      *
-     * @param loginInfo
-     * @return
-     * @throws Exception
+     * @param loginInfo 账号密码
+     * @return LoginResult
      */
-    @PostMapping("/login")
-    public ResultContext<LoginResult> login(@RequestBody Map<String, String> loginInfo) {
+    @PostMapping("/logIn")
+    public ResultContext<LoginResult> logIn(@RequestBody Map<String, String> loginInfo) {
         Assert.notEmpty(loginInfo);
 
         String accountOrEmailOrPhone = loginInfo.get("accountOrEmailOrPhone");
@@ -54,15 +52,14 @@ public class AuthController {
     }
 
     /**
-     * 登录
+     * 退出登录
      *
-     * @return
-     * @throws Exception
+     * @return success
      */
     @PostMapping("/logOut")
     public ResultContext<String> logOut() {
         StpUtil.logout();
-        return ResultContext.success(null);
+        return ResultContext.success("退出登录成功！");
     }
 
     @SaCheckLogin
@@ -77,20 +74,4 @@ public class AuthController {
         return authService.queryUserPermission();
     }
 
-//    @GetMapping("/getUserInfo")
-//    @ApiOperation(value = "获取用户信息")
-//    @ApiOperationSupport(order = 5, author = "dcy")
-//    public R<LoginOutputDTO> getUserInfo() {
-//        SaSession session = StpUtil.getSession();
-//        LoginOutputDTO loginOutputDTO = session.getModel(Constant.SESSION_USER_KEY, LoginOutputDTO.class);
-//        return success(loginOutputDTO);
-//    }
-//
-//    @PostMapping("/logout")
-//    @ApiOperation(value = "用户退出")
-//    @ApiOperationSupport(order = 10, author = "dcy")
-//    public R<String> logout() {
-//        StpUtil.logout();
-//        return success("退出成功");
-//    }
 }

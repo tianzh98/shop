@@ -14,13 +14,14 @@
         ref="myTable"
         :tableData="tableData"
         :columns="columns"
-        :uniqueID="'urid'"
+        :uniqueID="'id'"
         :current="searchData.pageNum"
         :pageSize="searchData.pageSize"
         :total="total"
         :multiSelect="true"
         :isHandle="true"
         :tableHandles="tableHandles"
+        :rowClassName="rowClassName"
         @on-select-all="onSelectAll"
         @on-select="select"
         @on-selection-change="selectChange"
@@ -31,60 +32,20 @@
   </div>
 </template>
 <script>
-import * as user from "@/http/implement/user";
+import * as product from "@/http/implement/product";
 
 export default {
   name: "user",
   data() {
     return {
-      searchForm: [
-        {
-          type: "Input",
-          label: "用户名称",
-          prop: "userName",
-          placeholder: "请输入",
-          clearable: true
-        },
-        {
-          type: "Input",
-          label: "用户账号",
-          prop: "mobile",
-          clearable: true,
-          placeholder: "请输入"
-        },
-        {
-          type: "Select",
-          label: "用户状态",
-          prop: "userStatusCodeArray",
-          multiple: true,
-          change: value => {
-            this.searchData.userStatusCodeArray = value;
-            this.getTableData();
-          },
-          placeholder: "请选择"
-        }
-      ],
+      searchForm: [],
       searchHandle: [
         {
           label: "查询",
-          page: "user",
+          page: "productList",
           type: "primary",
           handle: () => {
             this.getTableData();
-          }
-        },
-        {
-          perm: true,
-          label: "新增",
-          type: "primary",
-          size: "small",
-          page: "user",
-          btn: "Add",
-          handle: () => {
-            this.$router.push({
-              path: "/user/add",
-              query: { state: "add" }
-            });
           }
         }
       ],
@@ -92,14 +53,14 @@ export default {
       total: 0,
       tableHandles: [
         {
-          label: "新增",
+          label: "添加",
           type: "primary",
           size: "small",
-          page: "user",
+          page: "productCate",
           btn: "Add",
           handle: () => {
             this.$router.push({
-              path: "/user/add",
+              path: "/product/productCateDetail",
               query: { state: "add" }
             });
           }
@@ -112,20 +73,19 @@ export default {
       columns: [],
       selection: [],
       dialogVisible: false,
+
+      // searchData 表格查询条件参数
       searchData: {
         pageNum: this.$route.query.pageNum
           ? parseInt(this.$route.query.pageNum)
           : 1,
-        pageSize: 200,
-        userName: "",
-        mobile: "",
-        orgName: "",
-        userStatusCodeArray: []
-      } //search data
+        pageSize: 200
+      }
     };
   },
   created() {
     this.getColumns();
+    this.getTableData();
     this.getENData();
   },
   activated() {
@@ -134,23 +94,28 @@ export default {
   methods: {
     getColumns: function() {
       this.$root.$children[0]
-        .getColumns("/order/agent/queryList.pub")
+        .getColumns("/product/getProductCateList")
         .then(res => {
           this.columns = this.$columns(res, true);
         });
     },
     getENData: function() {
-      let that = this;
-      this.$root.$children[0].getDataDic("ENUserStatus").then(res => {
-        that.list.userStatusCodeArrayList = res;
-      });
+      // let that = this;
+      // this.$root.$children[0].getDataDic("ENUserStatus").then(res => {
+      //   that.list.userStatusCodeArrayList = res;
+      // });
     },
     getTableData: function(page) {
       this.searchData.pageNum = page ? page : 1;
-      user.getUserList(this.searchData).then(res => {
-        this.tableData = res.data.rows;
+      product.getProductCateList(this.searchData).then(res => {
+        this.tableData = res.data.records;
         this.total = res.data.total;
       });
+    },
+    rowClassName: function({ row }) {
+      if (row.level === 1) {
+        return "success-row";
+      }
     },
     // Triggered when the number of pages changes
     pageChange(page) {

@@ -4,11 +4,11 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gll.shop.mapper.SysResourceMapper">
 
-    <resultMap id="BaseResultMap" type="com.gll.shop.entity.SysResourcePO">
+    <resultMap id="BaseResultMap" type="com.gll.shop.entity.SysResource">
             <id property="id" column="id" jdbcType="INTEGER"/>
             <result property="type" column="type" jdbcType="CHAR"/>
             <result property="menuCode" column="menu_code" jdbcType="VARCHAR"/>
-            <result property="pid" column="pid" jdbcType="VARCHAR"/>
+            <result property="pid" column="pid" jdbcType="INTEGER"/>
             <result property="serialNo" column="serial_no" jdbcType="DECIMAL"/>
             <result property="title" column="title" jdbcType="VARCHAR"/>
             <result property="url" column="url" jdbcType="VARCHAR"/>

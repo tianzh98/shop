@@ -13,8 +13,8 @@ const columns = (data, hasWidth = false) => {
         : data.width
         ? data.width[item]
         : hasWidth
-          ? (column.label.length + 1) * 21
-          : null;
+        ? (column.label.length + 1) * 21
+        : null;
     column.sort = data.orderByDictionary[item] ? true : false;
     columns.push(column);
   });
