@@ -96,11 +96,11 @@ export default {
       }
       console.log(file);
     },
-    handleUpload(param){
+    handleUpload(param) {
       let file = param.file;
       let res = {
         data: {
-          url: 'aaa'
+          url: "aaa"
         }
       };
       param.onSuccess(res);

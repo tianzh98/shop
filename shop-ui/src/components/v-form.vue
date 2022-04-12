@@ -1,62 +1,81 @@
 <!-- 搜索表单 -->
 <template>
-<!--  <div style="width: 100%">-->
-  <div  class="v-form">
+  <!--  <div style="width: 100%">-->
+  <div class="addPage">
     <!--  <div>-->
-    <el-form
-      style="width: 720px"
-      ref="ruleForm"
-      :size="size"
-      :label-width="labelWidth"
-      :rules="rules"
-      :model="searchData"
-      @validate="saveForm"
-    >
-      <el-row >
-<!--        <el-col-->
-
-<!--          :span="item.span ? item.span : itemWidth"-->
-
-<!--          v-show="item.show ? item.show() : true"-->
-<!--        >-->
-          <el-form-item
-            v-for="item in searchForm"
-            :key="item.prop"
-
-            :prop="item.prop"
-            :label-width="item.width"
-            :required="item.required"
-          >
-            <span slot="label">
-              {{ item.label }}
-              <slot name="tool" v-if="item.tool"></slot>
-            </span>
-            <!-- 输入框 -->
-            <el-tooltip
-              v-if="item.type === 'Input'"
-              :content="
-                searchData[item.prop]
-                  ? searchData[item.prop] + ''
-                  : item.placeholder
-              "
-              placement="top"
-              :disabled="isShowTooltip"
+    <div class="my-form-wrap">
+      <el-form
+        ref="ruleForm"
+        :size="size"
+        :label-width="labelWidth"
+        :rules="rules"
+        :model="searchData"
+        @validate="saveForm"
+      >
+        <el-row
+          v-for="(itemArray, index1) in getSearchFormCombine"
+          :key="index1"
+        >
+          <el-col v-for="(item, index2) in itemArray" :key="index2" span="12">
+            <el-form-item
+              :prop="item.prop"
+              :label-width="item.width"
+              :required="item.required"
             >
-              <el-input
+              <span slot="label">
+                {{ item.label }}
+                <slot name="tool" v-if="item.tool"></slot>
+              </span>
+              <!-- 输入框 -->
+              <el-tooltip
+                v-if="item.type === 'Input'"
+                :content="
+                  searchData[item.prop]
+                    ? searchData[item.prop] + ''
+                    : item.placeholder
+                "
+                placement="top"
+                :disabled="isShowTooltip"
+              >
+                <el-input
+                  v-model="searchData[item.prop]"
+                  :ref="item.prop"
+                  @mouseover.native="onMouseOver(item.prop, 'input')"
+                  :type="item.rowType ? item.rowType : 'text'"
+                  :autosize="{
+                    minRows: item.rows ? item.rows : 2,
+                    maxRows: item.maxRows
+                  }"
+                  :show-word-limit="item.maxlength ? true : false"
+                  :maxlength="item.maxlength"
+                  @blur="item.handle ? item.handle() : null"
+                  @focus="item.click ? item.click() : null"
+                  @keyup.native="item.keyUp ? item.keyUp() : null"
+                  @clear="item.clear ? item.clear() : null"
+                  :disabled="
+                    item.disable
+                      ? typeof item.disable === 'function'
+                        ? item.disable()
+                        : item.disable
+                      : disable
+                  "
+                  :clearable="item.clearable"
+                  :placeholder="
+                    item.disable || disable ? '暂无' : item.placeholder
+                  "
+                  @dblclick.native="copy(searchData[item.prop])"
+                ></el-input>
+              </el-tooltip>
+              <!-- 下拉框 -->
+              <el-select
+                v-if="item.type === 'Select'"
+                :class="{ isLong: item.long }"
                 v-model="searchData[item.prop]"
-                :ref="item.prop"
-                @mouseover.native="onMouseOver(item.prop, 'input')"
-                :type="item.rowType ? item.rowType : 'text'"
-                :autosize="{
-                  minRows: item.rows ? item.rows : 2,
-                  maxRows: item.maxRows
-                }"
-                :show-word-limit="item.maxlength ? true : false"
-                :maxlength="item.maxlength"
-                @blur="item.handle ? item.handle() : null"
-                @focus="item.click ? item.click() : null"
-                @keyup.native="item.keyUp ? item.keyUp() : null"
-                @clear="item.clear ? item.clear() : null"
+                filterable
+                :clearable="item.clearable ? item.clearable : false"
+                :multiple="item.multiple ? item.multiple : false"
+                :collapse-tags="item.multiple ? !item.collapse : false"
+                :placeholder="item.placeholder"
                 :disabled="
                   item.disable
                     ? typeof item.disable === 'function'
@@ -64,194 +83,177 @@
                       : item.disable
                     : disable
                 "
-                :clearable="item.clearable"
+                @change="
+                  item.change ? item.change(searchData[item.prop]) : null
+                "
+                @clear="item.clear ? item.clear() : null"
+              >
+                <el-tooltip
+                  v-for="op in item.options
+                    ? item.options
+                    : list[item.prop + 'List']"
+                  :key="op.value"
+                  :content="op.label"
+                  placement="top"
+                  :disabled="isShowTooltip"
+                >
+                  <el-option
+                    :label="op.label"
+                    :value="op.value"
+                    @mouseover.native="
+                      hasMouse ? onMouseOver(op.label, 'select') : null
+                    "
+                  ></el-option>
+                </el-tooltip>
+              </el-select>
+
+              <!--级联下拉-->
+              <el-cascader
+                v-if="item.type === 'Cascader'"
+                placeholder="请选择"
+                v-model="searchData[item.prop]"
+                :key="Math.random()"
+                :options="
+                  item.options ? item.options : list[item.prop + 'List']
+                "
+                :props="defaultProps"
+                :disabled="
+                  item.disable
+                    ? typeof item.disable === 'function'
+                      ? item.disable()
+                      : item.disable
+                    : disable
+                "
+                @change="
+                  item.change ? item.change(searchData[item.prop]) : null
+                "
+                filterable
+              ></el-cascader>
+
+              <!-- 单选 -->
+              <el-radio-group
+                v-if="item.type === 'Radio'"
+                v-model="searchData[item.prop]"
+                :disabled="item.disable ? item.disable : disable"
+              >
+                <el-radio
+                  v-for="ra in item.radios"
+                  :label="ra.value"
+                  :key="ra.value"
+                  >{{ ra.label }}
+                </el-radio>
+              </el-radio-group>
+
+              <!-- 单选按钮 -->
+              <el-radio-group
+                v-if="item.type === 'RadioButton'"
+                v-model="searchData[item.prop]"
+                :disabled="item.disable ? item.disable : disable"
+                @change="item.change && item.change(searchData[item.prop])"
+              >
+                <el-radio-button
+                  v-for="ra in item.radios"
+                  :label="ra.value"
+                  :key="ra.value"
+                  >{{ ra.label }}
+                </el-radio-button>
+              </el-radio-group>
+
+              <!-- 复选框 -->
+              <el-checkbox-group
+                v-if="item.type === 'Checkbox'"
+                v-model="searchData[item.prop]"
+                :disabled="item.disable ? item.disable : disable"
+              >
+                <el-checkbox
+                  v-for="ch in item.checkboxs"
+                  :label="ch.value"
+                  :key="ch.value"
+                  >{{ ch.label }}
+                </el-checkbox>
+              </el-checkbox-group>
+
+              <!-- 日期 -->
+              <el-date-picker
+                v-if="item.type === 'Date'"
+                :value-format="item.valueFormat"
+                :default-time="item.defaultTime"
+                :picker-options="item.pickerOptions"
+                :type="item.dateType ? item.dateType : 'date'"
                 :placeholder="
                   item.disable || disable ? '暂无' : item.placeholder
                 "
-                @dblclick.native="copy(searchData[item.prop])"
-              ></el-input>
-            </el-tooltip>
-            <!-- 下拉框 -->
-            <el-select
-              v-if="item.type === 'Select'"
-              :class="{ isLong: item.long }"
-              v-model="searchData[item.prop]"
-              filterable
-              :clearable="item.clearable ? item.clearable : false"
-              :multiple="item.multiple ? item.multiple : false"
-              :collapse-tags="item.multiple ? !item.collapse : false"
-              :placeholder="item.placeholder"
-              :disabled="
-                item.disable
-                  ? typeof item.disable === 'function'
-                    ? item.disable()
-                    : item.disable
-                  : disable
-              "
-              @change="item.change ? item.change(searchData[item.prop]) : null"
-              @clear="item.clear ? item.clear() : null"
-            >
-              <el-tooltip
-                v-for="op in item.options
-                  ? item.options
-                  : list[item.prop + 'List']"
-                :key="op.value"
-                :content="op.label"
-                placement="top"
-                :disabled="isShowTooltip"
-              >
-                <el-option
-                  :label="op.label"
-                  :value="op.value"
-                  @mouseover.native="
-                    hasMouse ? onMouseOver(op.label, 'select') : null
-                  "
-                ></el-option>
-              </el-tooltip>
-            </el-select>
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                v-model="searchData[item.prop]"
+                @change="item.change ? item.change() : null"
+                :disabled="item.disable ? item.disable : disable"
+                :clearable="item.clear === '0' ? false : true"
+              ></el-date-picker>
 
-            <!--级联下拉-->
-            <el-cascader
-              v-if="item.type === 'Cascader'"
-              placeholder="请选择"
-              v-model="searchData[item.prop]"
-              :key="Math.random()"
-              :options="item.options ? item.options : list[item.prop + 'List']"
-              :props="defaultProps"
-              :disabled="
-                item.disable
-                  ? typeof item.disable === 'function'
-                    ? item.disable()
-                    : item.disable
-                  : disable
-              "
-              @change="item.change ? item.change(searchData[item.prop]) : null"
-              filterable
-            ></el-cascader>
+              <!-- 时间 -->
+              <el-time-select
+                v-if="item.type === 'Time'"
+                v-model="searchData[item.prop]"
+                :disabled="item.disable ? item.disable : disable"
+                type=""
+              ></el-time-select>
 
-            <!-- 单选 -->
-            <el-radio-group
-              v-if="item.type === 'Radio'"
-              v-model="searchData[item.prop]"
-              :disabled="item.disable ? item.disable : disable"
-            >
-              <el-radio
-                v-for="ra in item.radios"
-                :label="ra.value"
-                :key="ra.value"
-                >{{ ra.label }}
-              </el-radio>
-            </el-radio-group>
+              <!-- 日期时间 -->
+              <el-date-picker
+                v-if="item.type === 'DateTime'"
+                type="datetime"
+                v-model="searchData[item.prop]"
+                :disabled="item.disable && item.disable(searchData[item.prop])"
+              ></el-date-picker>
+              <!-- 滑块 -->
+              <el-slider
+                v-if="item.type === 'Slider'"
+                v-model="searchData[item.prop]"
+              ></el-slider>
+              <!-- 开关 -->
+              <el-switch
+                v-if="item.type === 'Switch'"
+                v-model="searchData[item.prop]"
+              ></el-switch>
+              <single-upload
+                v-if="item.type === 'Upload' && !item.multiple"
+                v-model="searchData[item.prop]"
+              ></single-upload>
+              <multi-upload
+                v-if="item.type === 'Upload' && item.multiple"
+                v-model="searchData[item.prop]"
+              ></multi-upload>
 
-            <!-- 单选按钮 -->
-            <el-radio-group
-              v-if="item.type === 'RadioButton'"
-              v-model="searchData[item.prop]"
-              :disabled="item.disable ? item.disable : disable"
-              @change="item.change && item.change(searchData[item.prop])"
-            >
-              <el-radio-button
-                v-for="ra in item.radios"
-                :label="ra.value"
-                :key="ra.value"
-                >{{ ra.label }}
-              </el-radio-button>
-            </el-radio-group>
+              <span v-if="item.type === 'UploadImg'">
+                <img :src="searchData[item.prop]" />
+              </span>
+              <span v-if="item.type.indexOf('text') >= 0">
+                <a
+                  v-if="item.type === 'textUrl'"
+                  :href="searchData[item.prop] ? searchData[item.prop] : '#'"
+                  target="_blank"
+                >
+                  {{
+                    searchData[item.prop] ? searchData[item.prop] : "暂无"
+                  }}</a
+                >
+                <span class="acolor" v-else>{{
+                  searchData[item.prop] ? searchData[item.prop] : "暂无"
+                }}</span>
+              </span>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
 
-            <!-- 复选框 -->
-            <el-checkbox-group
-              v-if="item.type === 'Checkbox'"
-              v-model="searchData[item.prop]"
-              :disabled="item.disable ? item.disable : disable"
-            >
-              <el-checkbox
-                v-for="ch in item.checkboxs"
-                :label="ch.value"
-                :key="ch.value"
-                >{{ ch.label }}
-              </el-checkbox>
-            </el-checkbox-group>
-
-            <!-- 日期 -->
-            <el-date-picker
-              v-if="item.type === 'Date'"
-              :value-format="item.valueFormat"
-              :default-time="item.defaultTime"
-              :picker-options="item.pickerOptions"
-              :type="item.dateType ? item.dateType : 'date'"
-              :placeholder="item.disable || disable ? '暂无' : item.placeholder"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
-              v-model="searchData[item.prop]"
-              @change="item.change ? item.change() : null"
-              :disabled="item.disable ? item.disable : disable"
-              :clearable="item.clear === '0' ? false : true"
-            ></el-date-picker>
-
-            <!-- 时间 -->
-            <el-time-select
-              v-if="item.type === 'Time'"
-              v-model="searchData[item.prop]"
-              :disabled="item.disable ? item.disable : disable"
-              type=""
-            ></el-time-select>
-
-            <!-- 日期时间 -->
-            <el-date-picker
-              v-if="item.type === 'DateTime'"
-              type="datetime"
-              v-model="searchData[item.prop]"
-              :disabled="item.disable && item.disable(searchData[item.prop])"
-            ></el-date-picker>
-            <!-- 滑块 -->
-            <el-slider
-              v-if="item.type === 'Slider'"
-              v-model="searchData[item.prop]"
-            ></el-slider>
-            <!-- 开关 -->
-            <el-switch
-              v-if="item.type === 'Switch'"
-              v-model="searchData[item.prop]"
-            ></el-switch>
-            <single-upload
-              v-if="item.type === 'Upload' && !item.multiple"
-              v-model="searchData[item.prop]"
-            ></single-upload>
-            <multi-upload
-              v-if="item.type === 'Upload' && item.multiple"
-              v-model="searchData[item.prop]"
-            ></multi-upload>
-
-            <span v-if="item.type === 'UploadImg'">
-              <img :src="searchData[item.prop]" />
-            </span>
-            <span v-if="item.type.indexOf('text') >= 0">
-              <a
-                v-if="item.type === 'textUrl'"
-                :href="searchData[item.prop] ? searchData[item.prop] : '#'"
-                target="_blank"
-              >
-                {{ searchData[item.prop] ? searchData[item.prop] : "暂无" }}</a
-              >
-              <span class="acolor" v-else>{{
-                searchData[item.prop] ? searchData[item.prop] : "暂无"
-              }}</span>
-            </span>
-          </el-form-item>
-<!--        </el-col>-->
-      </el-row>
-
-      <el-row>
-        <el-col>
-          <el-form-item>
-            <el-button type="primary" @click="submitForm('ruleForm')"
-              >提交</el-button
-            >
-            <el-button @click="resetForm('ruleForm')">重置</el-button>
-          </el-form-item>
-        </el-col>
-      </el-row>
-    </el-form>
+      <div class="btnBoxs">
+        <el-button type="primary" @click="submitForm('ruleForm')"
+          >提交
+        </el-button>
+        <el-button @click="resetForm('ruleForm')">重置</el-button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -343,6 +345,15 @@ export default {
       return val;
     }
   },
+  computed: {
+    getSearchFormCombine() {
+      return this.searchForm
+        .map((e, i) =>
+          i % 2 ? null : [this.searchForm[i], this.searchForm[i + 1]]
+        ) // 两两取出
+        .filter(Boolean);
+    }
+  },
   methods: {
     uploadFile: function(param) {
       this.$emit("uploadFile", param);
@@ -405,8 +416,159 @@ export default {
   }
 };
 </script>
-<style>
-.v-form{
+<style lang="less">
+.v-form {
   margin-top: 50px;
+}
+
+.addPage {
+  background: #fff;
+  position: absolute;
+  top: 35px;
+  bottom: 10px;
+  right: 7px;
+  left: 7px;
+  z-index: 3;
+
+  .pageTop {
+    border-bottom-width: 1px;
+    height: 61px;
+  }
+
+  .my-form-wrap {
+    height: calc(100% - 61px);
+
+    .el-form {
+      height: calc(100% - 72px);
+      padding: 20px 0 0 0;
+      overflow: auto;
+    }
+
+    .el-form-item__content {
+      width: calc(100% - 190px);
+    }
+
+    .el-collapse {
+      border: none;
+    }
+
+    .el-collapse-item__wrap {
+      border: none;
+    }
+
+    .el-collapse-item__header {
+      display: block;
+    }
+
+    .el-collapse-item {
+      padding: 0 20px;
+    }
+  }
+
+  .my-form-wrap-detail {
+    height: calc(100% - 100px);
+
+    .el-form {
+      height: calc(100% - 72px);
+      padding: 20px 0 0 0;
+    }
+
+    .el-form-item__content {
+      width: calc(100% - 250px);
+    }
+
+    .el-collapse {
+      border: none;
+    }
+
+    .el-collapse-item__wrap {
+      border: none;
+    }
+
+    .el-collapse-item__header {
+      display: block;
+    }
+
+    .el-collapse-item {
+      padding: 0 20px;
+    }
+  }
+
+  .my-form-wrap-tab {
+    height: calc(100% - 61px);
+
+    > .el-form {
+      height: calc(100% - 72px);
+      padding: 20px 0 0 0;
+    }
+  }
+  .my-tree-wrap {
+    height: calc(100% - 138px);
+
+    .el-scrollbar {
+      width: 100%;
+    }
+  }
+  .my-tabs-wrap {
+    height: calc(100% - 61px);
+    margin: 0 20px;
+
+    .ivu-tabs {
+      height: 100%;
+
+      .ivu-tabs-content {
+        height: calc(100% - 36px);
+      }
+    }
+  }
+  .my-tabs-wrap {
+    height: calc(100% - 61px);
+    margin: 0 20px;
+
+    .el-tabs {
+      height: 100%;
+
+      .el-tabs__content {
+        height: calc(100% - 40px);
+
+        .el-tab-pane {
+          height: 100%;
+        }
+      }
+    }
+  }
+
+  .addPageul {
+    padding: 40px 0 20px 30px;
+    list-style: none;
+
+    .add-page-item {
+      width: 50%;
+      float: left;
+
+      .ivu-input {
+        font-size: 12px;
+      }
+
+      textarea.ivu-input {
+        min-height: 52px;
+      }
+    }
+    .blank-form-item {
+      height: 36px;
+    }
+  }
+  .el-form-item {
+    width: 100%;
+  }
+
+  .btnBoxs {
+    width: 100%;
+    padding-bottom: 20px;
+    text-align: center;
+    height: 74px;
+    line-height: 72px;
+    /*border-top: 2px solid @bg;*/
+  }
 }
 </style>

@@ -21,7 +21,7 @@
 import VForm from "@/components/v-form";
 export default {
   name: "ProductDetail",
-  components: { VForm},
+  components: { VForm },
   data() {
     return {
       fileList: {
