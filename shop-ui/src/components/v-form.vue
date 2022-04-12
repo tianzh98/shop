@@ -1,7 +1,7 @@
 <!-- 搜索表单 -->
 <template>
 <!--  <div style="width: 100%">-->
-  <div style="margin-top: 50px">
+  <div  class="v-form">
     <!--  <div>-->
     <el-form
       style="width: 720px"
@@ -12,7 +12,7 @@
       :model="searchData"
       @validate="saveForm"
     >
-<!--      <el-row >-->
+      <el-row >
 <!--        <el-col-->
 
 <!--          :span="item.span ? item.span : itemWidth"-->
@@ -239,7 +239,7 @@
             </span>
           </el-form-item>
 <!--        </el-col>-->
-<!--      </el-row>-->
+      </el-row>
 
       <el-row>
         <el-col>
@@ -405,3 +405,8 @@ export default {
   }
 };
 </script>
+<style>
+.v-form{
+  margin-top: 50px;
+}
+</style>

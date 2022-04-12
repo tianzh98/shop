@@ -208,57 +208,57 @@ export default {
 </script>
 
 <style lang="less">
-.el-upload-dragger {
-  width: 465px;
-  height: 596px;
-  border: none;
-  img {
-    width: 120px;
-    margin-top: 119px;
-  }
-  .el-upload__text {
-    height: 22px;
-    font-size: 16px;
-    font-family: PingFangSC-Medium, PingFang SC;
-    font-weight: 500;
-    color: #333333;
-    line-height: 22px;
-    margin-top: 60px;
-  }
-  .el-button {
-    margin-top: 33px;
-    margin-bottom: 88px;
-  }
-  .el-button--warning {
-    color: #fff;
-    background-color: #fb9f00;
-    border-color: #fb9f00;
-  }
-  ol {
-    width: 355px;
-    margin: 0 auto;
-    font-size: 12px;
-    color: #666;
-    text-align: left;
-    line-height: 14px;
-  }
-}
-.el-upload-list--text {
-  width: 465px;
-  margin-top: -205px;
-}
-.el-upload-list__item:first-child {
-  margin: 0 auto;
-  margin-top: -482px;
-  height: 126px;
-  width: 126px;
-  line-height: 280px;
-  border-radius: 50%;
-  background-color: #e3eaf9;
-}
-.el-upload-list__item-name {
-  margin-right: 0;
-}
+//.el-upload-dragger {
+//  width: 465px;
+//  height: 596px;
+//  border: none;
+//  img {
+//    width: 120px;
+//    margin-top: 119px;
+//  }
+//  .el-upload__text {
+//    height: 22px;
+//    font-size: 16px;
+//    font-family: PingFangSC-Medium, PingFang SC;
+//    font-weight: 500;
+//    color: #333333;
+//    line-height: 22px;
+//    margin-top: 60px;
+//  }
+//  .el-button {
+//    margin-top: 33px;
+//    margin-bottom: 88px;
+//  }
+//  .el-button--warning {
+//    color: #fff;
+//    background-color: #fb9f00;
+//    border-color: #fb9f00;
+//  }
+//  ol {
+//    width: 355px;
+//    margin: 0 auto;
+//    font-size: 12px;
+//    color: #666;
+//    text-align: left;
+//    line-height: 14px;
+//  }
+//}
+//.el-upload-list--text {
+//  width: 465px;
+//  margin-top: -205px;
+//}
+//.el-upload-list__item:first-child {
+//  margin: 0 auto;
+//  margin-top: -482px;
+//  height: 126px;
+//  width: 126px;
+//  line-height: 280px;
+//  border-radius: 50%;
+//  background-color: #e3eaf9;
+//}
+//.el-upload-list__item-name {
+//  margin-right: 0;
+//}
 .zoom {
   text-align: right;
   i {
@@ -266,13 +266,13 @@ export default {
     margin-right: 10px;
   }
 }
-.el-upload-list__item .el-progress {
-  top: 0;
-  left: 0;
-}
-.el-progress__text {
-  color: #fff;
-  font-size: 20px !important;
-  font-weight: 600;
-}
+//.el-upload-list__item .el-progress {
+//  top: 0;
+//  left: 0;
+//}
+//.el-progress__text {
+//  color: #fff;
+//  font-size: 20px !important;
+//  font-weight: 600;
+//}
 </style>
