@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product>
         implements ProductService {
 
+
     private final ProductMapper productMapper;
 
     @Autowired
@@ -43,12 +44,12 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product>
         return ResultContext.buildSuccess(null, page.convert(this::translate));
     }
 
+    //翻译，把product转换为productDTO
     private ProductDTO translate(Product po) {
         ProductDTO dto = new ProductDTO();
         BeanUtil.copyProperties(po, dto);
         return dto;
     }
-
 
 
 }

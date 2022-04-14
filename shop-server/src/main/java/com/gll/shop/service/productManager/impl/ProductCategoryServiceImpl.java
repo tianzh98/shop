@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.gll.shop.common.beans.ResultContext;
+import com.gll.shop.common.dropdown.DropDownDTO;
 import com.gll.shop.entity.ProductCategory;
 import com.gll.shop.entity.ProductCategoryDTO;
 import com.gll.shop.entity.common.BaseQueryParams;
@@ -13,7 +14,9 @@ import com.gll.shop.mapper.ProductCategoryMapper;
 import com.gll.shop.service.productManager.ProductCategoryService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -33,6 +36,38 @@ public class ProductCategoryServiceImpl extends ServiceImpl<ProductCategoryMappe
 
 
         return ResultContext.buildSuccess(null, oneLevelProductCategoryPage.convert(this::convertByLevelAndTranslate));
+    }
+
+    @Override
+    public ResultContext<List<DropDownDTO>> getProductCategory() {
+        //获取一级目录
+       Map<Long,String> oneLevelCategory = getBaseMapper().selectList(Wrappers.<ProductCategory>lambdaQuery()
+                       .eq(ProductCategory::getLevel,1))
+               .stream().distinct().collect(Collectors.toMap(ProductCategory::getId,ProductCategory::getName));
+       List<DropDownDTO> dropDownDTOS = new ArrayList<>();
+       for(Map.Entry<Long,String> entry : oneLevelCategory.entrySet())
+       {
+           List<DropDownDTO> dropDownS = new ArrayList<>();
+           //获取二级目录
+           Map<Long,String> twoLevelCategory = getBaseMapper().selectList(Wrappers.<ProductCategory>lambdaQuery()
+                           .eq(ProductCategory::getLevel,2)
+                           .eq(ProductCategory::getParentId,entry.getKey())
+                   )
+                   .stream().distinct().collect(Collectors.toMap(ProductCategory::getId,ProductCategory::getName));
+           for(Map.Entry<Long,String> entry1 : twoLevelCategory.entrySet())
+           {
+               DropDownDTO downDTO = new DropDownDTO();
+               downDTO.setValue(String.valueOf(entry1.getKey()));
+               downDTO.setLabel(String.valueOf(entry1.getValue()));
+               dropDownS.add(downDTO);
+           }
+           DropDownDTO downDTO = new DropDownDTO();
+           downDTO.setValue(String.valueOf(entry.getKey()));
+           downDTO.setLabel(entry.getValue());
+           downDTO.setChildren(dropDownS);
+           dropDownDTOS.add(downDTO);
+       }
+       return ResultContext.buildSuccess("查询联级目录成功",dropDownDTOS);
     }
 
     private ProductCategoryDTO convertByLevelAndTranslate(ProductCategory po) {

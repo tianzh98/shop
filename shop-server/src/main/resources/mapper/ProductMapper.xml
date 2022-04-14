@@ -65,4 +65,5 @@
         promotion_start_time,promotion_end_time,promotion_per_limit,
         promotion_type,brand_name,product_category_name
     </sql>
+
 </mapper>

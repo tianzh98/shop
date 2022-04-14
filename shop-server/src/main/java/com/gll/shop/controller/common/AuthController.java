@@ -41,11 +41,12 @@ public class AuthController {
      */
     @PostMapping("/logIn")
     public ResultContext<LoginResult> logIn(@RequestBody Map<String, String> loginInfo) {
-        Assert.notEmpty(loginInfo);
+        //如果loginInfo为null，则抛出异常
+        Assert.notEmpty(loginInfo,"登录信息为空");
 
         String accountOrEmailOrPhone = loginInfo.get("accountOrEmailOrPhone");
         String password = loginInfo.get("password");
-
+        //不能为null，而且长度必须大于0
         Assert.notBlank(accountOrEmailOrPhone);
         Assert.notBlank(password);
         return authService.login(accountOrEmailOrPhone, password);

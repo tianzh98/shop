@@ -67,4 +67,27 @@ public class GlobalException {
         return resultContext;
     }
 
+/*    @SaCheckLogin
+    private void my(){
+        System.out.println("你的逻辑");
+    }
+    // 代理模式，动态代理,面向切面
+    private void around(){
+        // 切面代码
+        try {
+            this.my();  // SaCheckLogin
+        } catch (Exception e) {
+            handlerException(e);
+    }
+
+        // 切面代码
+    }
+    private void before(){
+        // 切面代码
+        this.my();
+    }
+    private void after(){
+        this.my();
+        // 切面代码
+    }*/
 }

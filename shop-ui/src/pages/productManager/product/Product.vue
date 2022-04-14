@@ -32,6 +32,7 @@
 </template>
 <script>
 import * as product from "@/http/implement/product";
+/*import {getProductCategories, getProductCategory} from "@/http/implement/product";*/
 
 export default {
   name: "user",
@@ -115,7 +116,9 @@ export default {
       ],
       list: {
         userStatusCodeArrayList: [],
-        orgNameList: []
+        orgNameList: [],
+        brandIdList:[],
+        productCategoryIdList:[],
       },
       columns: [],
       selection: [],
@@ -162,6 +165,17 @@ export default {
         this.tableData = res.data.records;
         this.total = res.data.total;
       });
+      product.getBrands().then(
+        res => {
+          res.data.forEach(x => x.value = parseInt(x.value));
+          this.list.brandIdList = res.data;
+        });
+      product.getProductCategory().then(
+        res => {
+          res.data.forEach(x => x.value = parseInt(x.value));
+          res.data.children.forEach(x => x.value = parseInt(x.value));
+          this.list.productCategoryIdList = res.data;
+        });
     },
     // Triggered when the number of pages changes
     pageChange(page) {

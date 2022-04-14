@@ -85,12 +85,13 @@ public class AuthService {
     public ResultContext<JSONArray> queryUserMenu() {
         JSONArray jsonArray = new JSONArray();
 
-        List<String> resIds = getLoginUserResIds();
+        List<String> resIds = this.getLoginUserResIds();
         if (CollectionUtil.isEmpty(resIds)) {
             return ResultContext.buildSuccess("", jsonArray);
         }
         // 去资源表里 把菜单信息拿到
         // 先拿目录
+        //in 查询常用于where表达式中，其作用是查询某个范围内的数据。
         List<SysResource> sysResourceList = sysResourceMapper.selectList(Wrappers.<SysResource>lambdaQuery()
                 .in(SysResource::getId, resIds)
                 .eq(SysResource::getType, ENResourcesType.CATALOGUE.value)
