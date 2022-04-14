@@ -54,13 +54,13 @@ export default {
           placeholder: "请输入"
         },
         {
-          type: "Select",
+          type: "Cascader",
           label: "商品分类",
           prop: "productCategoryId",
           multiple: false,
           change: value => {
-            this.searchData.productCategoryId = value;
-            this.getTableData();
+            // 这里需要取value[1]，也就是二级分类。
+            this.searchData.productCategoryId = value[value.length-1];
           },
           placeholder: "请选择"
         },
@@ -71,7 +71,6 @@ export default {
           multiple: false,
           change: value => {
             this.searchData.brandId = value;
-            this.getTableData();
           },
           placeholder: "请选择"
         }
@@ -172,8 +171,8 @@ export default {
         });
       product.getProductCategory().then(
         res => {
-          res.data.forEach(x => x.value = parseInt(x.value));
-          res.data.children.forEach(x => x.value = parseInt(x.value));
+          // res.data.forEach(x => x.value = parseInt(x.value));
+          // res.data.children.forEach(x => x.value = parseInt(x.value));
           this.list.productCategoryIdList = res.data;
         });
     },
