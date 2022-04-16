@@ -60,7 +60,7 @@ export default {
           multiple: false,
           change: value => {
             // 这里需要取value[1]，也就是二级分类。
-            this.searchData.productCategoryId = value[value.length-1];
+            this.searchData.productCategoryId = value[value.length - 1];
           },
           placeholder: "请选择"
         },
@@ -79,7 +79,6 @@ export default {
         {
           label: "重置",
           page: "productList",
-          type: "primary",
           handle: () => {
             this.searchData.productCategoryId = "";
             this.searchData.name = "";
@@ -116,8 +115,8 @@ export default {
       list: {
         userStatusCodeArrayList: [],
         orgNameList: [],
-        brandIdList:[],
-        productCategoryIdList:[],
+        brandIdList: [],
+        productCategoryIdList: []
       },
       columns: [],
       selection: [],
@@ -164,17 +163,15 @@ export default {
         this.tableData = res.data.records;
         this.total = res.data.total;
       });
-      product.getBrands().then(
-        res => {
-          res.data.forEach(x => x.value = parseInt(x.value));
-          this.list.brandIdList = res.data;
-        });
-      product.getProductCategory().then(
-        res => {
-          // res.data.forEach(x => x.value = parseInt(x.value));
-          // res.data.children.forEach(x => x.value = parseInt(x.value));
-          this.list.productCategoryIdList = res.data;
-        });
+      product.getBrands().then(res => {
+        res.data.forEach(x => (x.value = parseInt(x.value)));
+        this.list.brandIdList = res.data;
+      });
+      product.getProductCategory().then(res => {
+        // res.data.forEach(x => x.value = parseInt(x.value));
+        // res.data.children.forEach(x => x.value = parseInt(x.value));
+        this.list.productCategoryIdList = res.data;
+      });
     },
     // Triggered when the number of pages changes
     pageChange(page) {

@@ -125,12 +125,12 @@ public class AuthService {
     private JSONObject getFromSysResource(SysResource sysresourcepo) {
         JSONObject jsonObject = new JSONObject();
         jsonObject.set("icon", sysresourcepo.getIcon());
-        jsonObject.set("id", sysresourcepo.getId());
+        jsonObject.set("id", String.valueOf(sysresourcepo.getId()));
         jsonObject.set("serialNo", sysresourcepo.getSerialNo());
         jsonObject.set("title", sysresourcepo.getTitle());
         jsonObject.set("url", sysresourcepo.getUrl());
         if (ENResourcesType.MENU.value.equals(sysresourcepo.getType()) && null != sysresourcepo.getPid()) {
-            jsonObject.set("pid", sysresourcepo.getPid());
+            jsonObject.set("pid", String.valueOf(sysresourcepo.getPid()));
         }
 
         JSONArray menuArray = new JSONArray();

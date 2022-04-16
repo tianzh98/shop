@@ -8,6 +8,7 @@ import com.gll.shop.entity.ProductCategory;
 import com.gll.shop.entity.ProductCategoryDTO;
 import com.gll.shop.entity.common.BaseQueryParams;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -15,5 +16,8 @@ import java.util.List;
  */
 public interface ProductCategoryService extends IService<ProductCategory> {
     ResultContext<IPage<ProductCategoryDTO>> getProductCateList(BaseQueryParams param);
+
     ResultContext<List<DropDownDTO>> getProductCategory();
+
+    ResultContext<ProductCategoryDTO> getCateDetail(Serializable id);
 }

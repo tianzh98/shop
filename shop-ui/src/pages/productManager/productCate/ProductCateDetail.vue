@@ -8,7 +8,6 @@
       :itemWidth="7"
       :searchData="searchData"
       :searchForm="searchForm"
-      :searchHandle="searchHandle"
       :list="list"
       :rules="rules"
       :submit="submit"
@@ -19,6 +18,8 @@
 </template>
 <script>
 import VForm from "@/components/v-form";
+import * as product from "@/http/implement/product";
+
 export default {
   name: "ProductDetail",
   components: { VForm },
@@ -41,9 +42,15 @@ export default {
           type: "Select",
           label: "上级分类",
           prop: "parentId",
-          multiple: true,
+          multiple: false,
           change: value => {
-            this.searchData.userStatusCodeArray = value;
+            this.searchData.parentId = value;
+          },
+          visibleChange: visible => {
+            if (visible) {
+              // 下拉框展示时
+              this.getParentDropdown();
+            }
           },
           placeholder: "请选择"
         },
@@ -57,66 +64,82 @@ export default {
         {
           type: "Input",
           label: "排序",
-          prop: "sortNum",
+          prop: "sort",
           clearable: true,
           placeholder: "请输入"
         },
         {
           type: "Radio",
           label: "是否显示",
-          prop: "isShow",
+          prop: "showStatus",
           clearable: true,
           radios: [
             { value: "1", label: "是" },
             { value: "0", label: "否" }
           ]
         },
+        // {
+        //   type: "Upload",
+        //   label: "分类图标",
+        //   prop: "icon",
+        //   clearable: true,
+        //   multiple: true
+        // },
         {
-          type: "Upload",
-          label: "分类图标",
-          prop: "icon",
+          type: "Input",
+          label: "分类描述",
+          prop: "description",
           clearable: true,
-          multiple: true
-        }
-      ],
-      searchHandle: [
-        {
-          label: "提交",
-          page: "user",
-          type: "primary",
-          handle: () => {}
+          placeholder: "请输入"
         }
       ],
       rules: {
-        name: [{ required: true, message: "请输入活动名称", trigger: "blur" }]
+        name: [{ required: true, message: "请输入分类名称", trigger: "blur" }],
+        parentId: [
+          { required: true, message: "请选择上级分类", trigger: "blur" }
+        ]
       },
       list: {
-        userStatusCodeArrayList: [],
-        orgNameList: []
+        parentIdList: []
       },
       searchData: {
-        pageNum: this.$route.query.pageNum
-          ? parseInt(this.$route.query.pageNum)
-          : 1,
-        pageSize: 200,
-        userName: "",
-        mobile: "",
-        orgName: "",
-        userStatusCodeArray: [],
-        isShow: 0,
-        icon: []
+        name: "",
+        parentId: null,
+        productUnit: "",
+        sort: 1,
+        showStatus: "",
+        description: ""
       } //search data
     };
   },
-  created() {},
+  created() {
+    this.getDetail();
+  },
   activated() {},
   methods: {
     goBack() {
       // this.$router.go(-1)
       this.$router.back();
     },
+    getDetail: function() {
+      if (this.$route.query.isEdit) {
+        product.getProductCateDetail({ id: this.$route.query.id }).then(res => {
+          this.searchData = res.data;
+        });
+      }
+    },
+    // 获取上级分类
+    getParentDropdown: function() {
+      product.getParentDropdown().then(res => {
+        this.list.parentIdList = res.data;
+      });
+    },
     submit: function() {
-      console.log("submit!!!");
+      product.editProductCateDetail(this.searchData).then(res => {
+        if (res.code === "0") {
+          this.goBack();
+        }
+      });
     },
     uploadFile: function() {
       console.log(this.searchData);

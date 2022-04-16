@@ -22,7 +22,7 @@ public class ProductCategory implements Serializable {
     private Long id;
 
     /**
-     * 上机分类的编号：1表示一级分类
+     * 上机分类的编号：0表示一级分类
      */
     private Long parentId;
 

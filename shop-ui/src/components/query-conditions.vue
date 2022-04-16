@@ -82,6 +82,9 @@
                 : disable
             "
             @change="item.change ? item.change(searchData[item.prop]) : null"
+            @visible-change="
+              item.visibleChange ? item.visibleChange($event) : null
+            "
             @clear="item.clear ? item.clear() : null"
           >
             <el-tooltip

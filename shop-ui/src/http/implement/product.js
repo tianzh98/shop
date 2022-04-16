@@ -18,3 +18,21 @@ export const getProductCategory = data => {
   return hyRequest.post({ url: "/product/getProductCategories", data });
 };
 
+// 查询商品分类详情
+export const getProductCateDetail = data => {
+  return hyRequest.post({ url: "/product/getProductCateDetail", data });
+};
+
+// 新增/修改商品分类
+export const editProductCateDetail = data => {
+  return hyRequest.post({ url: "/product/editProductCateDetail", data });
+};
+// 获取上级分类下拉框
+export const getParentDropdown = data => {
+  return hyRequest.post({ url: "/product/getParentDropdown", data });
+};
+
+// 新增/修改商品分类
+export const deleteProductCateById = data => {
+  return hyRequest.post({ url: "/product/deleteProductCateById", data });
+};

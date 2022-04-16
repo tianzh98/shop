@@ -16,7 +16,7 @@
           v-for="(itemArray, index1) in getSearchFormCombine"
           :key="index1"
         >
-          <el-col v-for="(item, index2) in itemArray" :key="index2" span="12">
+          <el-col v-for="(item, index2) in itemArray" :key="index2" :span="12">
             <el-form-item
               :prop="item.prop"
               :label-width="item.width"
@@ -85,6 +85,9 @@
                 "
                 @change="
                   item.change ? item.change(searchData[item.prop]) : null
+                "
+                @visible-change="
+                  item.visibleChange ? item.visibleChange($event) : null
                 "
                 @clear="item.clear ? item.clear() : null"
               >
