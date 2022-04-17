@@ -419,159 +419,20 @@ export default {
   }
 };
 </script>
-<style lang="less">
-.v-form {
-  margin-top: 50px;
+<style lang="less" scoped>
+.ces-search {
+  overflow: hidden;
 }
 
-.addPage {
-  background: #fff;
-  position: absolute;
-  top: 35px;
-  bottom: 10px;
-  right: 7px;
-  left: 7px;
-  z-index: 3;
+a {
+  margin-left: 10px;
+}
 
-  .pageTop {
-    border-bottom-width: 1px;
-    height: 61px;
-  }
+.el-select-dropdown__item {
+  font-size: 12px;
+}
 
-  .my-form-wrap {
-    height: calc(100% - 61px);
-
-    .el-form {
-      height: calc(100% - 72px);
-      padding: 20px 0 0 0;
-      overflow: auto;
-    }
-
-    .el-form-item__content {
-      width: calc(100% - 190px);
-    }
-
-    .el-collapse {
-      border: none;
-    }
-
-    .el-collapse-item__wrap {
-      border: none;
-    }
-
-    .el-collapse-item__header {
-      display: block;
-    }
-
-    .el-collapse-item {
-      padding: 0 20px;
-    }
-  }
-
-  .my-form-wrap-detail {
-    height: calc(100% - 100px);
-
-    .el-form {
-      height: calc(100% - 72px);
-      padding: 20px 0 0 0;
-    }
-
-    .el-form-item__content {
-      width: calc(100% - 250px);
-    }
-
-    .el-collapse {
-      border: none;
-    }
-
-    .el-collapse-item__wrap {
-      border: none;
-    }
-
-    .el-collapse-item__header {
-      display: block;
-    }
-
-    .el-collapse-item {
-      padding: 0 20px;
-    }
-  }
-
-  .my-form-wrap-tab {
-    height: calc(100% - 61px);
-
-    > .el-form {
-      height: calc(100% - 72px);
-      padding: 20px 0 0 0;
-    }
-  }
-  .my-tree-wrap {
-    height: calc(100% - 138px);
-
-    .el-scrollbar {
-      width: 100%;
-    }
-  }
-  .my-tabs-wrap {
-    height: calc(100% - 61px);
-    margin: 0 20px;
-
-    .ivu-tabs {
-      height: 100%;
-
-      .ivu-tabs-content {
-        height: calc(100% - 36px);
-      }
-    }
-  }
-  .my-tabs-wrap {
-    height: calc(100% - 61px);
-    margin: 0 20px;
-
-    .el-tabs {
-      height: 100%;
-
-      .el-tabs__content {
-        height: calc(100% - 40px);
-
-        .el-tab-pane {
-          height: 100%;
-        }
-      }
-    }
-  }
-
-  .addPageul {
-    padding: 40px 0 20px 30px;
-    list-style: none;
-
-    .add-page-item {
-      width: 50%;
-      float: left;
-
-      .ivu-input {
-        font-size: 12px;
-      }
-
-      textarea.ivu-input {
-        min-height: 52px;
-      }
-    }
-    .blank-form-item {
-      height: 36px;
-    }
-  }
-  .el-form-item {
-    width: 100%;
-  }
-
-  .btnBoxs {
-    width: 100%;
-    padding-bottom: 20px;
-    text-align: center;
-    height: 74px;
-    line-height: 72px;
-    /*border-top: 2px solid @bg;*/
-  }
+.el-input--small {
+  font-size: 12px;
 }
 </style>

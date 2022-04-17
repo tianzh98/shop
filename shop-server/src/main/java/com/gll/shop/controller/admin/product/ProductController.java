@@ -63,7 +63,10 @@ public class ProductController {
 
     @PostMapping("/deleteProductCateById")
     public ResultContext<String> deleteProductCateById(@RequestBody List<Long> idList) {
-        productCategoryService.removeBatchByIds(idList);
+        productCategoryService.remove(Wrappers.<ProductCategory>lambdaQuery()
+                .in(ProductCategory::getId, idList)
+                .or()
+                .in(ProductCategory::getParentId, idList));
         return ResultContext.success("删除成功！");
     }
 

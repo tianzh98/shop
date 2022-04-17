@@ -3,8 +3,10 @@ export const getuuid = function() {
   function S4() {
     return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
   }
+
   return S4() + S4() + S4() + S4() + S4() + S4() + S4() + S4();
 };
+
 function change(t) {
   if (t < 10) {
     return "0" + t;
@@ -12,6 +14,7 @@ function change(t) {
     return t;
   }
 }
+
 export const formatDate = function(date, type) {
   let year = date.getFullYear();
   let month = change(date.getMonth() + 1);

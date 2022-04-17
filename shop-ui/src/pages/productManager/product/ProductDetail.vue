@@ -1,100 +1,265 @@
 <template>
   <div>
-    <div>
-      <el-page-header @back="goBack" content="添加商品" title="返回" />
+    <div class="goBack">
+      <el-page-header @back="goBack" content="添加商品" title="返回"/>
     </div>
-    <Query
-      size="mini"
-      labelWidth="80px"
-      :itemWidth="7"
-      :searchData="searchData"
-      :searchForm="searchForm"
-      :searchHandle="searchHandle"
-      :list="list"
-    />
+    <div class="addPage">
+      <div class="my-form-wrap">
+        <el-form
+          :model="productDetail"
+          :rules="rules"
+          ref="productDetail"
+          label-width="100px"
+        >
+          <el-collapse v-model="activeNames">
+            <el-collapse-item title="商品信息" name="productInfo">
+              <el-row>
+                <el-col :span="12">
+                  <el-form-item label="商品分类" prop="productCategoryId">
+                    <el-cascader
+                      clearable
+                      v-model="productDetail.productCategoryId"
+                      :options="selectList.productCategoryDropDownList"
+                      @visible-change="getProductCategoryDropDownList($event)"
+                    ></el-cascader>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item label="商品名称" prop="name">
+                    <el-input clearable v-model="productDetail.name"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+
+              <el-row>
+                <el-col :span="12">
+                  <el-form-item label="副标题" prop="subTitle">
+                    <el-input
+                      clearable
+                      v-model="productDetail.subTitle"
+                    ></el-input>
+                  </el-form-item>
+                </el-col>
+
+                <el-col :span="12">
+                  <el-form-item label="商品品牌" prop="brandId">
+                    <el-select
+                      @visible-change="getBrandIdDropDownList($event)"
+                      v-model="productDetail.brandId"
+                      placeholder="请选择"
+                    >
+                      <el-option
+                        v-for="item in selectList.brandIdList"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value"
+                      >
+                      </el-option>
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+
+              <el-row>
+                <el-col :span="12">
+                  <el-form-item label="商品介绍" prop="description">
+                    <el-input
+                      type="textarea"
+                      :rows="2"
+                      placeholder="请输入内容"
+                      v-model="productDetail.description">
+                    </el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item label="商品货号" prop="productSn">
+                    <el-input
+                      clearable
+                      v-model="productDetail.productSn"
+                    ></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+
+              <el-row>
+                <el-col :span="12">
+                  <el-form-item label="商品售价" prop="price">
+                    <el-input type="number" placeholder="请输入内容" v-model="productDetail.price">
+                    </el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item label="市场价" prop="originalPrice">
+                    <el-input type="number" placeholder="请输入内容" v-model="productDetail.originalPrice">
+                    </el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+
+              <el-row>
+                <el-col :span="12">
+                  <el-form-item label="商品库存" prop="stock">
+                    <el-input type="number" placeholder="请输入内容" v-model="productDetail.stock">
+                    </el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item label="计量单位" prop="unit">
+                    <el-input
+                      clearable
+                      v-model="productDetail.unit"
+                    ></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="12">
+                  <el-form-item label="商品重量" prop="weight">
+                    <el-input type="number" placeholder="请输入内容" v-model="productDetail.weight">
+                      <template slot="append">克</template>
+                    </el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item label="排序" prop="sort">
+                    <el-input type="number" placeholder="请输入内容" v-model="productDetail.sort">
+                    </el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+            </el-collapse-item>
+
+            <el-collapse-item title="商品属性" name="productAttr">
+              <el-row>
+                <el-col :span="12">
+                  <el-form-item label="属性类型" prop="productAttributeCategoryId">
+                    <el-select
+                      @visible-change="getProductAttributeCategoryIdList($event)"
+                      v-model="productDetail.productAttributeCategoryId"
+                      placeholder="请选择"
+                    >
+                      <el-option
+                        v-for="item in selectList.productAttributeCategoryIdList"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value"
+                      >
+                      </el-option>
+                    </el-select>
+
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item label="商品规格" prop="productSn">
+                  </el-form-item>
+                </el-col>
+              </el-row>
+
+              <el-row>
+                <el-col :span="12">
+                  <el-form-item label="商品参数" prop="productSn">
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item label="商品相册" prop="productSn">
+                  </el-form-item>
+                </el-col>
+              </el-row>
+            </el-collapse-item>
+          </el-collapse>
+        </el-form>
+
+        <div class="btnBoxs">
+          <el-button type="primary" @click="submitForm('productDetail')"
+          >提交
+          </el-button>
+          <el-button @click="resetForm('productDetail')">重置</el-button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
-export default {
-  name: "ProductDetail",
-  data() {
-    return {
-      searchForm: [
-        {
-          type: "Input",
-          label: "用户名称",
-          prop: "userName",
-          placeholder: "请输入",
-          clearable: true
+  import * as product from "@/http/implement/product";
+
+  export default {
+    name: "ProductDetail",
+    data() {
+      return {
+        activeNames: ["productInfo", "productAttr"],
+        productDetail: {
+          productCategoryId: null,
+          name: "",
+          subTitle: "",
+          brandId: null,
+          description: "",
+          productSn: "",
+          price: null,
+          originalPrice: null,
+          stock: null,
+          unit: "",
+          weight: null,
+          sort: null,
+
+          // 商品属性：
+          productAttributeCategoryId: null
         },
-        {
-          type: "Input",
-          label: "用户账号",
-          prop: "mobile",
-          clearable: true,
-          placeholder: "请输入"
-        },
-        {
-          type: "Select",
-          label: "用户状态",
-          prop: "userStatusCodeArray",
-          multiple: true,
-          change: value => {
-            this.searchData.userStatusCodeArray = value;
-          },
-          placeholder: "请选择"
+        rules: {},
+        selectList: {
+          productCategoryDropDownList: [],
+          brandIdList: [],
+          productAttributeCategoryIdList: []
         }
-      ],
-      searchHandle: [
-        {
-          label: "查询",
-          page: "user",
-          type: "primary",
-          handle: () => {
-            this.getTableData();
-          }
-        }
-      ],
-      list: {
-        userStatusCodeArrayList: [],
-        orgNameList: []
+      };
+    },
+    created() {
+    },
+    activated() {
+    },
+    methods: {
+      goBack: function () {
+        // this.$router.go(-1)
+        this.$router.back();
       },
-      searchData: {
-        pageNum: this.$route.query.pageNum
-          ? parseInt(this.$route.query.pageNum)
-          : 1,
-        pageSize: 200,
-        userName: "",
-        mobile: "",
-        orgName: "",
-        userStatusCodeArray: []
-      } //search data
-    };
-  },
-  created() {},
-  activated() {},
-  methods: {
-    goBack() {
-      // this.$router.go(-1)
-      this.$router.back();
+      submitForm(formName) {
+        this.$refs[formName].validate(valid => {
+          if (valid) {
+            this.submit();
+          } else {
+            return false;
+          }
+        });
+      },
+      resetForm(formName) {
+        this.$refs[formName].resetFields();
+      },
+
+      getProductCategoryDropDownList: function (visible) {
+        if (visible) {
+          product.getProductCategory().then(res => {
+            res.data.forEach(x => (x.value = parseInt(x.value)));
+            this.selectList.productCategoryDropDownList = res.data;
+          });
+        }
+      },
+      getBrandIdDropDownList: function (visible) {
+        if (visible) {
+          product.getBrands().then(res => {
+            res.data.forEach(x => (x.value = parseInt(x.value)));
+            this.selectList.brandIdList = res.data;
+          });
+        }
+      },
+      getProductAttributeCategoryIdList: function (visible) {
+        if (visible) {
+          product.getBrands().then(res => {
+            res.data.forEach(x => (x.value = parseInt(x.value)));
+            this.selectList.brandIdList = res.data;
+          });
+        }
+      }
+
     }
-  }
-};
+  };
 </script>
-<style lang="less" scoped>
-.ces-search {
-  overflow: hidden;
-}
-
-a {
-  margin-left: 10px;
-}
-
-.el-select-dropdown__item {
-  font-size: 12px;
-}
-
-.el-input--small {
-  font-size: 12px;
-}
-</style>
+<style lang="less" scoped></style>

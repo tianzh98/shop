@@ -110,6 +110,58 @@ export default {
               query: { state: "add" }
             });
           }
+        },
+        {
+          label: "删除",
+          type: "primary",
+          size: "small",
+          page: "productList",
+          btn: "Delete",
+          handle: () => {
+            this.$router.push({
+              path: "/product/productDetail",
+              query: { state: "add" }
+            });
+          }
+        },
+        {
+          label: "编辑",
+          type: "primary",
+          size: "small",
+          page: "productList",
+          btn: "Edit",
+          handle: () => {
+            this.$router.push({
+              path: "/product/productDetail",
+              query: { state: "add" }
+            });
+          }
+        },
+        {
+          label: "上架/下架",
+          type: "primary",
+          size: "small",
+          page: "productList",
+          btn: "Sku",
+          handle: () => {
+            this.$router.push({
+              path: "/product/productDetail",
+              query: { state: "add" }
+            });
+          }
+        },
+        {
+          label: "设置库存信息",
+          type: "primary",
+          size: "small",
+          page: "productList",
+          btn: "Sku",
+          handle: () => {
+            this.$router.push({
+              path: "/product/productDetail",
+              query: { state: "add" }
+            });
+          }
         }
       ],
       list: {

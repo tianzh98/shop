@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div>
+    <div class="goBack">
       <el-page-header @back="goBack" content="添加商品分类" title="返回" />
     </div>
     <v-form
@@ -117,12 +117,15 @@ export default {
   },
   activated() {},
   methods: {
-    goBack() {
+    // 返回上一级路由
+    goBack: function() {
       // this.$router.go(-1)
       this.$router.back();
     },
     getDetail: function() {
-      if (this.$route.query.isEdit) {
+      // $route.query.的参数 bool会被转成string  所以这里要转换一下
+      let isEdit = eval(this.$route.query.isEdit);
+      if (isEdit) {
         product.getProductCateDetail({ id: this.$route.query.id }).then(res => {
           this.searchData = res.data;
         });
@@ -147,20 +150,4 @@ export default {
   }
 };
 </script>
-<style lang="less" scoped>
-.ces-search {
-  overflow: hidden;
-}
-
-a {
-  margin-left: 10px;
-}
-
-.el-select-dropdown__item {
-  font-size: 12px;
-}
-
-.el-input--small {
-  font-size: 12px;
-}
-</style>
+<style lang="less" scoped></style>
