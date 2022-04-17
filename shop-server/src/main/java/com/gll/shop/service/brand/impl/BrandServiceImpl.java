@@ -1,10 +1,13 @@
 package com.gll.shop.service.brand.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.gll.shop.common.beans.ResultContext;
 import com.gll.shop.common.dropdown.DropDownDTO;
 import com.gll.shop.entity.Brand;
+import com.gll.shop.entity.BrandParam;
 import com.gll.shop.mapper.BrandMapper;
 import com.gll.shop.service.brand.BrandService;
 import org.springframework.stereotype.Service;
@@ -44,6 +47,17 @@ public class BrandServiceImpl extends ServiceImpl<BrandMapper, Brand>
         }
         return ResultContext.buildSuccess("成功获取品牌",dropDownDTOS);
     }
+
+    @Override
+    public ResultContext<IPage<Brand>> getBrandDetail(BrandParam param) {
+        // 构造分页条件：查询第几页，每页多少条数据
+        Page<Brand> page = new Page<>(param.getPageNum(),param.getPageSize());
+        page = brandMapper.selectPage(page,Wrappers.<Brand>lambdaQuery()
+                .eq(param.getId() != null,Brand::getId,param.getId()));
+        return ResultContext.buildSuccess("品牌分页查询成功",page);
+    }
+
+
 }
 
 

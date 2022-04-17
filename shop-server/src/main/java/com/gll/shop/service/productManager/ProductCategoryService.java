@@ -20,4 +20,8 @@ public interface ProductCategoryService extends IService<ProductCategory> {
     ResultContext<List<DropDownDTO>> getProductCategory();
 
     ResultContext<ProductCategoryDTO> getCateDetail(Serializable id);
+
+    ResultContext<List<DropDownDTO>> getParentDropdown();
+
+    public ResultContext<String> editProductCateDetail( ProductCategory param);
 }

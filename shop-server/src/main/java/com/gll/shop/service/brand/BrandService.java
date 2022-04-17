@@ -1,9 +1,11 @@
 package com.gll.shop.service.brand;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.gll.shop.common.beans.ResultContext;
 import com.gll.shop.common.dropdown.DropDownDTO;
 import com.gll.shop.entity.Brand;
+import com.gll.shop.entity.BrandParam;
 
 import java.util.List;
 
@@ -14,5 +16,7 @@ import java.util.List;
 */
 public interface BrandService extends IService<Brand> {
     ResultContext<List<DropDownDTO>> getBrands();
+
+    ResultContext<IPage<Brand>> getBrandDetail(BrandParam param);
 
 }

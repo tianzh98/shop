@@ -69,7 +69,7 @@ public class ProductCategoryServiceImpl extends ServiceImpl<ProductCategoryMappe
         return ResultContext.buildSuccess("查询联级目录成功", dropDownDTOS);
     }
 
-    private ProductCategoryDTO convertByLevelAndTranslate(ProductCategory po) {
+     ProductCategoryDTO convertByLevelAndTranslate(ProductCategory po) {
 
         ProductCategoryDTO dto = this.translate(po);
         // 把二级分类查询出来 设置进去
@@ -91,10 +91,52 @@ public class ProductCategoryServiceImpl extends ServiceImpl<ProductCategoryMappe
         return dto;
     }
 
+    //获取商品目录
+    @Override
     public ResultContext<ProductCategoryDTO> getCateDetail(Serializable id) {
         return ResultContext.buildSuccess(null, this.translate(getBaseMapper().selectById(id)));
     }
+    //编辑商品目录
+    @Override
+    public ResultContext<String> editProductCateDetail( ProductCategory param) {
+        if (param.getParentId() == 0) {
+            param.setLevel(1);
+        } else {
+            param.setLevel(2);
+        }
+        if (param.getId() == null) {
+            this.save(param);
+        } else {
+            this.updateById(param);
+        }
+        return ResultContext.success(null);
+    }
+    //获得父类目录下拉
+    @Override
+    public ResultContext<List<DropDownDTO>> getParentDropdown() {
 
+        // 获取所有的一级分类
+        List<ProductCategory> productCategoryList = this.list(Wrappers.<ProductCategory>lambdaQuery()
+                .eq(ProductCategory::getLevel, 1));
+
+        List<DropDownDTO> list = new ArrayList<>();
+        // 构造默认（无上级分类）
+        DropDownDTO defaultDropDownDTO = new DropDownDTO();
+        defaultDropDownDTO.setLabel("无上级分类");
+        defaultDropDownDTO.setValue("0");
+        defaultDropDownDTO.setChildren(null);
+        list.add(defaultDropDownDTO);
+        // 转成DropDownDTO对象
+        List<DropDownDTO> dropDownDTOList = productCategoryList.stream().map(productCategory -> {
+            DropDownDTO dropDownDTO = new DropDownDTO();
+            dropDownDTO.setLabel(productCategory.getName());
+            dropDownDTO.setValue(String.valueOf(productCategory.getId()));
+            dropDownDTO.setChildren(null);
+            return dropDownDTO;
+        }).collect(Collectors.toList());
+        list.addAll(dropDownDTOList);
+        return ResultContext.buildSuccess(null, list);
+    }
 }
 
 

@@ -11,7 +11,11 @@ export const getProductCateList = data => {
 };
 // 获取商品品牌下拉
 export const getBrands = data => {
-  return hyRequest.post({ url: "/product/getBrands", data });
+  return hyRequest.post({ url: "/brand/getBrands", data });
+};
+// 获取商品品牌所有信息
+export const getBrandDetail = data => {
+  return hyRequest.post({ url: "/brand/getBrandDetail", data });
 };
 //获取商品联级目录下拉
 export const getProductCategory = data => {

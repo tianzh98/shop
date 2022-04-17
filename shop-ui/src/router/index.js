@@ -72,7 +72,14 @@ const routes = [
           import("@/pages/productManager/productCate/ProductCateDetail"),
         meta: { title: "添加商品分类" },
         hidden: true
-      }
+      },
+      {
+        path: "brandList",
+        name: "brandList",
+        component: () =>
+          import("@/pages/productManager/brandMannger/Brand"),
+        meta: { title: "品牌管理", icon: "product-cate" }
+      },
     ]
   }
 ];

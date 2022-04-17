@@ -10,7 +10,6 @@ import com.gll.shop.entity.ProductCategoryDTO;
 import com.gll.shop.entity.ProductDTO;
 import com.gll.shop.entity.ProductParam;
 import com.gll.shop.entity.common.BaseQueryParams;
-import com.gll.shop.service.brand.BrandService;
 import com.gll.shop.service.productManager.ProductCategoryService;
 import com.gll.shop.service.productManager.ProductService;
 import lombok.extern.slf4j.Slf4j;
@@ -19,10 +18,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * @author gaoll
@@ -36,13 +33,11 @@ import java.util.stream.Collectors;
 public class ProductController {
     private final ProductService productService;
     private final ProductCategoryService productCategoryService;
-    private final BrandService brandService;
 
     //构造方法注入
-    public ProductController(ProductService productService, ProductCategoryService productCategoryService, BrandService brandService) {
+    public ProductController(ProductService productService, ProductCategoryService productCategoryService) {
         this.productService = productService;
         this.productCategoryService = productCategoryService;
-        this.brandService = brandService;
     }
 
     @PostMapping("/getProductList")
@@ -70,12 +65,6 @@ public class ProductController {
         return ResultContext.success("删除成功！");
     }
 
-
-    @PostMapping("/getBrands")
-    public ResultContext<List<DropDownDTO>> getBrands() {
-        return brandService.getBrands();
-    }
-
     @PostMapping("/getProductCategories")
     public ResultContext<List<DropDownDTO>> getProductCategories() {
         return productCategoryService.getProductCategory();
@@ -83,44 +72,12 @@ public class ProductController {
 
     @PostMapping("/editProductCateDetail")
     public ResultContext<String> editProductCateDetail(@RequestBody ProductCategory param) {
-        if (param.getParentId() == 0) {
-            param.setLevel(1);
-        } else {
-            param.setLevel(2);
-        }
-        if (param.getId() == null) {
-            productCategoryService.save(param);
-        } else {
-            productCategoryService.updateById(param);
-        }
-        return ResultContext.success(null);
+        return productCategoryService.editProductCateDetail(param);
     }
-
 
     @PostMapping("/getParentDropdown")
     public ResultContext<List<DropDownDTO>> getParentDropdown() {
-
-        // 获取所有的一级分类
-        List<ProductCategory> productCategoryList = productCategoryService.list(Wrappers.<ProductCategory>lambdaQuery()
-                .eq(ProductCategory::getLevel, 1));
-
-        List<DropDownDTO> list = new ArrayList<>();
-        // 构造默认（无上级分类）
-        DropDownDTO defaultDropDownDTO = new DropDownDTO();
-        defaultDropDownDTO.setLabel("无上级分类");
-        defaultDropDownDTO.setValue("0");
-        defaultDropDownDTO.setChildren(null);
-        list.add(defaultDropDownDTO);
-        // 转成DropDownDTO对象
-        List<DropDownDTO> dropDownDTOList = productCategoryList.stream().map(productCategory -> {
-            DropDownDTO dropDownDTO = new DropDownDTO();
-            dropDownDTO.setLabel(productCategory.getName());
-            dropDownDTO.setValue(String.valueOf(productCategory.getId()));
-            dropDownDTO.setChildren(null);
-            return dropDownDTO;
-        }).collect(Collectors.toList());
-        list.addAll(dropDownDTOList);
-        return ResultContext.buildSuccess(null, list);
+       return productCategoryService.getParentDropdown();
     }
 
 }
