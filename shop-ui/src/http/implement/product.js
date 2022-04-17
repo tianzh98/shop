@@ -40,3 +40,24 @@ export const getParentDropdown = data => {
 export const deleteProductCateById = data => {
   return hyRequest.post({ url: "/product/deleteProductCateById", data });
 };
+
+export const getProductAttributeCategoryDropDown = data => {
+  return hyRequest.post({
+    url: "/product/getProductAttributeCategoryDropDown",
+    data
+  });
+};
+
+// 商品编辑页，下拉商品属性时候，获取商品规格、属性列表
+export const getProductAttribute = data => {
+  return hyRequest.post({ url: "/product/getProductAttribute", data });
+};
+// 获取商品库存信息
+export const getSkuStockList = data => {
+  return hyRequest.post({ url: "/product/getSkuStockList", data });
+};
+
+// 获取商品的属性信息
+export const getProductAttributeValueList = data => {
+  return hyRequest.post({ url: "/product/getProductAttributeValueList", data });
+};

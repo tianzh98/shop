@@ -108,20 +108,7 @@ export default {
           handle: () => {
             this.$router.push({
               path: "/product/productDetail",
-              query: { state: "add" }
-            });
-          }
-        },
-        {
-          label: "删除",
-          type: "primary",
-          size: "small",
-          page: "productList",
-          btn: "Delete",
-          handle: () => {
-            this.$router.push({
-              path: "/product/productDetail",
-              query: { state: "add" }
+              query: { isEdit: false }
             });
           }
         },
@@ -132,10 +119,18 @@ export default {
           page: "productList",
           btn: "Edit",
           handle: () => {
-            this.$router.push({
-              path: "/product/productDetail",
-              query: { state: "add" }
-            });
+            let that = this;
+            if (that.selection.length !== 1) {
+              this.$message.error("请选择一条记录!");
+            } else {
+              this.$router.push({
+                path: "/product/productDetail",
+                query: {
+                  isEdit: true,
+                  id: that.selection[0].id
+                }
+              });
+            }
           }
         },
         {
@@ -144,12 +139,7 @@ export default {
           size: "small",
           page: "productList",
           btn: "Sku",
-          handle: () => {
-            this.$router.push({
-              path: "/product/productDetail",
-              query: { state: "add" }
-            });
-          }
+          handle: () => {}
         },
         {
           label: "设置库存信息",
@@ -163,13 +153,21 @@ export default {
               query: { state: "add" }
             });
           }
+        },
+        {
+          label: "删除",
+          type: "primary",
+          size: "small",
+          page: "productList",
+          btn: "Delete",
+          handle: () => {}
         }
       ],
       list: {
         userStatusCodeArrayList: [],
         orgNameList: [],
-        brandIdList:[],
-        productCategoryIdList:[],
+        brandIdList: [],
+        productCategoryIdList: []
       },
       columns: [],
       selection: [],
@@ -216,17 +214,15 @@ export default {
         this.tableData = res.data.records;
         this.total = res.data.total;
       });
-      product.getBrands().then(
-        res => {
-          res.data.forEach(x => x.value = parseInt(x.value));
-          this.list.brandIdList = res.data;
-        });
-      product.getProductCategory().then(
-        res => {
-          // res.data.forEach(x => x.value = parseInt(x.value));
-          // res.data.children.forEach(x => x.value = parseInt(x.value));
-          this.list.productCategoryIdList = res.data;
-        });
+      product.getBrands().then(res => {
+        res.data.forEach(x => (x.value = parseInt(x.value)));
+        this.list.brandIdList = res.data;
+      });
+      product.getProductCategory().then(res => {
+        // res.data.forEach(x => x.value = parseInt(x.value));
+        // res.data.children.forEach(x => x.value = parseInt(x.value));
+        this.list.productCategoryIdList = res.data;
+      });
     },
     // Triggered when the number of pages changes
     pageChange(page) {

@@ -36,6 +36,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product>
         Page<Product> page = new Page<>(param.getPageNum(), param.getPageSize());
 
         page = productMapper.selectPage(page, Wrappers.<Product>lambdaQuery()
+                .eq(param.getId() != null, Product::getId,param.getId())
                 .eq(null != param.getBrandId(), Product::getBrandId, param.getBrandId())
                 .eq(null != param.getProductCategoryId(), Product::getProductCategoryId, param.getProductCategoryId())
                 .eq(StrUtil.isNotBlank(param.getProductSn()), Product::getProductSn, param.getProductSn())

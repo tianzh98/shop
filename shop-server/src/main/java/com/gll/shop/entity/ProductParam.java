@@ -12,6 +12,7 @@ import lombok.Setter;
 public class ProductParam extends BaseQueryParams {
     private static final long serialVersionUID = 5141320606177789234L;
 
+    private Long id;
 
     /**
      * 分类

@@ -76,10 +76,9 @@ const routes = [
       {
         path: "brandList",
         name: "brandList",
-        component: () =>
-          import("@/pages/productManager/brandMannger/Brand"),
+        component: () => import("@/pages/productManager/brandMannger/Brand"),
         meta: { title: "品牌管理", icon: "product-cate" }
-      },
+      }
     ]
   }
 ];
