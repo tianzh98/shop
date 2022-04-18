@@ -1,4 +1,4 @@
-package com.gll.shop.controller.admin.product;
+package com.gll.shop.controller.product;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -7,12 +7,12 @@ import com.gll.shop.common.beans.ResultContext;
 import com.gll.shop.common.dropdown.DropDownDTO;
 import com.gll.shop.entity.*;
 import com.gll.shop.entity.common.BaseQueryParams;
-import com.gll.shop.service.ProductAttributeCategoryService;
-import com.gll.shop.service.ProductAttributeService;
-import com.gll.shop.service.ProductAttributeValueService;
-import com.gll.shop.service.ProductStockService;
+import com.gll.shop.service.productAttribute.ProductAttributeCategoryService;
+import com.gll.shop.service.productAttribute.ProductAttributeService;
+import com.gll.shop.service.productAttribute.ProductAttributeValueService;
 import com.gll.shop.service.productManager.ProductCategoryService;
 import com.gll.shop.service.productManager.ProductService;
+import com.gll.shop.service.productStock.ProductStockService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

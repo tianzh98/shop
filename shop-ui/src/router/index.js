@@ -78,6 +78,12 @@ const routes = [
         name: "brandList",
         component: () => import("@/pages/productManager/brandMannger/Brand"),
         meta: { title: "品牌管理", icon: "product-cate" }
+      },
+      {
+        path: "orderList",
+        name: "orderList",
+        component: () => import("@/pages/productManager/order/orderList"),
+        meta: { title: "订单管理", icon: "order-cate" }
       }
     ]
   }

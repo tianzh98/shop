@@ -1,4 +1,4 @@
-package com.gll.shop.controller.admin.product;
+package com.gll.shop.controller.product;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import com.baomidou.mybatisplus.core.metadata.IPage;

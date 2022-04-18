@@ -61,3 +61,19 @@ export const getSkuStockList = data => {
 export const getProductAttributeValueList = data => {
   return hyRequest.post({ url: "/product/getProductAttributeValueList", data });
 };
+
+
+
+//获取订单列表
+export const getOrderList = data => {
+  return hyRequest.post({ url: "/order/getOrderList", data });
+};
+//获取订单支付类型下拉
+export const getPayType = data => {
+  return hyRequest.post({ url: "/order/getPayType", data });
+};
+//获取订单状态下拉
+export const getStatus = data => {
+  return hyRequest.post({ url: "/order/getStatus", data });
+};
+

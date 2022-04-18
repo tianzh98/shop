@@ -1,7 +1,7 @@
-package com.gll.shop.service;
+package com.gll.shop.service.productAttribute;
 
-import com.gll.shop.entity.ProductAttribute;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.gll.shop.entity.ProductAttribute;
 
 /**
  *
