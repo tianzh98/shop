@@ -4,7 +4,7 @@ import cn.dev33.satoken.annotation.SaCheckLogin;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.gll.shop.common.beans.ResultContext;
 import com.gll.shop.common.dropdown.DropDownDTO;
-import com.gll.shop.entity.Order;
+import com.gll.shop.entity.OrderDTO;
 import com.gll.shop.entity.OrderParam;
 import com.gll.shop.service.order.OrderService;
 import lombok.extern.slf4j.Slf4j;
@@ -28,17 +28,17 @@ public class OrderController {
     }
 
     @PostMapping("/getOrderList")
-    public ResultContext<IPage<Order>> getOrderLists(@RequestBody OrderParam param)
+    public ResultContext<IPage<OrderDTO>> getOrderLists(@RequestBody OrderParam param)
     {
         return orderService.getOrderList(param);
     }
     @PostMapping("/getPayType")
-    public ResultContext<List<DropDownDTO>> getPayTypes(@RequestBody Order param)
+    public ResultContext<List<DropDownDTO>> getPayTypes()
     {
         return orderService.getPayType();
     }
     @PostMapping("/getStatus")
-    public ResultContext<List<DropDownDTO>> getStatuses(@RequestBody Order param)
+    public ResultContext<List<DropDownDTO>> getStatuses()
     {
         return orderService.getStatus();
     }

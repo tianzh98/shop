@@ -107,8 +107,8 @@ export default {
         { key: "createTime", label: "提交时间", prop: "createTime" },
         { key: "memberUsername", label: "用户帐号", prop: "memberUsername" },
         { key: "totalAmount", label: "订单总金额", prop: "totalAmount" },
-        { key: "payType", label: "支付方式", prop: "payType" },
-        { key: "status", label: "订单状态", prop: "status" }
+        { key: "payTypeName", label: "支付方式", prop: "payTypeName" },
+        { key: "statusName", label: "订单状态", prop: "statusName" }
       ],
       selection: [],
       searchData: {
@@ -129,12 +129,20 @@ export default {
     };
   },
   created() {
+    this.getColumns();
     //一加载页面就运行
     this.getTableData();
   },
   watch: {},
   activated() {},
   methods: {
+    getColumns: function() {
+      this.$root.$children[0]
+        .getColumns("/order/orderList")
+        .then(res => {
+          this.columns = this.$columns(res, true);
+        });
+    },
     getTableData: function(page) {
       this.searchData.pageNum = page ? page : 1;
       product.getOrderList(this.searchData).then(res => {

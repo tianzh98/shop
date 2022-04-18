@@ -22,4 +22,13 @@ public enum ENPayType {
     public String getLabel() {
         return label;
     }
+    public static String getLabelByValue(String value) {
+        for (ENPayType type : ENPayType.values()) {
+            if (value.equals(type.getValue())) {
+                return type.getLabel();
+            }
+        }
+        return null;
+    }
+
 }

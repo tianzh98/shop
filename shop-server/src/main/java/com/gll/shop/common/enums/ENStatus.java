@@ -20,4 +20,12 @@ public enum ENStatus {
         this.value = value;
         this.label = label;
     }
+    public static String getLabelByValue(String value) {
+        for (ENStatus type : ENStatus.values()) {
+            if (value.equals(type.getValue())) {
+                return type.getLabel();
+            }
+        }
+        return null;
+    }
 }
