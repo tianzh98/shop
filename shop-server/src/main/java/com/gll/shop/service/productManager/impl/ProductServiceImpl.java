@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.gll.shop.common.beans.ResultContext;
 import com.gll.shop.entity.Product;
 import com.gll.shop.entity.ProductDTO;
+import com.gll.shop.entity.ProductDetail;
 import com.gll.shop.entity.ProductParam;
 import com.gll.shop.mapper.ProductMapper;
 import com.gll.shop.service.productManager.ProductService;
@@ -36,7 +37,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product>
         Page<Product> page = new Page<>(param.getPageNum(), param.getPageSize());
 
         page = productMapper.selectPage(page, Wrappers.<Product>lambdaQuery()
-                .eq(param.getId() != null, Product::getId,param.getId())
+                .eq(param.getId() != null, Product::getId, param.getId())
                 .eq(null != param.getBrandId(), Product::getBrandId, param.getBrandId())
                 .eq(null != param.getProductCategoryId(), Product::getProductCategoryId, param.getProductCategoryId())
                 .eq(StrUtil.isNotBlank(param.getProductSn()), Product::getProductSn, param.getProductSn())
@@ -53,6 +54,11 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product>
     }
 
 
+    @Override
+    public ResultContext<String> saveOrUpdateProductDetail(ProductDetail productDetail) {
+        System.out.println(productDetail);
+        return ResultContext.success("保存成功！");
+    }
 }
 
 

@@ -101,7 +101,7 @@ export default {
       total: 0,
       sortName: "",
       sortType: "",
-     /* columns: [
+      /* columns: [
         { key: "id", label: "编号", prop: "id" },
         { key: "orderSn", label: "订单编号", prop: "orderSn" },
         { key: "createTime", label: "提交时间", prop: "createTime" },
@@ -116,15 +116,14 @@ export default {
           ? parseInt(this.$route.query.pageNum)
           : 1,
         pageSize: 200,
-        orderSn:"",
-        memberUsername:"",
-        payType:"",
-        status:"",
-
+        orderSn: "",
+        memberUsername: "",
+        payType: "",
+        status: ""
       },
       list: {
-        payTypeList:[],
-        statusList:[],
+        payTypeList: [],
+        statusList: []
       }
     };
   },
@@ -137,11 +136,9 @@ export default {
   activated() {},
   methods: {
     getColumns: function() {
-      this.$root.$children[0]
-        .getColumns("/order/orderList")
-        .then(res => {
-          this.columns = this.$columns(res, true);
-        });
+      this.$root.$children[0].getColumns("/order/orderList").then(res => {
+        this.columns = this.$columns(res, true);
+      });
     },
     getTableData: function(page) {
       this.searchData.pageNum = page ? page : 1;
@@ -196,4 +193,3 @@ export default {
 </script>
 
 <style scoped></style>
-

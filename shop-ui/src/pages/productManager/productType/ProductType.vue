@@ -59,7 +59,7 @@ export default {
                 query: {
                   isEdit: true,
                   id: that.selection[0].id,
-                  type:0
+                  type: 0
                 }
               });
             }
@@ -81,26 +81,26 @@ export default {
                 query: {
                   isEdit: true,
                   id: that.selection[0].id,
-                  type:1
+                  type: 1
                 }
               });
             }
           }
-        },
-        ],
+        }
+      ],
       tableData: [],
       total: 0,
       sortName: "",
       sortType: "",
       columns: [],
       selection: [],
-      searchData:{
+      searchData: {
         pageNum: this.$route.query.pageNum
           ? parseInt(this.$route.query.pageNum)
           : 1,
-        pageSize: 200,
+        pageSize: 200
       },
-      list: "",
+      list: ""
     };
   },
   created() {
@@ -119,11 +119,9 @@ export default {
       });
     },
     getColumns: function() {
-      this.$root.$children[0]
-        .getColumns("/product/productType")
-        .then(res => {
-          this.columns = this.$columns(res, true);
-        });
+      this.$root.$children[0].getColumns("/product/productType").then(res => {
+        this.columns = this.$columns(res, true);
+      });
     },
     select: function(selection) {
       this.selection = selection;
@@ -163,4 +161,3 @@ export default {
 </script>
 
 <style scoped></style>
-

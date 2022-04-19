@@ -48,8 +48,8 @@ export default {
       sortType: "",
       columns: [],
       selection: [],
-      searchData:"",
-      list: "",
+      searchData: "",
+      list: ""
     };
   },
   created() {
@@ -65,7 +65,8 @@ export default {
     }
   },
   activated() {},
-  methods: {/*
+  methods: {
+    /*
     getTableData: function(page) {
       this.searchData.pageNum = page ? page : 1;
       let data=
@@ -78,14 +79,12 @@ export default {
         this.total = res.data.total;
       });
     },*/
-    getAttributeParam: function()
-    {
-      let data=
-        {
-          // 获取上一个页面传进来的值
-          id:this.$route.query.id,
-          type:this.$route.query.type
-        };
+    getAttributeParam: function() {
+      let data = {
+        // 获取上一个页面传进来的值
+        id: this.$route.query.id,
+        type: this.$route.query.type
+      };
       product.getProductAttributeParam(data).then(res => {
         this.tableData = res.data;
         //this.total = res.data.total;
@@ -136,5 +135,3 @@ export default {
 </script>
 
 <style scoped></style>
-
-

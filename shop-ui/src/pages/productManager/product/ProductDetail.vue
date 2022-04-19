@@ -380,7 +380,9 @@
     data() {
       return {
         activeNames: ["productInfo", "productAttr"],
+        // 商品分类级联下拉框的绑定值，取下标为1的即可
         productCategoryIdArray: [],
+        // 商品信息
         productDetail: {
           productCategoryId: null,
           name: "",
@@ -399,21 +401,26 @@
 
           picFiles: []
         },
-        rules: {},
-        selectList: {
-          productCategoryDropDownList: [],
-          brandIdList: [],
-          productAttributeCategoryIdList: []
-        },
         // 商品属性 列表
         selectProductAttr: [],
         // 商品规格 列表
         selectProductParam: [],
-
-        // mall
+        //商品sku库存信息{lowStock: 0, pic: '', price: 0, sale: 0, skuCode: '', spData: '', stock: 0}
         skuStockList: [],
+
+        // 商品所具有的属性(编辑模式下获取商品原来具有的属性)
         productAttributeValueList: [],
-        addProductAttrValue: null
+        // 增加自定义的属性值(临时变量，不需要传给后端)
+        addProductAttrValue: null,
+
+        // 表单校验规则
+        rules: {},
+        // 下拉框可选值
+        selectList: {
+          productCategoryDropDownList: [],
+          brandIdList: [],
+          productAttributeCategoryIdList: []
+        }
       };
     },
     created() {
@@ -435,64 +442,40 @@
       productCategoryIdArray: function (newValue) {
         if (newValue && newValue.length === 2) {
           this.productDetail.productCategoryId = newValue[1];
+        } else {
+          this.productDetail.productCategoryId = null;
         }
       }
     },
     methods: {
-      getProductDetail: function () {
-        if (this.isEdit) {
-          product
-            .getProductList({pageSize: 1, pageNum: 1, id: this.$route.query.id})
-            .then(res => {
-              this.productDetail = res.data.records[0];
-
-              this.productAttributeCategoryIdChange(this.productDetail.productAttributeCategoryId);
-
-              // 初始化商品分类
-              for (let i = 0; i< this.selectList.productCategoryDropDownList.length;i++) {
-                // 寻找匹配的children
-                let parentDropDown = this.selectList.productCategoryDropDownList[i];
-                for(let j = 0; parentDropDown.children && j< parentDropDown.children.length;j++) {
-                  let child = parentDropDown.children[j];
-                  if (child && child.value === String(this.productDetail.productCategoryId)) {
-                    this.productCategoryIdArray[0] = parentDropDown.value;
-                    this.productCategoryIdArray[1] = child.value;
-                  }
-                }
-              }
-            });
-        }
-      },
-      getSkuStockList: function () {
-        // $route.query.的参数 bool会被转成string  所以这里要转换一下
-        if (this.isEdit) {
-          product
-            .getSkuStockList({productId: this.$route.query.id})
-            .then(res => {
-              this.skuStockList = res.data;
-            });
-        }
-      },
-      getProductAttributeValueList: function () {
-        if (this.isEdit) {
-          product
-            .getProductAttributeValueList({productId: this.$route.query.id})
-            .then(res => {
-              this.productAttributeValueList = res.data;
-            });
-        }
-      },
       goBack: function () {
         // this.$router.go(-1)
         this.$router.back();
       },
       submitForm(formName) {
-        console.log(this.productDetail);
-        console.log(this.productCategoryIdArray)
-        console.log(this.selectList)
+        // console.log(this.productDetail);
         this.$refs[formName].validate(valid => {
           if (valid) {
-            this.submit();
+            this.$confirm("是否确认提交？", "提示", {
+              confirmButtonText: "确定",
+              cancelButtonText: "取消",
+              type: "info"
+            }).then(() => {
+              let data = {
+                id: this.$route.query.id,
+                ...this.productDetail,
+                skuStockList: this.skuStockList,
+                selectProductAttr: this.selectProductAttr,
+                selectProductParam: this.selectProductParam
+              };
+              product.saveOrUpdateProductDetail(data).then(res => {
+                this.$message({
+                  message: res.info,
+                  type: 'success'
+                });
+                this.goBack();
+              });
+            });
           } else {
             return false;
           }
@@ -525,6 +508,71 @@
           });
         }
       },
+      getProductDetail: function () {
+        if (this.isEdit) {
+          product
+            .getProductList({pageSize: 1, pageNum: 1, id: this.$route.query.id})
+            .then(res => {
+              this.productDetail = res.data.records[0];
+
+              // 获取商品规格，参数
+              this.productAttributeCategoryIdChange(
+                this.productDetail.productAttributeCategoryId
+              );
+
+              // 初始化商品分类下拉框
+              for (
+                let i = 0;
+                i < this.selectList.productCategoryDropDownList.length;
+                i++
+              ) {
+                // 寻找匹配的children
+                let parentDropDown = this.selectList.productCategoryDropDownList[
+                  i
+                  ];
+                for (
+                  let j = 0;
+                  parentDropDown.children && j < parentDropDown.children.length;
+                  j++
+                ) {
+                  let child = parentDropDown.children[j];
+                  if (
+                    child &&
+                    child.value === String(this.productDetail.productCategoryId)
+                  ) {
+                    // this.productCategoryIdArray.push(parentDropDown.value,child.value) ;
+                    // 这里必须下面这样写 不然级联下拉框不能回显
+                    this.productCategoryIdArray = [
+                      parentDropDown.value,
+                      child.value
+                    ];
+                    return;
+                  }
+                }
+              }
+
+            });
+        }
+      },
+      getSkuStockList: function () {
+        // $route.query.的参数 bool会被转成string  所以这里要转换一下
+        if (this.isEdit) {
+          product
+            .getSkuStockList({productId: this.$route.query.id})
+            .then(res => {
+              this.skuStockList = res.data;
+            });
+        }
+      },
+      getProductAttributeValueList: function () {
+        if (this.isEdit) {
+          product
+            .getProductAttributeValueList({productId: this.$route.query.id})
+            .then(res => {
+              this.productAttributeValueList = res.data;
+            });
+        }
+      },
       productAttributeCategoryIdChange: function (productAttributeCategoryId) {
         // 获取商品规格，参数
         product
@@ -532,6 +580,7 @@
             productAttributeCategoryId: productAttributeCategoryId
           })
           .then(res => {
+            // 0->规格；1->参数
             let selectProductAttrList = res.data.filter(item => item.type === 0);
             let selectProductParamList = res.data.filter(item => item.type === 1);
 
@@ -557,6 +606,8 @@
                 options: options
               });
             }
+
+            // todo delete me
             if (this.isEdit) {
               //编辑模式下刷新商品属性图片
               this.refreshProductAttrPics();

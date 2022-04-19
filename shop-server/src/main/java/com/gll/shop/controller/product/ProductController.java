@@ -59,6 +59,13 @@ public class ProductController {
         return productService.queryProductList(param);
     }
 
+
+    @PostMapping("/saveOrUpdateProductDetail")
+    public ResultContext<String> saveOrUpdateProductDetail(@RequestBody ProductDetail productDetail) {
+        return productService.saveOrUpdateProductDetail(productDetail);
+    }
+
+
     @PostMapping("/getProductCateList")
     public ResultContext<IPage<ProductCategoryDTO>> getProductCateList(@RequestBody BaseQueryParams param) {
         return productCategoryService.getProductCateList(param);

@@ -75,14 +75,14 @@ export default {
       total: 0,
       sortName: "",
       sortType: "",
-     /* columns: [
+      /* columns: [
         { key: "id", label: "品牌编号", prop: "id" },
         { key: "name", label: "品牌名字", prop: "name" },
         { key: "firstLetter", label: "品牌首字母", prop: "firstLetter" },
         { key: "sort", label: "排序", prop: "sort" },
         { key: "brandStory", label: "品牌故事", prop: "brandStory" }
       ],*/
-      columns:[],
+      columns: [],
       selection: [],
       searchData: {
         pageNum: this.$route.query.pageNum
@@ -117,11 +117,9 @@ export default {
       });
     },
     getColumns: function() {
-      this.$root.$children[0]
-        .getColumns("/product/brandList")
-        .then(res => {
-          this.columns = this.$columns(res, true);
-        });
+      this.$root.$children[0].getColumns("/product/brandList").then(res => {
+        this.columns = this.$columns(res, true);
+      });
     },
     select: function(selection) {
       this.selection = selection;

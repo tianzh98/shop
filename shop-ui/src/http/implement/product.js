@@ -5,6 +5,12 @@ export const getProductList = data => {
   return hyRequest.post({ url: "/product/getProductList", data });
 };
 
+// 保存 或者 编辑商品信息
+export const saveOrUpdateProductDetail = data => {
+  return hyRequest.post({ url: "/product/saveOrUpdateProductDetail", data });
+};
+
+
 // 获取商品分类列表
 export const getProductCateList = data => {
   return hyRequest.post({ url: "/product/getProductCateList", data });
@@ -41,10 +47,6 @@ export const deleteProductCateById = data => {
   return hyRequest.post({ url: "/product/deleteProductCateById", data });
 };
 
-
-
-
-
 //获取商品类型列表下拉
 export const getProductAttributeCategoryDropDown = data => {
   return hyRequest.post({
@@ -63,11 +65,6 @@ export const getProductAttributeParam = data => {
   return hyRequest.post({ url: "/product/getProductAttributeParam", data });
 };
 
-
-
-
-
-
 // 商品编辑页，下拉商品属性时候，获取商品规格、属性列表
 export const getProductAttribute = data => {
   return hyRequest.post({ url: "/product/getProductAttribute", data });
@@ -82,8 +79,6 @@ export const getProductAttributeValueList = data => {
   return hyRequest.post({ url: "/product/getProductAttributeValueList", data });
 };
 
-
-
 //获取订单列表
 export const getOrderList = data => {
   return hyRequest.post({ url: "/order/getOrderList", data });
@@ -96,9 +91,3 @@ export const getPayType = data => {
 export const getStatus = data => {
   return hyRequest.post({ url: "/order/getStatus", data });
 };
-
-
-
-
-
-
