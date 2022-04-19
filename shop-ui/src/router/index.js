@@ -79,6 +79,22 @@ const routes = [
         component: () => import("@/pages/productManager/brandMannger/Brand"),
         meta: { title: "品牌管理", icon: "product-cate" }
       },
+      {
+        path: "productType",
+        name: "productType",
+        component: () =>
+          import("@/pages/productManager/productType/ProductType"),
+        meta: { title: "添加商品类型" },
+        hidden: true
+      },
+      {
+        path: "productTypeParam",
+        name: "productTypeParam",
+        component: () =>
+          import("@/pages/productManager/productType/ProductTypeParam"),
+        meta: { title: "添加商品类型" },
+        hidden: true
+      },
     ]
   },
   {

@@ -38,125 +38,92 @@
 import * as product from "@/http/implement/product";
 
 export default {
-  name: "orderList",
+  name: "productType",
   data() {
     return {
-      searchForm: [
+      searchHandle: [],
+      tableHandles: [
         {
-          type: "Input",
-          label: "订单编号",
-          prop: "orderSn",
-          multiple: false,
-          clearable: true,
-          placeholder: "请输入订单编号"
-        },
-        {
-          type: "Input",
-          label: "用户账户",
-          prop: "memberUsername",
-          clearable: true,
-          placeholder: "请输入用户名"
-        },
-        {
-          type: "Select",
-          label: "支付方式",
-          prop: "payType",
-          multiple: false,
-          change: value => {
-            this.searchData.payType = value;
-          }
-        },
-        {
-          type: "Select",
-          label: "订单状态",
-          prop: "status",
-          multiple: false,
-          change: value => {
-            this.searchData.status = value;
-          }
-        }
-      ],
-      searchHandle: [
-        {
-          label: "查询",
-          page: "brand",
+          label: "商品属性查询",
           type: "primary",
+          size: "small",
+          page: "productType",
+          btn: "Add",
           handle: () => {
-            this.getTableData();
+            let that = this;
+            if (that.selection.length !== 1) {
+              this.$message.error("请选择一条记录!");
+            } else {
+              this.$router.push({
+                path: "/product/productTypeParam",
+                query: {
+                  isEdit: true,
+                  id: that.selection[0].id,
+                  type:0
+                }
+              });
+            }
           }
         },
         {
-          label: "重置",
-          page: "brand",
+          label: "商品参数查询",
           type: "primary",
+          size: "small",
+          page: "productType",
+          btn: "Edit",
           handle: () => {
-            this.searchData.orderSn = "";
-            this.searchData.memberUsername = "";
-            this.searchData.payType = "";
-            this.searchData.status = "";
+            let that = this;
+            if (that.selection.length !== 1) {
+              this.$message.error("请选择一条记录!");
+            } else {
+              this.$router.push({
+                path: "/product/productTypeParam",
+                query: {
+                  isEdit: true,
+                  id: that.selection[0].id,
+                  type:1
+                }
+              });
+            }
           }
-        }
-      ],
+        },
+        ],
       tableData: [],
       total: 0,
       sortName: "",
       sortType: "",
-     /* columns: [
-        { key: "id", label: "编号", prop: "id" },
-        { key: "orderSn", label: "订单编号", prop: "orderSn" },
-        { key: "createTime", label: "提交时间", prop: "createTime" },
-        { key: "memberUsername", label: "用户帐号", prop: "memberUsername" },
-        { key: "totalAmount", label: "订单总金额", prop: "totalAmount" },
-        { key: "payTypeName", label: "支付方式", prop: "payTypeName" },
-        { key: "statusName", label: "订单状态", prop: "statusName" }
-      ],*/
+      columns: [],
       selection: [],
-      searchData: {
+      searchData:{
         pageNum: this.$route.query.pageNum
           ? parseInt(this.$route.query.pageNum)
           : 1,
         pageSize: 200,
-        orderSn:"",
-        memberUsername:"",
-        payType:"",
-        status:"",
-
       },
-      list: {
-        payTypeList:[],
-        statusList:[],
-      }
+      list: "",
     };
   },
   created() {
-    this.getColumns();
     //一加载页面就运行
     this.getTableData();
+    this.getColumns();
   },
   watch: {},
   activated() {},
   methods: {
-    getColumns: function() {
-      this.$root.$children[0]
-        .getColumns("/order/orderList")
-        .then(res => {
-          this.columns = this.$columns(res, true);
-        });
-    },
     getTableData: function(page) {
       this.searchData.pageNum = page ? page : 1;
-      product.getOrderList(this.searchData).then(res => {
+      product.getProductAttributeCategoryList(this.searchData).then(res => {
         this.tableData = res.data.records;
         this.total = res.data.total;
       });
-      product.getPayType().then(res => {
-        res.data.forEach(x => (x.value = parseInt(x.value)));
-        this.list.payTypeList = res.data;
-      });
-      product.getStatus().then(res => {
-        res.data.forEach(x => (x.value = parseInt(x.value)));
-        this.list.statusList = res.data;
-      });
+    },
+    getColumns: function() {
+      this.$root.$children[0]
+        .getColumns("/product/productType")
+        .then(res => {
+          this.columns = this.$columns(res, true);
+        });
     },
     select: function(selection) {
       this.selection = selection;

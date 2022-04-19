@@ -25,4 +25,12 @@
         sort,filter_type,search_type,
         related_status,hand_add_status,type
     </sql>
+    <select id="getProductTypeParam" resultType="com.gll.shop.entity.ProductAttributePO">
+        SELECT pa.id,
+               pa.`name`,
+               pa.select_type  as selectType,
+               pa.input_list as inputList,pac.`name` as productTypeName
+              from product_attribute as pa INNER JOIN product_attribute_category as pac
+        where pa.product_attribute_category_id = pac.id  and pa.product_attribute_category_id = #{param.id} and type = #{param.type}
+    </select>
 </mapper>

@@ -41,12 +41,32 @@ export const deleteProductCateById = data => {
   return hyRequest.post({ url: "/product/deleteProductCateById", data });
 };
 
+
+
+
+
+//获取商品类型列表下拉
 export const getProductAttributeCategoryDropDown = data => {
   return hyRequest.post({
     url: "/product/getProductAttributeCategoryDropDown",
     data
   });
 };
+
+//获取商品类型列表
+export const getProductAttributeCategoryList = data => {
+  return hyRequest.post({ url: "/product/getProductAttributeList", data });
+};
+
+//获取商品类型列表
+export const getProductAttributeParam = data => {
+  return hyRequest.post({ url: "/product/getProductAttributeParam", data });
+};
+
+
+
+
+
 
 // 商品编辑页，下拉商品属性时候，获取商品规格、属性列表
 export const getProductAttribute = data => {
@@ -76,4 +96,9 @@ export const getPayType = data => {
 export const getStatus = data => {
   return hyRequest.post({ url: "/order/getStatus", data });
 };
+
+
+
+
+
 

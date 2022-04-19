@@ -38,87 +38,62 @@
 import * as product from "@/http/implement/product";
 
 export default {
-  name: "Brand",
+  name: "ProductTypeParam",
   data() {
     return {
-      searchForm: [
-        {
-          type: "Select",
-          label: "商品品牌",
-          prop: "id",
-          multiple: false,
-          change: value => {
-            this.searchData.id = value;
-          },
-          placeholder: "请选择"
-        }
-      ],
-      searchHandle: [
-        {
-          label: "查询",
-          page: "brand",
-          type: "primary",
-          handle: () => {
-            this.getTableData();
-          }
-        },
-        {
-          label: "重置",
-          page: "brand",
-          type: "primary",
-          handle: () => {
-            this.searchData.id = "";
-          }
-        }
-      ],
+      searchHandle: [],
       tableData: [],
       total: 0,
       sortName: "",
       sortType: "",
-     /* columns: [
-        { key: "id", label: "品牌编号", prop: "id" },
-        { key: "name", label: "品牌名字", prop: "name" },
-        { key: "firstLetter", label: "品牌首字母", prop: "firstLetter" },
-        { key: "sort", label: "排序", prop: "sort" },
-        { key: "brandStory", label: "品牌故事", prop: "brandStory" }
-      ],*/
-      columns:[],
+      columns: [],
       selection: [],
-      searchData: {
-        pageNum: this.$route.query.pageNum
-          ? parseInt(this.$route.query.pageNum)
-          : 1,
-        pageSize: 200,
-        //品牌id下拉
-        id: ""
-      },
-      list: {
-        idList: []
-      }
+      searchData:"",
+      list: "",
     };
   },
   created() {
     //一加载页面就运行
-    this.getTableData();
+    //this.getTableData();
     this.getColumns();
+    this.getAttributeParam();
   },
   watch: {},
+  computed: {
+    isEdit() {
+      return eval(this.$route.query.isEdit);
+    }
+  },
   activated() {},
-  methods: {
+  methods: {/*
     getTableData: function(page) {
       this.searchData.pageNum = page ? page : 1;
-      product.getBrandDetail(this.searchData).then(res => {
-        this.tableData = res.data.records;
+      let data=
+        {
+          id:this.$router.push.query.id,
+          type:this.$router.push.query.type
+        };
+      product.getProductAttributeParam(data).then(res => {
+        this.tableData = res.data;
         this.total = res.data.total;
       });
-      product.getBrands().then(res => {
-        res.data.forEach(x => (x.value = parseInt(x.value)));
-        this.list.idList = res.data;
+    },*/
+    getAttributeParam: function()
+    {
+      let data=
+        {
+          // 获取上一个页面传进来的值
+          id:this.$route.query.id,
+          type:this.$route.query.type
+        };
+      product.getProductAttributeParam(data).then(res => {
+        this.tableData = res.data;
+        //this.total = res.data.total;
       });
     },
     getColumns: function() {
       this.$root.$children[0]
-        .getColumns("/product/brandList")
+        .getColumns("/productType/productTypeParam")
         .then(res => {
           this.columns = this.$columns(res, true);
         });
@@ -161,3 +136,5 @@ export default {
 </script>
 
 <style scoped></style>
+
+

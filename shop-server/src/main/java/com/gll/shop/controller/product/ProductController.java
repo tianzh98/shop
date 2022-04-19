@@ -109,6 +109,19 @@ public class ProductController {
         return ResultContext.buildSuccess(null, collect);
     }
 
+   //获取所有商品类型
+    @PostMapping("/getProductAttributeList")
+    public ResultContext<IPage<ProductAttributeCategory>> getProductAttributeList(@RequestBody BaseQueryParams params) {
+        return productAttributeCategoryService.getProductAttributeList(params);
+    }
+
+    //获取所有商品类型参数
+    @PostMapping("/getProductAttributeParam")
+    public ResultContext<List<ProductAttributeDTO>> getProductAttributeParam(@RequestBody ProductAttributeParam param) {
+        return productAttributeService.getProductAttributeParam(param);
+    }
+
+
     @PostMapping("/getProductAttribute")
     public ResultContext<List<ProductAttribute>> getProductAttribute(@RequestBody Map<String, Long> params) {
         Long productAttributeCategoryId = params.get("productAttributeCategoryId");
@@ -138,6 +151,8 @@ public class ProductController {
         // 获取商品属性类别的下拉框
         return ResultContext.buildSuccess(null, list);
     }
+
+
 
 
 }
