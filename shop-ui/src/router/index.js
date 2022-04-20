@@ -80,6 +80,12 @@ const routes = [
         meta: { title: "品牌管理", icon: "product-cate" }
       },
       {
+        path: "addBrand",
+        name: "addBrand",
+        component: () => import("@/pages/productManager/brandMannger/AddBrand"),
+        meta: { title: "增加品牌", icon: "product-cate" }
+      },
+      {
         path: "productType",
         name: "productType",
         component: () =>
@@ -109,6 +115,21 @@ const routes = [
         name: "orderList",
         component: () => import("@/pages/orderManager/order/orderList"),
         meta: { title: "订单管理", icon: "order-cate" }
+      }
+    ]
+  },
+  {
+    path: "/address",
+    component: index,
+    redirect: "/address/addressList",
+    name: "address",
+    meta: { title: "订单"},
+    children: [
+      {
+        path: "addressList",
+        name: "addressList",
+        component: () => import("@/pages/addressManager/address/addressList"),
+        meta: { title: "地址管理", icon: "order-cate" }
       }
     ]
   }

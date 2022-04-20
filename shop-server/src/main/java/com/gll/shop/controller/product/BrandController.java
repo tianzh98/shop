@@ -1,6 +1,7 @@
 package com.gll.shop.controller.product;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
+import cn.hutool.json.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.gll.shop.common.beans.ResultContext;
 import com.gll.shop.common.dropdown.DropDownDTO;
@@ -36,5 +37,13 @@ public class BrandController {
     public ResultContext<IPage<Brand>> getBrandAll(@RequestBody BrandParam param) {
         return brandService.getBrandDetail(param);
     }
-
+    @PostMapping("/insertBrand")
+    public ResultContext<Void> insertBrand(@RequestBody Brand brand) {
+        return brandService.insertBrand(brand);
+    }
+    @PostMapping("/deleteBrandById")
+    public ResultContext<Void> deleteBrandById(@RequestBody JSONObject param) {
+        Integer id = param.getInt("id");
+        return brandService.deleteBrandById(id);
+    }
 }

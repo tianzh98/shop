@@ -101,6 +101,7 @@ export default {
       total: 0,
       sortName: "",
       sortType: "",
+      columns:[],
       /* columns: [
         { key: "id", label: "编号", prop: "id" },
         { key: "orderSn", label: "订单编号", prop: "orderSn" },

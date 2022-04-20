@@ -38,25 +38,23 @@
 import * as product from "@/http/implement/product";
 
 export default {
-  name: "Brand",
+  name: "addressList",
   data() {
     return {
       searchForm: [
         {
-          type: "Select",
-          label: "商品品牌",
-          prop: "id",
+          type: "Input",
+          label: "姓名",
+          prop: "name",
           multiple: false,
-          change: value => {
-            this.searchData.id = value;
-          },
-          placeholder: "请选择"
-        }
+          clearable: true,
+          placeholder: "请输入订单编号"
+        },
       ],
       searchHandle: [
         {
           label: "查询",
-          page: "brand",
+          page: "addressList",
           type: "primary",
           handle: () => {
             this.getTableData();
@@ -67,7 +65,7 @@ export default {
           page: "brand",
           type: "primary",
           handle: () => {
-            this.searchData.id = "";
+            this.searchData.name = "";
           }
         }
       ],
@@ -76,91 +74,49 @@ export default {
           label: "添加",
           type: "primary",
           size: "small",
-          page: "AddBrand",
+          page: "productList",
           btn: "Add",
           handle: () => {
             this.$router.push({
-              path: "/product/addBrand",
+              path: "/product/productDetail",
               query: { isEdit: false }
             });
           }
-        },
-        {
-          label: "删除",
-          type: "primary",
-          size: "small",
-          page: "AddBrand",
-          btn: "Delete",
-          handle: () => {
-            if (this.selection.length <= 0) {
-              this.$message.error("请选择一条或多条记录!");
-            } else {
-              this.$confirm(
-                "此操作将永久删除已选中数据, 是否继续?",
-                "提示",
-                {
-                  confirmButtonText: "确定",
-                  cancelButtonText: "取消",
-                  type: "warning"
-                }
-              )
-                .then(() => {
-                  let data=
-                    {
-                      id:this.selection[0].id
-                    }
-                  product.deleteBrandById(data)
-                    .then(res => {
-                      this.$message.success(res.info);
-                      this.getTableData();
-                    });
-                })
-
-            }
-          }
-        }
-      ],
+        }],
       tableData: [],
       total: 0,
       sortName: "",
       sortType: "",
-      columns: [],
+      columns:[],
       selection: [],
       searchData: {
         pageNum: this.$route.query.pageNum
           ? parseInt(this.$route.query.pageNum)
           : 1,
         pageSize: 200,
-        //品牌id下拉
-        id: ""
+        name:"",
       },
-      list: {
-        idList: []
-      }
+      list: "",
     };
   },
   created() {
+    this.getColumns();
     //一加载页面就运行
     this.getTableData();
-    this.getColumns();
   },
   watch: {},
   activated() {},
   methods: {
     getColumns: function() {
-      this.$root.$children[0].getColumns("/product/brandList").then(res => {
+      this.$root.$children[0].getColumns("/address/addressList").then(res => {
         this.columns = this.$columns(res, true);
       });
     },
     getTableData: function(page) {
       this.searchData.pageNum = page ? page : 1;
-      product.getBrandDetail(this.searchData).then(res => {
+      product.getAddressList(this.searchData).then(res => {
         this.tableData = res.data.records;
         this.total = res.data.total;
-      });
-      product.getBrands().then(res => {
-        res.data.forEach(x => (x.value = parseInt(x.value)));
-        this.list.idList = res.data;
       });
     },
     select: function(selection) {

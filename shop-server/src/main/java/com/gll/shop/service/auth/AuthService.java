@@ -13,9 +13,9 @@ import com.gll.shop.common.constant.Constant;
 import com.gll.shop.common.enums.ENResourcesType;
 import com.gll.shop.common.enums.ENUserStatus;
 import com.gll.shop.entity.SysResource;
-import com.gll.shop.entity.SysRoleResPO;
-import com.gll.shop.entity.SysUserPO;
-import com.gll.shop.entity.SysUserRolePO;
+import com.gll.shop.entity.SysRoleRes;
+import com.gll.shop.entity.SysUser;
+import com.gll.shop.entity.SysUserRole;
 import com.gll.shop.entity.auth.LoginResult;
 import com.gll.shop.mapper.SysResourceMapper;
 import com.gll.shop.mapper.SysRoleMapper;
@@ -57,7 +57,7 @@ public class AuthService {
 
     public ResultContext<LoginResult> login(String accountOrEmailOrPhone, String password) {
 
-        SysUserPO userInfo = sysUserService.getUser(accountOrEmailOrPhone);
+        SysUser userInfo = sysUserService.getUser(accountOrEmailOrPhone);
 
         if (userInfo == null) {
             return ResultContext.businessFail("用户不存在");
@@ -111,14 +111,14 @@ public class AuthService {
         // 获取userId
         int userId = StpUtil.getLoginIdAsInt();
         // 获取该用户的角色
-        List<String> roleIds = sysUserRoleMapper.selectList(Wrappers.<SysUserRolePO>lambdaQuery()
-                .select(SysUserRolePO::getRoleId)
-                .eq(SysUserRolePO::getUserId, userId))
-                .stream().map(SysUserRolePO::getRoleId).collect(Collectors.toList());
+        List<String> roleIds = sysUserRoleMapper.selectList(Wrappers.<SysUserRole>lambdaQuery()
+                .select(SysUserRole::getRoleId)
+                .eq(SysUserRole::getUserId, userId))
+                .stream().map(SysUserRole::getRoleId).collect(Collectors.toList());
         // 根据角色-资源关系表把每个角色的资源权限都查到
-        List<String> resIds = sysRoleResMapper.selectList(Wrappers.<SysRoleResPO>lambdaQuery()
-                .in(SysRoleResPO::getRoleId, roleIds))
-                .stream().distinct().map(SysRoleResPO::getResId).collect(Collectors.toList());
+        List<String> resIds = sysRoleResMapper.selectList(Wrappers.<SysRoleRes>lambdaQuery()
+                .in(SysRoleRes::getRoleId, roleIds))
+                .stream().distinct().map(SysRoleRes::getResId).collect(Collectors.toList());
         return resIds;
     }
 

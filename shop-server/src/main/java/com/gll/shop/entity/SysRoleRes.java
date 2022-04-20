@@ -9,37 +9,22 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 角色表
- * @TableName sys_role
+ * 角色和资源关联表
+ * @TableName sys_role_res
  */
-@TableName(value ="sys_role")
+@TableName(value ="sys_role_res")
 @Data
-public class SysRolePO implements Serializable {
+public class SysRoleRes implements Serializable {
     /**
      * 角色id
      */
     @TableId
-    private String id;
+    private String roleId;
 
     /**
-     * 角色名称
+     * 资源id
      */
-    private String roleName;
-
-    /**
-     * 角色权限字符串
-     */
-    private String roleKey;
-
-    /**
-     * 角色状态（0、正常；1、禁用）
-     */
-    private String roleStatus;
-
-    /**
-     * 数据范围（1、全部数据权限；2、自定数据权限；3、本部门数据权限；4、本部门及以下数据权限）
-     */
-    private String dataScope;
+    private String resId;
 
     /**
      * 创建时间

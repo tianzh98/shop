@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gll.shop.mapper.SysUserRoleMapper">
 
-    <resultMap id="BaseResultMap" type="com.gll.shop.entity.SysUserRolePO">
+    <resultMap id="BaseResultMap" type="com.gll.shop.entity.SysUserRole">
             <id property="userId" column="user_id" jdbcType="VARCHAR"/>
             <id property="roleId" column="role_id" jdbcType="VARCHAR"/>
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>

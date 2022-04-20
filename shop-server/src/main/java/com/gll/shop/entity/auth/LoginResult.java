@@ -1,6 +1,6 @@
 package com.gll.shop.entity.auth;
 
-import com.gll.shop.entity.SysUserPO;
+import com.gll.shop.entity.SysUser;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -15,6 +15,6 @@ import java.io.Serializable;
 public class LoginResult implements Serializable {
     private static final long serialVersionUID = 3694874991377933216L;
     private String token;
-    private SysUserPO userInfo;
+    private SysUser userInfo;
 
 }

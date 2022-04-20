@@ -9,22 +9,22 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 角色和资源关联表
- * @TableName sys_role_res
+ * 用户角色关联表
+ * @TableName sys_user_role
  */
-@TableName(value ="sys_role_res")
+@TableName(value ="sys_user_role")
 @Data
-public class SysRoleResPO implements Serializable {
+public class SysUserRole implements Serializable {
+    /**
+     * 用户id
+     */
+    @TableId
+    private String userId;
+
     /**
      * 角色id
      */
-    @TableId
     private String roleId;
-
-    /**
-     * 资源id
-     */
-    private String resId;
 
     /**
      * 创建时间

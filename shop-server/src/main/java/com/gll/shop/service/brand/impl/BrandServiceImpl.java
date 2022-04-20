@@ -57,6 +57,22 @@ public class BrandServiceImpl extends ServiceImpl<BrandMapper, Brand>
         return ResultContext.buildSuccess("品牌分页查询成功",page);
     }
 
+    @Override
+    public ResultContext<Void> insertBrand(Brand brand) {
+      int  result =  brandMapper.insert(brand);
+      if(result <= 0)
+          throw new RuntimeException("插入brand错误");
+        return  ResultContext.buildSuccess("插入成功",null);
+    }
+
+    @Override
+    public ResultContext<Void> deleteBrandById(Integer id) {
+      int result =  brandMapper.deleteById(id);
+        if(result <= 0)
+            throw new RuntimeException("删除brand错误");
+        return  ResultContext.buildSuccess("删除",null);
+    }
+
 
 }
 
