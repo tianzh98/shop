@@ -179,7 +179,7 @@
                 <el-col :span="12">
                   <el-form-item label="商品相册" prop="picFiles">
                     <multi-upload
-                      v-model="productDetail.picFiles"
+                      :value="productDetail.picFiles"
                     ></multi-upload>
                   </el-form-item>
                 </el-col>
@@ -278,7 +278,7 @@
                     </el-card>
                     <el-table
                       style="width: 100%;margin-top: 20px"
-                      :data="skuStockList"
+                      :data="stockList"
                       border
                     >
                       <el-table-column
@@ -405,8 +405,8 @@
         selectProductAttr: [],
         // 商品规格 列表
         selectProductParam: [],
-        //商品sku库存信息{lowStock: 0, pic: '', price: 0, sale: 0, skuCode: '', spData: '', stock: 0}
-        skuStockList: [],
+        //商品库存信息{lowStock: 0, pic: '', price: 0, sale: 0, skuCode: '', spData: '', stock: 0}
+        stockList: [],
 
         // 商品所具有的属性(编辑模式下获取商品原来具有的属性)
         productAttributeValueList: [],
@@ -414,7 +414,12 @@
         addProductAttrValue: null,
 
         // 表单校验规则
-        rules: {},
+        rules: {
+          productCategoryId: [{ required: true, message: "请输入分类名称", trigger: "blur" }],
+          name: [{ required: true, message: "请输入商品名称", trigger: "blur" }],
+          subTitle: [{ required: true, message: "请输入副标题", trigger: "blur" }],
+          brandId: [{ required: true, message: "请选择品牌", trigger: "blur" }]
+        },
         // 下拉框可选值
         selectList: {
           productCategoryDropDownList: [],
@@ -427,7 +432,7 @@
       this.getProductCategoryDropDownList(true);
       this.getBrandIdDropDownList(true);
       this.getProductAttributeCategoryDropDown(true);
-      this.getSkuStockList();
+      this.getStockList();
       this.getProductDetail();
       this.getProductAttributeValueList();
     },
@@ -464,7 +469,7 @@
               let data = {
                 id: this.$route.query.id,
                 ...this.productDetail,
-                skuStockList: this.skuStockList,
+                stockList: this.stockList,
                 selectProductAttr: this.selectProductAttr,
                 selectProductParam: this.selectProductParam
               };
@@ -554,13 +559,13 @@
             });
         }
       },
-      getSkuStockList: function () {
+      getStockList: function () {
         // $route.query.的参数 bool会被转成string  所以这里要转换一下
         if (this.isEdit) {
           product
-            .getSkuStockList({productId: this.$route.query.id})
+            .getStockList({productId: this.$route.query.id})
             .then(res => {
-              this.skuStockList = res.data;
+              this.stockList = res.data;
             });
         }
       },
@@ -649,24 +654,24 @@
       getEditAttrValues(index) {
         let values = new Set();
         if (index === 0) {
-          for (let i = 0; i < this.skuStockList.length; i++) {
-            let sku = this.skuStockList[i];
+          for (let i = 0; i < this.stockList.length; i++) {
+            let sku = this.stockList[i];
             let spData = JSON.parse(sku.spData);
             if (spData !== null && spData.length >= 1) {
               values.add(spData[0].value);
             }
           }
         } else if (index === 1) {
-          for (let i = 0; i < this.skuStockList.length; i++) {
-            let sku = this.skuStockList[i];
+          for (let i = 0; i < this.stockList.length; i++) {
+            let sku = this.stockList[i];
             let spData = JSON.parse(sku.spData);
             if (spData !== null && spData.length >= 2) {
               values.add(spData[1].value);
             }
           }
         } else {
-          for (let i = 0; i < this.skuStockList.length; i++) {
-            let sku = this.skuStockList[i];
+          for (let i = 0; i < this.stockList.length; i++) {
+            let sku = this.stockList[i];
             let spData = JSON.parse(sku.spData);
             if (spData !== null && spData.length >= 3) {
               values.add(spData[2].value);
@@ -737,16 +742,16 @@
           cancelButtonText: "取消",
           type: "warning"
         }).then(() => {
-          if (this.skuStockList !== null && this.skuStockList.length > 0) {
+          if (this.stockList !== null && this.stockList.length > 0) {
             let tempSkuList = [];
-            tempSkuList = tempSkuList.concat(tempSkuList, this.skuStockList);
-            let price = this.skuStockList[0].price;
+            tempSkuList = tempSkuList.concat(tempSkuList, this.stockList);
+            let price = this.stockList[0].price;
             for (let i = 0; i < tempSkuList.length; i++) {
               tempSkuList[i].price = price;
             }
-            this.skuStockList = [];
-            this.skuStockList = this.skuStockList.concat(
-              this.skuStockList,
+            this.stockList = [];
+            this.stockList = this.stockList.concat(
+              this.stockList,
               tempSkuList
             );
           }
@@ -758,18 +763,18 @@
           cancelButtonText: "取消",
           type: "warning"
         }).then(() => {
-          if (this.skuStockList !== null && this.skuStockList.length > 0) {
+          if (this.stockList !== null && this.stockList.length > 0) {
             let tempSkuList = [];
-            tempSkuList = tempSkuList.concat(tempSkuList, this.skuStockList);
-            let stock = this.skuStockList[0].stock;
-            let lowStock = this.skuStockList[0].lowStock;
+            tempSkuList = tempSkuList.concat(tempSkuList, this.stockList);
+            let stock = this.stockList[0].stock;
+            let lowStock = this.stockList[0].lowStock;
             for (let i = 0; i < tempSkuList.length; i++) {
               tempSkuList[i].stock = stock;
               tempSkuList[i].lowStock = lowStock;
             }
-            this.skuStockList = [];
-            this.skuStockList = this.skuStockList.concat(
-              this.skuStockList,
+            this.stockList = [];
+            this.stockList = this.stockList.concat(
+              this.stockList,
               tempSkuList
             );
           }
@@ -777,8 +782,8 @@
       },
 
       refreshProductSkuList() {
-        this.skuStockList = [];
-        let skuList = this.skuStockList;
+        this.stockList = [];
+        let skuList = this.stockList;
         //只有一个属性时
         if (this.selectProductAttr.length === 1) {
           let attr = this.selectProductAttr[0];
@@ -861,16 +866,16 @@
 
       //获取商品相关属性的图片
       getProductSkuPic(name) {
-        for (let i = 0; i < this.skuStockList.length; i++) {
-          let spData = JSON.parse(this.skuStockList[i].spData);
+        for (let i = 0; i < this.stockList.length; i++) {
+          let spData = JSON.parse(this.stockList[i].spData);
           if (name === spData[0].value) {
-            return this.skuStockList[i].pic;
+            return this.stockList[i].pic;
           }
         }
         return null;
       },
       handleRemoveProductSku(index) {
-        let list = this.skuStockList;
+        let list = this.stockList;
         if (list.length === 1) {
           list.pop();
         } else {

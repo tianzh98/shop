@@ -139,8 +139,8 @@ public class ProductController {
     }
 
 
-    @PostMapping("/getSkuStockList")
-    public ResultContext<List<ProductStock>> getSkuStockList(@RequestBody Map<String, Long> params) {
+    @PostMapping("/getStockList")
+    public ResultContext<List<ProductStock>> getStockList(@RequestBody Map<String, Long> params) {
         Long productId = params.get("productId");
         List<ProductStock> list = productStockService.list(Wrappers.<ProductStock>lambdaQuery()
                 .eq(ProductStock::getProductId, productId));

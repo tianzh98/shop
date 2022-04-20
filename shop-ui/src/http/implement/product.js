@@ -92,8 +92,8 @@ export const getProductAttribute = data => {
   return hyRequest.post({ url: "/product/getProductAttribute", data });
 };
 // 获取商品库存信息
-export const getSkuStockList = data => {
-  return hyRequest.post({ url: "/product/getSkuStockList", data });
+export const getStockList = data => {
+  return hyRequest.post({ url: "/product/getStockList", data });
 };
 
 // 获取商品的属性信息

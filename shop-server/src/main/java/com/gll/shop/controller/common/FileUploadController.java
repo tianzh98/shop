@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @author gaoll
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class FileUploadController {
 
     @PostMapping("/upload")
-    public ResultContext<LoginResult> upload() {
+    public ResultContext<LoginResult> upload(MultipartFile file) {
 
         return ResultContext.success(null);
     }
