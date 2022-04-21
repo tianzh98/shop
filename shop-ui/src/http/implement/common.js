@@ -30,3 +30,14 @@ export const getPerms = data => {
 export const getColumns = data => {
   return hyRequest.post({ url: "/tableConfig/getSortedFieldConfig", data });
 };
+
+// 上传文件
+export const uploadFile = data => {
+  return hyRequest.post({ url: "/file/upload", data });
+};
+
+// 上传文件
+export const getFileById = data => {
+  return hyRequest.post({ url: "/file/getFileById", data });
+};
+

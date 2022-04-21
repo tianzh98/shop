@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gll.shop.mapper.ShopFileMapper">
+
+    <resultMap id="BaseResultMap" type="com.gll.shop.entity.ShopFile">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="fileType" column="file_type" jdbcType="VARCHAR"/>
+            <result property="fileName" column="file_name" jdbcType="VARCHAR"/>
+            <result property="fileAttr" column="file_attr" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="creator" column="creator" jdbcType="VARCHAR"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="updater" column="updater" jdbcType="VARCHAR"/>
+            <result property="rowVersion" column="row_version" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,file_type,file_name,
+        file_attr,create_time,creator,
+        update_time,updater,row_version,
+        file_base64
+    </sql>
+</mapper>

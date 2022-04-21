@@ -1,9 +1,9 @@
 <template>
   <div>
     <el-upload
-      :action="useOss ? ossUploadUrl : minioUploadUrl"
+      action="#"
       :http-request="handleUpload"
-      :data="useOss ? dataObj : null"
+      :data="null"
       list-type="picture-card"
       :file-list="fileList"
       :before-upload="beforeUpload"
@@ -16,99 +16,109 @@
       <i class="el-icon-plus"></i>
     </el-upload>
     <el-dialog :visible.sync="dialogVisible">
-      <img width="100%" :src="dialogImageUrl" alt="" />
+      <img width="100%" :src="dialogImageUrl" alt=""/>
     </el-dialog>
   </div>
 </template>
 <script>
-export default {
-  name: "multiUpload",
-  props: {
-    //图片属性数组
-    value: Array,
-    //最大上传图片数量
-    maxCount: {
-      type: Number,
-      default: 5
-    }
-  },
-  data() {
-    return {
-      dataObj: {
-        policy: "",
-        signature: "",
-        key: "",
-        ossaccessKeyId: "",
-        dir: "",
-        host: ""
-      },
-      dialogVisible: false,
-      dialogImageUrl: null,
-      useOss: false, //使用oss->true;使用MinIO->false
-      ossUploadUrl: "http://macro-oss.oss-cn-shenzhen.aliyuncs.com",
-      minioUploadUrl: "http://localhost:8080/minio/upload"
-    };
-  },
-  computed: {
-    fileList() {
-      let fileList = [];
-      for (let i = 0; i < this.value.length; i++) {
-        fileList.push({ url: this.value[i] });
+  import {getFileById, uploadFile} from "@/http/implement/common";
+
+  export default {
+    name: "multiUpload",
+    props: {
+      //图片属性数组
+      picIdList: Array,
+      //最大上传图片数量
+      maxCount: {
+        type: Number,
+        default: 5
       }
-      return fileList;
-    }
-  },
-  methods: {
-    emitInput(fileList) {
-      let value = [];
-      for (let i = 0; i < fileList.length; i++) {
-        value.push(fileList[i].url);
-      }
-      this.$emit("input", value);
     },
-    handleRemove(file, fileList) {
-      this.emitInput(fileList);
-    },
-    handlePreview(file) {
-      this.dialogVisible = true;
-      this.dialogImageUrl = file.url;
-    },
-    beforeUpload(file) {
-      if (!this.useOss) {
-        //不使用oss不需要获取策略
-        return true;
-      }
-      console.log(file);
-    },
-    handleUpload(param) {
-      let file = param.file;
-      let res = {
-        data: {
-          url: "aaa"
-        }
+    data() {
+      return {
+        dialogVisible: false,
+        dialogImageUrl: null,
+        // {id,url}
+        fileList: []
       };
-      param.onSuccess(res);
-      console.log(file);
     },
-    handleUploadSuccess(res, file) {
-      let url = this.dataObj.host + "/" + this.dataObj.dir + "/" + file.name;
-      if (!this.useOss) {
-        //不使用oss直接获取图片路径
-        url = res.data.url;
+    created() {
+      this.getFileList();
+    },
+    computed: {
+      // fileList() {
+      //   let fileList = [];
+      //   for (let i = 0; i < this.picIdList.length; i++) {
+      //     fileList.push({url: this.picIdList[i]});
+      //   }
+      //   return fileList;
+      // }
+    },
+    methods: {
+      getFileList() {
+        if (this.picIdList) {
+          this.picIdList.forEach(id => {
+            for (let i = 0; i < this.fileList.length; i++) {
+              let fileIdAndUrl = this.fileList.get(i);
+              if (fileIdAndUrl.id && fileIdAndUrl.id === id && !fileIdAndUrl.url) {
+                getFileById({id: id}).then(res => {
+                  fileIdAndUrl.url = this.resolveRes(res).url;
+                });
+                break;
+              }
+            }
+            // 添加
+            getFileById({id: id}).then(res => {
+              this.fileList.push(this.resolveRes(res));
+            });
+          });
+        }
+        console.log(this.fileList)
+      },
+      handleRemove(file, fileList) {
+        this.emitInput(fileList);
+      },
+      handlePreview(file) {
+        this.dialogVisible = true;
+        this.dialogImageUrl = file.url;
+        console.log(this.fileList)
+      },
+      beforeUpload() {
+        // console.log(file);
+      },
+      handleUpload(param) {
+        // 创建form对象,必须使用这个,会自动把content-type设置成multi-part-form
+        let formData = new FormData();
+        formData.append('file', param.file);
+        uploadFile(formData).then(res => {
+          // 返回 图片在数据库中的id
+          param.onSuccess(res);
+        });
+      },
+      handleUploadSuccess(res) {
+        // url = file.url;
+        if (!this.fileList) {
+          this.fileList = []
+        }
+        this.fileList.push(this.resolveRes(res));
+      },
+      handleExceed() {
+        this.$message({
+          message: "最多只能上传" + this.maxCount + "张图片",
+          type: "warning",
+          duration: 1000
+        });
+      },
+
+      resolveRes(res) {
+        let base64String = res.data.base64String;
+        let fileType = res.data.fileType;
+        let id = res.data.id;
+        let blob = new Blob([base64String], {type: fileType});
+        let url = window.URL.createObjectURL(blob);
+        return {id: id, url: url};
       }
-      url = file.url;
-      this.fileList.push({ name: file.name, url: url });
-      this.emitInput(this.fileList);
-    },
-    handleExceed(files, fileList) {
-      console.log(files + fileList);
-      this.$message({
-        message: "最多只能上传" + this.maxCount + "张图片",
-        type: "warning",
-        duration: 1000
-      });
     }
-  }
-};
+  };
 </script>
 <style></style>

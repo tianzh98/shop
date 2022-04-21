@@ -179,7 +179,7 @@
                 <el-col :span="12">
                   <el-form-item label="商品相册" prop="picFiles">
                     <multi-upload
-                      :value="productDetail.picFiles"
+                      :picIdList="productDetail.picIdList"
                     ></multi-upload>
                   </el-form-item>
                 </el-col>
@@ -399,7 +399,7 @@
           // 商品属性：
           productAttributeCategoryId: null,
 
-          picFiles: []
+          picIdList: [1,2,3]
         },
         // 商品属性 列表
         selectProductAttr: [],
