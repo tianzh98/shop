@@ -101,6 +101,14 @@ const routes = [
         meta: { title: "添加商品类型" },
         hidden: true
       },
+      {
+        path: "addProductType",
+        name: "addProductType",
+        component: () =>
+          import("@/pages/productManager/productType/AddProductType"),
+        meta: { title: "添加商品类型" },
+        hidden: true
+      },
     ]
   },
   {
@@ -128,8 +136,14 @@ const routes = [
       {
         path: "addressList",
         name: "addressList",
-        component: () => import("@/pages/addressManager/address/addressList"),
+        component: () => import("@/pages/addressManager/address/AddressList"),
         meta: { title: "地址管理", icon: "order-cate" }
+      },
+      {
+        path: "addAddress",
+        name: "addAddress",
+        component: () => import("@/pages/addressManager/address/AddAddress"),
+        meta: { title: "增加地址", icon: "order-cate" }
       }
     ]
   }

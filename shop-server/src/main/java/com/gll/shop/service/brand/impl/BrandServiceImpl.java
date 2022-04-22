@@ -58,11 +58,22 @@ public class BrandServiceImpl extends ServiceImpl<BrandMapper, Brand>
     }
 
     @Override
-    public ResultContext<Void> insertBrand(Brand brand) {
-      int  result =  brandMapper.insert(brand);
+    public ResultContext<Void> insertAndUpdateBrand(Brand brand) {
+        int  result;
+        Long id = brand.getId();
+       //判断id是否为null
+        //插入品牌
+        if(null == id)
+        {
+            result =  brandMapper.insert(brand);
+        }else
+        {
+            //更新品牌
+            result = brandMapper.updateById(brand);
+        }
       if(result <= 0)
-          throw new RuntimeException("插入brand错误");
-        return  ResultContext.buildSuccess("插入成功",null);
+          throw new RuntimeException("插入或者更新brand错误");
+        return  ResultContext.buildSuccess("插入或者更新品牌成功",null);
     }
 
     @Override
@@ -70,7 +81,21 @@ public class BrandServiceImpl extends ServiceImpl<BrandMapper, Brand>
       int result =  brandMapper.deleteById(id);
         if(result <= 0)
             throw new RuntimeException("删除brand错误");
-        return  ResultContext.buildSuccess("删除",null);
+        return  ResultContext.buildSuccess("删除成功",null);
+    }
+
+    @Override
+    public ResultContext<Brand> getBrandById(Long id) {
+        Brand brand = brandMapper.selectById(id);
+        return ResultContext.buildSuccess("成功返回品牌",brand);
+    }
+
+    @Override
+    public ResultContext<Void> editBrand(Brand brand) {
+        int result = brandMapper.updateById(brand);
+        if(result <= 0)
+            throw new RuntimeException("编辑brand错误");
+        return  ResultContext.buildSuccess("编辑",null);
     }
 
 

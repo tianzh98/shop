@@ -26,13 +26,22 @@ export const getBrandDetail = data => {
   return hyRequest.post({ url: "/brand/getBrandDetail", data });
 };
 // 插入商品品牌
-export const insertBrand = data => {
+export const insertAndUpdateBrand = data => {
   return hyRequest.post({ url: "/brand/insertBrand", data });
 };
 // 删除商品品牌
 export const deleteBrandById = data => {
   return hyRequest.post({ url: "/brand/deleteBrandById", data });
 };
+// 得到商品品牌通过id
+export const getBrandById = data => {
+  return hyRequest.post({ url: "/brand/getBrandById", data });
+};
+// 得到商品品牌通过id
+export const EditBrand = data => {
+  return hyRequest.post({ url: "/brand/editBrand", data });
+};
+
 
 
 
@@ -66,6 +75,8 @@ export const deleteProductCateById = data => {
 
 
 
+
+
 //获取商品类型列表下拉
 export const getProductAttributeCategoryDropDown = data => {
   return hyRequest.post({
@@ -83,6 +94,20 @@ export const getProductAttributeCategoryList = data => {
 export const getProductAttributeParam = data => {
   return hyRequest.post({ url: "/product/getProductAttributeParam", data });
 };
+//获取商品类型通过id
+export const getProductAttributeCategoryById = data => {
+  return hyRequest.post({ url: "/product/getProductAttributeCateById", data });
+};
+//删除商品类型通过id
+export const deleteProductAttributeCategoryById = data => {
+  return hyRequest.post({ url: "/product/deleteProductAttributeCateById", data });
+};
+//插入或者更新商品类型通过id
+export const insertOrUpdateProductAttributeCategoryById = data => {
+  return hyRequest.post({ url: "/product/inOrUpProductAttributeCate", data });
+};
+
+
 
 
 
@@ -123,3 +148,7 @@ export const getStatus = data => {
 export const getAddressList = data => {
   return hyRequest.post({ url: "/address/getAddressList", data });
 };
+//获取所有地址
+// export const getAddressList = data => {
+//   return hyRequest.post({ url: "/address/getAddressList", data });
+// };

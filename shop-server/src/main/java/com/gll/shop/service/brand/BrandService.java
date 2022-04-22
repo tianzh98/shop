@@ -19,7 +19,11 @@ public interface BrandService extends IService<Brand> {
 
     ResultContext<IPage<Brand>> getBrandDetail(BrandParam param);
 
-    ResultContext<Void> insertBrand(Brand brand);
+    ResultContext<Void> insertAndUpdateBrand(Brand brand);
 
     ResultContext<Void> deleteBrandById(Integer id);
+
+    ResultContext<Brand> getBrandById(Long id);
+
+    ResultContext<Void> editBrand(Brand brand);
 }

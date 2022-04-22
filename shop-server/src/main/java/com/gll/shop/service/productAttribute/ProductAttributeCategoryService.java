@@ -12,4 +12,10 @@ import com.gll.shop.entity.common.BaseQueryParams;
 public interface ProductAttributeCategoryService extends IService<ProductAttributeCategory> {
 
     ResultContext<IPage<ProductAttributeCategory>> getProductAttributeList(BaseQueryParams params);
+
+    ResultContext<ProductAttributeCategory> getProductAttributeCategoryById(Long id);
+
+    ResultContext<Void> deleteProductAttributeCategoryById(Long id);
+
+    ResultContext<Void> insertAndUpdateProductAttributeCategoryById(ProductAttributeCategory productAttributeCategory);
 }

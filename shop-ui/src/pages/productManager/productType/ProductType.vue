@@ -86,6 +86,73 @@ export default {
               });
             }
           }
+        },
+        {
+          label: "添加",
+          type: "primary",
+          size: "small",
+          page: "AddProductType",
+          btn: "Add",
+          handle: () => {
+            this.$router.push({
+              path: "/product/addProductType",
+              query: { isEdit: false }
+            });
+          }
+        },
+        {
+          label: "编辑",
+          type: "primary",
+          size: "small",
+          page: "AddProductType",
+          btn: "Edit",
+          handle: () => {
+            if (this.selection.length !== 1) {
+              this.$message.error("请选择一条记录!");
+            } else {
+              let that = this;
+              this.$router.push({
+                path: "/product/addProductType",
+                query: {
+                  isEdit: true,
+                  id: that.selection[0].id
+                }
+              });
+            }
+          }
+        },
+        {
+          label: "删除",
+          type: "primary",
+          size: "small",
+          page: "AddProductType",
+          btn: "Delete",
+          handle: () => {
+            if (this.selection.length <= 0) {
+              this.$message.error("请选择一条或多条记录!");
+            } else {
+              this.$confirm(
+                "此操作将永久删除已选中数据, 是否继续?",
+                "提示",
+                {
+                  confirmButtonText: "确定",
+                  cancelButtonText: "取消",
+                  type: "warning"
+                }
+              )
+                .then(() => {
+                  let data=
+                    {
+                      id:this.selection[0].id
+                    }
+                  product.deleteProductAttributeCategoryById(data)
+                    .then(res => {
+                      this.$message.success(res.info);
+                      this.getTableData();
+                    });
+                })
+            }
+          }
         }
       ],
       tableData: [],

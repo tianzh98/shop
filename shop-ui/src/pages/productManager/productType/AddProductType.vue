@@ -1,72 +1,57 @@
 <template>
   <div>
     <div class="goBack">
-      <el-page-header @back="goBack" content="添加品牌" title="返回" />
+      <el-page-header @back="goBack" content="添加或者更新商品类型" title="返回" />
     </div>
     <v-form
-      labelWidth="80px"
-      :itemWidth="7"
       :searchData="searchData"
       :searchForm="searchForm"
       :list="list"
       :rules="rules"
-      :submit="insertBrand"
+      :submit="insertOrUpdate"
     />
   </div>
 </template>
 <script>
 import * as product from "@/http/implement/product";
-
+import VForm from "@/components/v-form";
 export default {
-  name: "AddBrand",
+  name: "AddProductType",
+  components: { VForm },
   data() {
     return {
       searchForm: [
         {
           type: "Input",
-          label: "品牌名字",
+          label: "商品类型名称",
           prop: "name",
           clearable: true,
           placeholder: "请输入"
         },
         {
           type: "Input",
-          label: "品牌首字母",
-          prop: "firstLetter",
+          label: "商品属性数量",
+          prop: "attributeCount",
           clearable: true,
           placeholder: "请输入"
         },
         {
           type: "Input",
-          label: "排序",
-          prop: "sort",
-          clearable: true,
-          placeholder: "请输入"
-        },
-        {
-          type: "Input",
-          label: "品牌故事",
-          prop: "brandStory",
+          label: "商品参数数量",
+          prop: "paramCount",
           clearable: true,
           placeholder: "请输入"
         },
       ],
-      searchHandle: [],
-      total: 0,
-      sortName: "",
-      sortType: "",
-      selection: [],
       rules: {
-        name: [{ required: true, message: "请输入品牌名称", trigger: "blur" }]
+        name:[{ required: true, message: "请输入品牌类型名称", trigger: "blur" }]
       },
       searchData: {
-        //品牌id下拉
         name:"",
-        firstLetter:"",
-        sort:"",
-        brandStory:"",
+        attributeCount:"",
+        paramCount:"",
       },
-      list:"",
+      list:null,
     };
   },
   created() {
@@ -80,13 +65,14 @@ export default {
       // this.$router.go(-1)
       this.$router.back();
     },
-    insertBrand: function()
+    insertOrUpdate: function()
     {  this.$confirm("是否确认提交？", "提示", {
       confirmButtonText: "确定",
       cancelButtonText: "取消",
       type: "info"
     }).then(() => {
-      product.insertAndUpdateBrand(this.searchData).then(res => {
+      product.insertOrUpdateProductAttributeCategoryById(this.searchData).then(res => {
+        //如果更新或者插入商品类型成功
         if (res.code === "0") {
           this.goBack();
         }
@@ -97,12 +83,12 @@ export default {
       // $route.query.的参数 bool会被转成string  所以这里要转换一下
       let isEdit = eval(this.$route.query.isEdit);
       if (isEdit) {
-        product.getBrandById({ id: this.$route.query.id }).then(res => {
+        product.getProductAttributeCategoryById({ id: this.$route.query.id }).then(res => {
           this.searchData = res.data;
         });
       }
     },
-    }
+  }
 };
 </script>
 

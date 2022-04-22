@@ -86,6 +86,27 @@ export default {
           }
         },
         {
+          label: "编辑",
+          type: "primary",
+          size: "small",
+          page: "AddBrand",
+          btn: "Edit",
+          handle: () => {
+            if (this.selection.length !== 1) {
+              this.$message.error("请选择一条记录!");
+            } else {
+              let that = this;
+              this.$router.push({
+                path: "/product/addBrand",
+                query: {
+                  isEdit: true,
+                  id: that.selection[0].id
+                }
+              });
+            }
+          }
+        },
+        {
           label: "删除",
           type: "primary",
           size: "small",

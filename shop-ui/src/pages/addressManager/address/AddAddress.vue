@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="goBack">
-      <el-page-header @back="goBack" content="添加品牌" title="返回" />
+      <el-page-header @back="goBack" content="添加或者编辑地址" title="返回" />
     </div>
     <v-form
       labelWidth="80px"
@@ -18,35 +18,56 @@
 import * as product from "@/http/implement/product";
 
 export default {
-  name: "AddBrand",
+  name: "AddAddress",
   data() {
     return {
       searchForm: [
         {
           type: "Input",
-          label: "品牌名字",
+          label: "收货人姓名",
           prop: "name",
           clearable: true,
           placeholder: "请输入"
         },
         {
           type: "Input",
-          label: "品牌首字母",
-          prop: "firstLetter",
+          label: "收货人电话号码",
+          prop: "phoneNumber",
           clearable: true,
           placeholder: "请输入"
         },
         {
           type: "Input",
-          label: "排序",
-          prop: "sort",
+          label: "邮政编码",
+          prop: "postCode",
           clearable: true,
           placeholder: "请输入"
         },
         {
           type: "Input",
-          label: "品牌故事",
-          prop: "brandStory",
+          label: "省份",
+          prop: "province",
+          clearable: true,
+          placeholder: "请输入"
+        },
+        {
+          type: "Input",
+          label: "城市",
+          prop: "city",
+          clearable: true,
+          placeholder: "请输入"
+        },
+        {
+          type: "Input",
+          label: "地区",
+          prop: "region",
+          clearable: true,
+          placeholder: "请输入"
+        },
+        {
+          type: "Input",
+          label: "具体地址",
+          prop: "detailAddress",
           clearable: true,
           placeholder: "请输入"
         },
@@ -60,11 +81,13 @@ export default {
         name: [{ required: true, message: "请输入品牌名称", trigger: "blur" }]
       },
       searchData: {
-        //品牌id下拉
         name:"",
-        firstLetter:"",
-        sort:"",
-        brandStory:"",
+        phoneNumber:"",
+        postCode:"",
+        province:"",
+        city:"",
+        region:"",
+        detailAddress:"",
       },
       list:"",
     };
@@ -97,12 +120,12 @@ export default {
       // $route.query.的参数 bool会被转成string  所以这里要转换一下
       let isEdit = eval(this.$route.query.isEdit);
       if (isEdit) {
-        product.getBrandById({ id: this.$route.query.id }).then(res => {
+        product.getAddressList({ id: this.$route.query.id }).then(res => {
           this.searchData = res.data;
         });
       }
     },
-    }
+  }
 };
 </script>
 

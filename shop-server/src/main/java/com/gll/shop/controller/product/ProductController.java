@@ -1,6 +1,7 @@
 package com.gll.shop.controller.product;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
+import cn.hutool.json.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.gll.shop.common.beans.ResultContext;
@@ -126,6 +127,26 @@ public class ProductController {
     @PostMapping("/getProductAttributeParam")
     public ResultContext<List<ProductAttributeDTO>> getProductAttributeParam(@RequestBody ProductAttributeParam param) {
         return productAttributeService.getProductAttributeParam(param);
+    }
+    //获取商品类型通过id
+    @PostMapping("/getProductAttributeCateById")
+    public ResultContext<ProductAttributeCategory> getProductAttributeCategoryById(@RequestBody JSONObject jsonObject)
+    {
+        Long id = jsonObject.getLong("id");
+        return productAttributeCategoryService.getProductAttributeCategoryById(id);
+    }
+    //删除商品类型通过id
+    @PostMapping("/deleteProductAttributeCateById")
+    public ResultContext<Void> deleteProductAttributeCategoryById(@RequestBody JSONObject jsonObject)
+    {
+        Long id = jsonObject.getLong("id");
+        return productAttributeCategoryService.deleteProductAttributeCategoryById(id);
+    }
+    //插入或者更新商品类型
+    @PostMapping("/inOrUpProductAttributeCate")
+    public ResultContext<Void> insertOrUpdateProductAttributeCate(@RequestBody ProductAttributeCategory productAttributeCategory)
+    {
+        return productAttributeCategoryService.insertAndUpdateProductAttributeCategoryById(productAttributeCategory);
     }
 
 

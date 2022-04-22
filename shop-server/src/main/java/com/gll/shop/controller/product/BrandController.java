@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/brand")
@@ -38,12 +39,25 @@ public class BrandController {
         return brandService.getBrandDetail(param);
     }
     @PostMapping("/insertBrand")
-    public ResultContext<Void> insertBrand(@RequestBody Brand brand) {
-        return brandService.insertBrand(brand);
+    public ResultContext<Void> insertAndUpdateBrand(@RequestBody Brand brand) {
+        return brandService.insertAndUpdateBrand(brand);
     }
     @PostMapping("/deleteBrandById")
     public ResultContext<Void> deleteBrandById(@RequestBody JSONObject param) {
         Integer id = param.getInt("id");
         return brandService.deleteBrandById(id);
     }
+    @PostMapping("/getBrandById")
+    public ResultContext<Brand> getBrandById(@RequestBody  Map<String,Long> map)
+    {
+        Long id = map.get("id");
+       return  brandService.getBrandById(id);
+    }
+    @PostMapping("/editBrand")
+    public ResultContext<Void> editBrand(Brand brand)
+    {
+        return  brandService.editBrand(brand);
+    }
 }
+
+

@@ -24,6 +24,40 @@ public class ProductAttributeCategoryServiceImpl extends ServiceImpl<ProductAttr
         page = getBaseMapper().selectPage(page, Wrappers.<ProductAttributeCategory>lambdaQuery());
         return ResultContext.buildSuccess("返回商品分类成功",page);
     }
+
+    @Override
+    public ResultContext<ProductAttributeCategory> getProductAttributeCategoryById(Long id) {
+        ProductAttributeCategory productAttributeCategory = getBaseMapper().selectById(id);
+        return ResultContext.buildSuccess("得到商品类型通过id",productAttributeCategory);
+    }
+
+    @Override
+    public ResultContext<Void> deleteProductAttributeCategoryById(Long id) {
+        int result = getBaseMapper().deleteById(id);
+        if(result <= 0)
+        {
+            throw new RuntimeException("删除商品类型错误");
+        }
+        return ResultContext.buildSuccess("删除商品类型成功",null);
+    }
+
+    @Override
+    public ResultContext<Void> insertAndUpdateProductAttributeCategoryById(ProductAttributeCategory productAttributeCategory) {
+        Long id = productAttributeCategory.getId();
+        int result ;
+        if(null == id)
+        {
+            result = getBaseMapper().insert(productAttributeCategory);
+        }else
+        {
+            result = getBaseMapper().updateById(productAttributeCategory);
+        }
+        if(result <= 0)
+        {
+            throw new RuntimeException("删除或者更新商品类型页面错误");
+        }
+        return ResultContext.buildSuccess("删除或者更新商品类型页面成功",null);
+    }
 }
 
 
