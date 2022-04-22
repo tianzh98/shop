@@ -1,15 +1,15 @@
 <template>
   <div>
-    <Query
-      size="mini"
-      labelWidth="100px"
-      :itemWidth="7"
-      :searchData="searchData"
-      :searchForm="searchForm"
-      :searchHandle="searchHandle"
-      :list="list"
-    >
-    </Query>
+    <!--    <Query-->
+    <!--      size="mini"-->
+    <!--      labelWidth="100px"-->
+    <!--      :itemWidth="7"-->
+    <!--      :searchData="searchData"-->
+    <!--      :searchForm="searchForm"-->
+    <!--      :searchHandle="searchHandle"-->
+    <!--      :list="list"-->
+    <!--    >-->
+    <!--    </Query>-->
     <el-main class="table-main">
       <r-table
         ref="myTable"
@@ -42,6 +42,7 @@ export default {
   data() {
     return {
       searchHandle: [],
+      tableHandles: [],
       tableData: [],
       total: 0,
       sortName: "",

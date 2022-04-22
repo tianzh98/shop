@@ -18,6 +18,7 @@
         >
           <el-col v-for="(item, index2) in itemArray" :key="index2" :span="12">
             <el-form-item
+              v-if="item"
               :prop="item.prop"
               :label-width="item.width"
               :required="item.required"
@@ -349,6 +350,7 @@ export default {
     }
   },
   computed: {
+    // 如果searchForm是奇数个，那么会造成有一组里面有一个null值，需要自己判断
     getSearchFormCombine() {
       return this.searchForm
         .map((e, i) =>

@@ -40,4 +40,3 @@ export const uploadFile = data => {
 export const getFileById = data => {
   return hyRequest.post({ url: "/file/getFileById", data });
 };
-

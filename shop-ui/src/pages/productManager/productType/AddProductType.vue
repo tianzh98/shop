@@ -1,7 +1,11 @@
 <template>
   <div>
     <div class="goBack">
-      <el-page-header @back="goBack" content="添加或者更新商品类型" title="返回" />
+      <el-page-header
+        @back="goBack"
+        content="添加或者更新商品类型"
+        title="返回"
+      />
     </div>
     <v-form
       :searchData="searchData"
@@ -41,17 +45,19 @@ export default {
           prop: "paramCount",
           clearable: true,
           placeholder: "请输入"
-        },
+        }
       ],
       rules: {
-        name:[{ required: true, message: "请输入品牌类型名称", trigger: "blur" }]
+        name: [
+          { required: true, message: "请输入品牌类型名称", trigger: "blur" }
+        ]
       },
       searchData: {
-        name:"",
-        attributeCount:"",
-        paramCount:"",
+        name: "",
+        attributeCount: "",
+        paramCount: ""
       },
-      list:null,
+      list: null
     };
   },
   created() {
@@ -65,31 +71,33 @@ export default {
       // this.$router.go(-1)
       this.$router.back();
     },
-    insertOrUpdate: function()
-    {  this.$confirm("是否确认提交？", "提示", {
-      confirmButtonText: "确定",
-      cancelButtonText: "取消",
-      type: "info"
-    }).then(() => {
-      product.insertOrUpdateProductAttributeCategoryById(this.searchData).then(res => {
-        //如果更新或者插入商品类型成功
-        if (res.code === "0") {
-          this.goBack();
-        }
+    insertOrUpdate: function() {
+      this.$confirm("是否确认提交？", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "info"
+      }).then(() => {
+        product
+          .insertOrUpdateProductAttributeCategoryById(this.searchData)
+          .then(res => {
+            //如果更新或者插入商品类型成功
+            if (res.code === "0") {
+              this.goBack();
+            }
+          });
       });
-    });
     },
     getDetail: function() {
       // $route.query.的参数 bool会被转成string  所以这里要转换一下
       let isEdit = eval(this.$route.query.isEdit);
       if (isEdit) {
-        product.getProductAttributeCategoryById({ id: this.$route.query.id }).then(res => {
-          this.searchData = res.data;
-        });
+        product
+          .getProductAttributeCategoryById({ id: this.$route.query.id })
+          .then(res => {
+            this.searchData = res.data;
+          });
       }
-    },
+    }
   }
 };
 </script>
-
-<style scoped></style>

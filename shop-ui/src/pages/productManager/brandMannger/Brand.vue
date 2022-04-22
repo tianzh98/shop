@@ -116,27 +116,19 @@ export default {
             if (this.selection.length <= 0) {
               this.$message.error("请选择一条或多条记录!");
             } else {
-              this.$confirm(
-                "此操作将永久删除已选中数据, 是否继续?",
-                "提示",
-                {
-                  confirmButtonText: "确定",
-                  cancelButtonText: "取消",
-                  type: "warning"
-                }
-              )
-                .then(() => {
-                  let data=
-                    {
-                      id:this.selection[0].id
-                    }
-                  product.deleteBrandById(data)
-                    .then(res => {
-                      this.$message.success(res.info);
-                      this.getTableData();
-                    });
-                })
-
+              this.$confirm("此操作将永久删除已选中数据, 是否继续?", "提示", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
+                type: "warning"
+              }).then(() => {
+                let data = {
+                  id: this.selection[0].id
+                };
+                product.deleteBrandById(data).then(res => {
+                  this.$message.success(res.info);
+                  this.getTableData();
+                });
+              });
             }
           }
         }

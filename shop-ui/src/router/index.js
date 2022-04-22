@@ -108,7 +108,7 @@ const routes = [
           import("@/pages/productManager/productType/AddProductType"),
         meta: { title: "添加商品类型" },
         hidden: true
-      },
+      }
     ]
   },
   {
@@ -116,7 +116,7 @@ const routes = [
     component: index,
     redirect: "/order/orderList",
     name: "order",
-    meta: { title: "订单"},
+    meta: { title: "订单" },
     children: [
       {
         path: "orderList",
@@ -131,7 +131,7 @@ const routes = [
     component: index,
     redirect: "/address/addressList",
     name: "address",
-    meta: { title: "订单"},
+    meta: { title: "订单" },
     children: [
       {
         path: "addressList",

@@ -70,7 +70,7 @@ export default {
           prop: "detailAddress",
           clearable: true,
           placeholder: "请输入"
-        },
+        }
       ],
       searchHandle: [],
       total: 0,
@@ -81,15 +81,15 @@ export default {
         name: [{ required: true, message: "请输入品牌名称", trigger: "blur" }]
       },
       searchData: {
-        name:"",
-        phoneNumber:"",
-        postCode:"",
-        province:"",
-        city:"",
-        region:"",
-        detailAddress:"",
+        name: "",
+        phoneNumber: "",
+        postCode: "",
+        province: "",
+        city: "",
+        region: "",
+        detailAddress: ""
       },
-      list:"",
+      list: ""
     };
   },
   created() {
@@ -103,18 +103,18 @@ export default {
       // this.$router.go(-1)
       this.$router.back();
     },
-    insertBrand: function()
-    {  this.$confirm("是否确认提交？", "提示", {
-      confirmButtonText: "确定",
-      cancelButtonText: "取消",
-      type: "info"
-    }).then(() => {
-      product.insertAndUpdateBrand(this.searchData).then(res => {
-        if (res.code === "0") {
-          this.goBack();
-        }
+    insertBrand: function() {
+      this.$confirm("是否确认提交？", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "info"
+      }).then(() => {
+        product.insertAndUpdateBrand(this.searchData).then(res => {
+          if (res.code === "0") {
+            this.goBack();
+          }
+        });
       });
-    });
     },
     getDetail: function() {
       // $route.query.的参数 bool会被转成string  所以这里要转换一下
@@ -124,7 +124,7 @@ export default {
           this.searchData = res.data;
         });
       }
-    },
+    }
   }
 };
 </script>
