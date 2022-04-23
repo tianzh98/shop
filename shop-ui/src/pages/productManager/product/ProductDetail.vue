@@ -6,9 +6,9 @@
     <div class="addPage" style="height: calc( 100% - 100px );overflow: scroll;">
       <div class="my-form-wrap">
         <el-form
-          :model="productDetail"
+          :model="productDTO"
           :rules="rules"
-          ref="productDetail"
+          ref="productDTO"
           label-width="100px"
         >
           <el-collapse v-model="activeNames">
@@ -26,7 +26,7 @@
                 </el-col>
                 <el-col :span="12">
                   <el-form-item label="商品名称" prop="name">
-                    <el-input clearable v-model="productDetail.name"></el-input>
+                    <el-input clearable v-model="productDTO.name"></el-input>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -36,7 +36,7 @@
                   <el-form-item label="副标题" prop="subTitle">
                     <el-input
                       clearable
-                      v-model="productDetail.subTitle"
+                      v-model="productDTO.subTitle"
                     ></el-input>
                   </el-form-item>
                 </el-col>
@@ -45,7 +45,7 @@
                   <el-form-item label="商品品牌" prop="brandId">
                     <el-select
                       @visible-change="getBrandIdDropDownList($event)"
-                      v-model="productDetail.brandId"
+                      v-model="productDTO.brandId"
                       placeholder="请选择"
                     >
                       <el-option
@@ -67,7 +67,7 @@
                       type="textarea"
                       :rows="2"
                       placeholder="请输入内容"
-                      v-model="productDetail.description"
+                      v-model="productDTO.description"
                     >
                     </el-input>
                   </el-form-item>
@@ -76,7 +76,7 @@
                   <el-form-item label="商品货号" prop="productSn">
                     <el-input
                       clearable
-                      v-model="productDetail.productSn"
+                      v-model="productDTO.productSn"
                     ></el-input>
                   </el-form-item>
                 </el-col>
@@ -88,7 +88,7 @@
                     <el-input
                       type="number"
                       placeholder="请输入内容"
-                      v-model="productDetail.price"
+                      v-model="productDTO.price"
                     >
                     </el-input>
                   </el-form-item>
@@ -98,7 +98,7 @@
                     <el-input
                       type="number"
                       placeholder="请输入内容"
-                      v-model="productDetail.originalPrice"
+                      v-model="productDTO.originalPrice"
                     >
                     </el-input>
                   </el-form-item>
@@ -111,14 +111,14 @@
                     <el-input
                       type="number"
                       placeholder="请输入内容"
-                      v-model="productDetail.stock"
+                      v-model="productDTO.stock"
                     >
                     </el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
                   <el-form-item label="计量单位" prop="unit">
-                    <el-input clearable v-model="productDetail.unit"></el-input>
+                    <el-input clearable v-model="productDTO.unit"></el-input>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -128,7 +128,7 @@
                     <el-input
                       type="number"
                       placeholder="请输入内容"
-                      v-model="productDetail.weight"
+                      v-model="productDTO.weight"
                     >
                       <template slot="append">克</template>
                     </el-input>
@@ -139,7 +139,7 @@
                     <el-input
                       type="number"
                       placeholder="请输入内容"
-                      v-model="productDetail.sort"
+                      v-model="productDTO.sort"
                     >
                     </el-input>
                   </el-form-item>
@@ -158,10 +158,10 @@
                       @visible-change="
                         getProductAttributeCategoryDropDown($event)
                       "
-                      v-model="productDetail.productAttributeCategoryId"
+                      v-model="productDTO.productAttributeCategoryId"
                       @change="
                         productAttributeCategoryIdChange(
-                          productDetail.productAttributeCategoryId
+                          productDTO.productAttributeCategoryId
                         )
                       "
                       placeholder="请选择"
@@ -179,7 +179,8 @@
                 <el-col :span="12">
                   <el-form-item label="商品相册" prop="picFiles">
                     <multi-upload
-                      :picIdList="productDetail.picIdList"
+                      :old-pic-id-list="productDTO.oldPicIdList"
+                      @changeNewPicIdList="changeNewPicIdList"
                     ></multi-upload>
                   </el-form-item>
                 </el-col>
@@ -339,20 +340,20 @@
                       type="primary"
                       style="margin-top: 20px"
                       @click="handleRefreshProductSkuList"
-                      >刷新列表
+                      >刷新/重置列表
                     </el-button>
                     <el-button
                       type="primary"
                       style="margin-top: 20px"
-                      @click="handleSyncProductSkuPrice"
-                      >同步价格
+                      @click="handleSyncProductSkuList"
+                      >同步当前列表数据库信息
                     </el-button>
-                    <el-button
-                      type="primary"
-                      style="margin-top: 20px"
-                      @click="handleSyncProductSkuStock"
-                      >同步库存
-                    </el-button>
+                    <!--                    <el-button-->
+                    <!--                      type="primary"-->
+                    <!--                      style="margin-top: 20px"-->
+                    <!--                      @click="handleSyncProductSkuStock"-->
+                    <!--                      >同步库存-->
+                    <!--                    </el-button>-->
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -362,10 +363,10 @@
       </div>
     </div>
     <div>
-      <el-button type="primary" @click="submitForm('productDetail')"
+      <el-button type="primary" @click="submitForm('productDTO')"
         >提交
       </el-button>
-      <el-button @click="resetForm('productDetail')">重置</el-button>
+      <el-button @click="resetForm('productDTO')">重置</el-button>
     </div>
   </div>
 </template>
@@ -383,7 +384,7 @@ export default {
       // 商品分类级联下拉框的绑定值，取下标为1的即可
       productCategoryIdArray: [],
       // 商品信息
-      productDetail: {
+      productDTO: {
         productCategoryId: null,
         name: "",
         subTitle: "",
@@ -399,7 +400,8 @@ export default {
         // 商品属性：
         productAttributeCategoryId: null,
 
-        picIdList: []
+        oldPicIdList: [],
+        newPicIdList: []
       },
       // 商品属性 列表
       selectProductAttr: [],
@@ -449,9 +451,9 @@ export default {
   watch: {
     productCategoryIdArray: function(newValue) {
       if (newValue && newValue.length === 2) {
-        this.productDetail.productCategoryId = newValue[1];
+        this.productDTO.productCategoryId = newValue[1];
       } else {
-        this.productDetail.productCategoryId = null;
+        this.productDTO.productCategoryId = null;
       }
     }
   },
@@ -460,8 +462,11 @@ export default {
       // this.$router.go(-1)
       this.$router.back();
     },
+    changeNewPicIdList: function(newPicIdList) {
+      this.productDTO.newPicIdList = newPicIdList;
+    },
     submitForm(formName) {
-      // console.log(this.productDetail);
+      // console.log(this.productDTO);
       this.$refs[formName].validate(valid => {
         if (valid) {
           this.$confirm("是否确认提交？", "提示", {
@@ -471,7 +476,7 @@ export default {
           }).then(() => {
             let data = {
               id: this.$route.query.id,
-              ...this.productDetail,
+              ...this.productDTO,
               stockList: this.stockList,
               selectProductAttr: this.selectProductAttr,
               selectProductParam: this.selectProductParam
@@ -521,11 +526,11 @@ export default {
         product
           .getProductList({ pageSize: 1, pageNum: 1, id: this.$route.query.id })
           .then(res => {
-            this.productDetail = res.data.records[0];
+            this.productDTO = res.data.records[0];
 
             // 获取商品规格，参数
             this.productAttributeCategoryIdChange(
-              this.productDetail.productAttributeCategoryId
+              this.productDTO.productAttributeCategoryId
             );
 
             // 初始化商品分类下拉框
@@ -546,7 +551,7 @@ export default {
                 let child = parentDropDown.children[j];
                 if (
                   child &&
-                  child.value === String(this.productDetail.productCategoryId)
+                  child.value === String(this.productDTO.productCategoryId)
                 ) {
                   // this.productCategoryIdArray.push(parentDropDown.value,child.value) ;
                   // 这里必须下面这样写 不然级联下拉框不能回显
@@ -607,16 +612,18 @@ export default {
               name: selectProductAttrList[i].name,
               handAddStatus: selectProductAttrList[i].handAddStatus,
               inputList: selectProductAttrList[i].inputList,
+              type: selectProductAttrList[i].type,
+              inputType: selectProductAttrList[i].inputType,
               values: values,
               options: options
             });
           }
 
-          // todo delete me
-          if (this.isEdit) {
-            //编辑模式下刷新商品属性图片
-            this.refreshProductAttrPics();
-          }
+          // // todo delete me
+          // if (this.isEdit) {
+          //   //编辑模式下刷新商品属性图片
+          //   this.refreshProductAttrPics();
+          // }
 
           // 商品属性
           this.selectProductParam = [];
@@ -629,6 +636,7 @@ export default {
             this.selectProductParam.push({
               id: selectProductParamList[i].id,
               name: selectProductParamList[i].name,
+              type: selectProductParamList[i].type,
               value: value,
               inputType: selectProductParamList[i].inputType,
               inputList: selectProductParamList[i].inputList
@@ -727,53 +735,91 @@ export default {
       this.addProductAttrValue = null;
     },
     handleRefreshProductSkuList() {
-      this.$confirm("刷新列表将导致sku信息重新生成，是否要刷新", "提示", {
+      this.$confirm("刷新列表将导致sku信息重新生成，是否要刷新?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
-      }).then(() => {
-        this.refreshProductAttrPics();
-        this.refreshProductSkuList();
-      });
+      })
+        .then(() => {
+          // this.refreshProductAttrPics();
+          this.refreshProductSkuList();
+        })
+        .catch(() => {});
     },
-    handleSyncProductSkuPrice() {
-      this.$confirm("将同步第一个sku的价格到所有sku,是否继续", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      }).then(() => {
-        if (this.stockList !== null && this.stockList.length > 0) {
-          let tempSkuList = [];
-          tempSkuList = tempSkuList.concat(tempSkuList, this.stockList);
-          let price = this.stockList[0].price;
-          for (let i = 0; i < tempSkuList.length; i++) {
-            tempSkuList[i].price = price;
-          }
-          this.stockList = [];
-          this.stockList = this.stockList.concat(this.stockList, tempSkuList);
-        }
-      });
+
+    handleSyncProductSkuList() {
+      if (this.isEdit) {
+        this.$confirm("是否同步当前规格参数的原始数据?", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "info"
+        })
+          .then(() => {
+            product
+              .getStockList({ productId: this.$route.query.id })
+              .then(res => {
+                let stockListRes = res.data;
+                let skuList = JSON.parse(JSON.stringify(this.stockList));
+                if (skuList && stockListRes) {
+                  for (let i = 0; i < skuList.length; i++) {
+                    let stock = skuList[i];
+                    for (let j = 0; j < stockListRes.length; j++) {
+                      let stockRes = stockListRes[j];
+                      if (stock.spData === stockRes.spData) {
+                        stock.price = stockRes.price;
+                        stock.stock = stockRes.stock;
+                        stock.lowStock = stockRes.lowStock;
+                        stock.productCode = stockRes.productCode;
+                        stock.id = stockRes.id;
+                        break;
+                      }
+                    }
+                  }
+                }
+                this.stockList = skuList;
+              });
+          })
+          .catch(() => {});
+      }
     },
-    handleSyncProductSkuStock() {
-      this.$confirm("将同步第一个sku的库存到所有sku,是否继续", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      }).then(() => {
-        if (this.stockList !== null && this.stockList.length > 0) {
-          let tempSkuList = [];
-          tempSkuList = tempSkuList.concat(tempSkuList, this.stockList);
-          let stock = this.stockList[0].stock;
-          let lowStock = this.stockList[0].lowStock;
-          for (let i = 0; i < tempSkuList.length; i++) {
-            tempSkuList[i].stock = stock;
-            tempSkuList[i].lowStock = lowStock;
-          }
-          this.stockList = [];
-          this.stockList = this.stockList.concat(this.stockList, tempSkuList);
-        }
-      });
-    },
+    // handleSyncProductSkuPrice() {
+    //   this.$confirm("将同步第一个sku的价格到所有sku,是否继续", "提示", {
+    //     confirmButtonText: "确定",
+    //     cancelButtonText: "取消",
+    //     type: "warning"
+    //   }).then(() => {
+    //     if (this.stockList !== null && this.stockList.length > 0) {
+    //       let tempSkuList = [];
+    //       tempSkuList = tempSkuList.concat(tempSkuList, this.stockList);
+    //       let price = this.stockList[0].price;
+    //       for (let i = 0; i < tempSkuList.length; i++) {
+    //         tempSkuList[i].price = price;
+    //       }
+    //       this.stockList = [];
+    //       this.stockList = this.stockList.concat(this.stockList, tempSkuList);
+    //     }
+    //   });
+    // },
+    // handleSyncProductSkuStock() {
+    //   this.$confirm("将同步第一个sku的库存到所有sku,是否继续", "提示", {
+    //     confirmButtonText: "确定",
+    //     cancelButtonText: "取消",
+    //     type: "warning"
+    //   }).then(() => {
+    //     if (this.stockList !== null && this.stockList.length > 0) {
+    //       let tempSkuList = [];
+    //       tempSkuList = tempSkuList.concat(tempSkuList, this.stockList);
+    //       let stock = this.stockList[0].stock;
+    //       let lowStock = this.stockList[0].lowStock;
+    //       for (let i = 0; i < tempSkuList.length; i++) {
+    //         tempSkuList[i].stock = stock;
+    //         tempSkuList[i].lowStock = lowStock;
+    //       }
+    //       this.stockList = [];
+    //       this.stockList = this.stockList.concat(this.stockList, tempSkuList);
+    //     }
+    //   });
+    // },
 
     refreshProductSkuList() {
       this.stockList = [];
@@ -807,7 +853,7 @@ export default {
             });
           }
         }
-      } else {
+      } else if (this.selectProductAttr.length === 3) {
         let attr0 = this.selectProductAttr[0];
         let attr1 = this.selectProductAttr[1];
         let attr2 = this.selectProductAttr[2];
@@ -841,22 +887,24 @@ export default {
             }
           }
         }
+      } else {
+        this.$message.error("商品规格不支持三种及以上组合");
       }
     },
-    refreshProductAttrPics() {
-      this.selectProductAttrPics = [];
-      if (this.selectProductAttr.length >= 1) {
-        let values = this.selectProductAttr[0].values;
-        for (let i = 0; i < values.length; i++) {
-          let pic = null;
-          if (this.isEdit) {
-            //编辑状态下获取图片
-            pic = this.getProductSkuPic(values[i]);
-          }
-          this.selectProductAttrPics.push({ name: values[i], pic: pic });
-        }
-      }
-    },
+    // refreshProductAttrPics() {
+    //   this.selectProductAttrPics = [];
+    //   if (this.selectProductAttr.length >= 1) {
+    //     let values = this.selectProductAttr[0].values;
+    //     for (let i = 0; i < values.length; i++) {
+    //       let pic = null;
+    //       if (this.isEdit) {
+    //         //编辑状态下获取图片
+    //         pic = this.getProductSkuPic(values[i]);
+    //       }
+    //       this.selectProductAttrPics.push({ name: values[i], pic: pic });
+    //     }
+    //   }
+    // },
 
     //获取商品相关属性的图片
     getProductSkuPic(name) {

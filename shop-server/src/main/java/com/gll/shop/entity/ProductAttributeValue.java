@@ -4,8 +4,9 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serializable;
 import lombok.Data;
+
+import java.io.Serializable;
 
 /**
  * 存储产品参数信息的表
@@ -31,7 +32,7 @@ public class ProductAttributeValue implements Serializable {
     private Long productAttributeId;
 
     /**
-     * 手动添加规格或参数的值，参数单值，规格有多个时以逗号隔开
+     * 手动添加规格可选值或参数的值，参数单值，规格有多个时以逗号隔开
      */
     private String value;
 

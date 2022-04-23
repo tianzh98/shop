@@ -139,28 +139,90 @@ export default {
           size: "small",
           page: "productList",
           btn: "Sku",
-          handle: () => {}
-        },
-        {
-          label: "设置库存信息",
-          type: "primary",
-          size: "small",
-          page: "productList",
-          btn: "Sku",
           handle: () => {
-            this.$router.push({
-              path: "/product/productDetail",
-              query: { state: "add" }
-            });
+            if (this.selection.length <= 0) {
+              this.$message.error("请选择一条或多条记录!");
+            } else {
+              // 校验选中的数据的上架/下架状态是否一致
+              let publishStatus = this.selection[0].publishStatus;
+              let publishStatusLabel = publishStatus === 1 ? "下架" : "上架";
+              for (let i = 0; i < this.selection.length; i++) {
+                if (publishStatus !== this.selection[i].publishStatus) {
+                  this.$message.error("请选择相同上架/下架状态的记录!");
+                  return;
+                }
+              }
+              this.$confirm("是否确认" + publishStatusLabel + "?", "提示", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
+                type: "warning"
+              })
+                .then(() => {
+                  let productList = [];
+                  for (let i = 0; i < this.selection.length; i++) {
+                    productList.push({
+                      id: this.selection[i].id,
+                      publishStatus:
+                        this.selection[i].publishStatus === 1 ? 0 : 1
+                    });
+                  }
+                  product.updateProduct(productList).then(res => {
+                    this.$message.success(res.info);
+                    this.getTableData();
+                  });
+                })
+                .catch(() => {});
+            }
           }
         },
+        // {
+        //   label: "设置库存信息",
+        //   type: "primary",
+        //   size: "small",
+        //   page: "productList",
+        //   btn: "Sku",
+        //   handle: () => {
+        //     this.$router.push({
+        //       path: "/product/productDTO",
+        //       query: { state: "add" }
+        //     });
+        //   }
+        // },
         {
           label: "删除",
           type: "primary",
           size: "small",
           page: "productList",
           btn: "Delete",
-          handle: () => {}
+          handle: () => {
+            if (this.selection.length <= 0) {
+              this.$message.error("请选择一条或多条记录!");
+            } else {
+              this.$confirm("此操作将永久删除已选中数据, 是否继续?", "提示", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
+                type: "warning"
+              })
+                .then(() => {
+                  product
+                    .deleteProductByIds(
+                      this.selection.map(s => {
+                        return s.id;
+                      })
+                    )
+                    .then(res => {
+                      this.$message.success(res.info);
+                      this.getTableData();
+                    });
+                })
+                .catch(() => {
+                  // this.$message({
+                  //   type: 'info',
+                  //   message: '已取消删除'
+                  // });
+                });
+            }
+          }
         }
       ],
       list: {

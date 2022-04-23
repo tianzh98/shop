@@ -67,7 +67,7 @@ public class ProductAttribute implements Serializable {
     private Integer relatedStatus;
 
     /**
-     * 是否支持手动新增；0->不支持；1->支持
+     * 规格是否支持手动新增；0->不支持；1->支持
      */
     private Integer handAddStatus;
 

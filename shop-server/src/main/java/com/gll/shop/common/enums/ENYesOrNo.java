@@ -33,6 +33,12 @@ public enum ENYesOrNo implements LabelAndValue<String> {
         return label;
     }
 
+
+    public Integer getIntValue() {
+        return Integer.valueOf(value);
+    }
+
+
     public static String getLabelByValue(String value) {
         return StrUtil.isBlank(value) ? null :
                 Arrays.stream(ENYesOrNo.values())
@@ -46,6 +52,16 @@ public enum ENYesOrNo implements LabelAndValue<String> {
     public static boolean isNo(String value) {
         return NO.value.equals(value);
     }
+
+
+    public static boolean isYes(Integer value) {
+        return isYes(String.valueOf(value));
+    }
+
+    public static boolean isNo(Integer value) {
+        return isNo(String.valueOf(value));
+    }
+
 
     public static ENYesOrNo convertByLabel(String label) {
         for (ENYesOrNo st : ENYesOrNo.values()) {

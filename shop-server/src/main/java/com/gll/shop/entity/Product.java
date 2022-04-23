@@ -174,9 +174,9 @@ public class Product implements Serializable {
     private String note;
 
     /**
-     * 画册图片，连产品图片限制为5张，以逗号分割
+     * 图片id，连产品图片限制为5张，以逗号分割
      */
-    private String albumPics;
+    private String picIdListStr;
 
     /**
      * 

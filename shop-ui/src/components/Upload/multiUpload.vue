@@ -27,7 +27,10 @@ export default {
   name: "multiUpload",
   props: {
     //图片属性数组
-    picIdList: Array,
+    oldPicIdList: {
+      type: Array,
+      default: () => []
+    },
     //最大上传图片数量
     maxCount: {
       type: Number,
@@ -38,39 +41,39 @@ export default {
     return {
       dialogVisible: false,
       dialogImageUrl: null,
+      oldPicIdListTemp: [],
       // {id,url}
       fileList: []
     };
   },
   created() {
-    this.getFileList();
+    this.initFileList();
   },
-  computed: {
-    // fileList() {
-    //   let fileList = [];
-    //   for (let i = 0; i < this.picIdList.length; i++) {
-    //     fileList.push({url: this.picIdList[i]});
-    //   }
-    //   return fileList;
-    // }
+  activated() {
+    this.initFileList();
+  },
+  watch: {
+    fileList(newValue) {
+      let newPicIdList = [];
+      if (newValue) {
+        for (let i = 0; i < newValue.length; i++) {
+          newPicIdList.push(newValue[i].id);
+        }
+      }
+      this.$emit("changeNewPicIdList", newPicIdList);
+    },
+    // 必须监听这个父组件值的变化，否则刷新页面后 子组件的值会效时
+    oldPicIdList(val) {
+      this.oldPicIdListTemp = [];
+      this.oldPicIdListTemp.push(...val);
+      this.initFileList();
+    }
   },
   methods: {
-    getFileList() {
-      if (this.picIdList) {
-        this.picIdList.forEach(id => {
-          for (let i = 0; i < this.fileList.length; i++) {
-            let fileIdAndUrl = this.fileList.get(i);
-            if (
-              fileIdAndUrl.id &&
-              fileIdAndUrl.id === id &&
-              !fileIdAndUrl.url
-            ) {
-              getFileById({ id: id }).then(res => {
-                fileIdAndUrl.url = this.resolveRes(res).url;
-              });
-              break;
-            }
-          }
+    initFileList() {
+      if (this.oldPicIdListTemp) {
+        this.fileList = [];
+        this.oldPicIdListTemp.forEach(id => {
           // 添加
           getFileById({ id: id }).then(res => {
             this.fileList.push(this.resolveRes(res));
@@ -78,8 +81,15 @@ export default {
         });
       }
     },
-    handleRemove(file, fileList) {
-      this.emitInput(fileList);
+    handleRemove(file) {
+      if (this.fileList) {
+        for (let i = 0; i < this.fileList.length; i++) {
+          if (file.id === this.fileList[i].id) {
+            this.fileList.splice(i, 1);
+            break;
+          }
+        }
+      }
     },
     handlePreview(file) {
       this.dialogVisible = true;
@@ -127,7 +137,6 @@ export default {
       }
       let blob = new Blob([u8Arr], { type: fileType });
       let url = window.URL.createObjectURL(blob);
-      console.log(this.fileList);
 
       return { id: id, url: url };
     }

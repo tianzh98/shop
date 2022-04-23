@@ -9,6 +9,15 @@ export const getProductList = data => {
 export const saveOrUpdateProductDetail = data => {
   return hyRequest.post({ url: "/product/saveOrUpdateProductDetail", data });
 };
+// 删除商品，参数id列表
+export const deleteProductByIds = data => {
+  return hyRequest.post({ url: "/product/deleteProductByIds", data });
+};
+
+// 删除商品，参数id列表
+export const updateProduct = data => {
+  return hyRequest.post({ url: "/product/updateProduct", data });
+};
 
 // 获取商品分类列表
 export const getProductCateList = data => {

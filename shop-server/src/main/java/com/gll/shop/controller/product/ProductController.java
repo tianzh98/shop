@@ -62,8 +62,19 @@ public class ProductController {
 
 
     @PostMapping("/saveOrUpdateProductDetail")
-    public ResultContext<String> saveOrUpdateProductDetail(@RequestBody ProductDetail productDetail) {
-        return productService.saveOrUpdateProductDetail(productDetail);
+    public ResultContext<String> saveOrUpdateProductDetail(@RequestBody ProductDTO productDTO) {
+        return productService.saveOrUpdateProductDetail(productDTO);
+    }
+
+    @PostMapping("/deleteProductByIds")
+    public ResultContext<String> deleteProductByIds(@RequestBody List<Long> idList) {
+        return productService.deleteProductByIds(idList);
+    }
+
+
+    @PostMapping("/updateProduct")
+    public ResultContext<String> updateProduct(@RequestBody List<Product> productList) {
+        return productService.updateProduct(productList);
     }
 
 
@@ -117,7 +128,7 @@ public class ProductController {
         return ResultContext.buildSuccess(null, collect);
     }
 
-   //获取所有商品类型
+    //获取所有商品类型
     @PostMapping("/getProductAttributeList")
     public ResultContext<IPage<ProductAttributeCategory>> getProductAttributeList(@RequestBody BaseQueryParams params) {
         return productAttributeCategoryService.getProductAttributeList(params);
@@ -128,24 +139,24 @@ public class ProductController {
     public ResultContext<List<ProductAttributeDTO>> getProductAttributeParam(@RequestBody ProductAttributeParam param) {
         return productAttributeService.getProductAttributeParam(param);
     }
+
     //获取商品类型通过id
     @PostMapping("/getProductAttributeCateById")
-    public ResultContext<ProductAttributeCategory> getProductAttributeCategoryById(@RequestBody JSONObject jsonObject)
-    {
+    public ResultContext<ProductAttributeCategory> getProductAttributeCategoryById(@RequestBody JSONObject jsonObject) {
         Long id = jsonObject.getLong("id");
         return productAttributeCategoryService.getProductAttributeCategoryById(id);
     }
+
     //删除商品类型通过id
     @PostMapping("/deleteProductAttributeCateById")
-    public ResultContext<Void> deleteProductAttributeCategoryById(@RequestBody JSONObject jsonObject)
-    {
+    public ResultContext<Void> deleteProductAttributeCategoryById(@RequestBody JSONObject jsonObject) {
         Long id = jsonObject.getLong("id");
         return productAttributeCategoryService.deleteProductAttributeCategoryById(id);
     }
+
     //插入或者更新商品类型
     @PostMapping("/inOrUpProductAttributeCate")
-    public ResultContext<Void> insertOrUpdateProductAttributeCate(@RequestBody ProductAttributeCategory productAttributeCategory)
-    {
+    public ResultContext<Void> insertOrUpdateProductAttributeCate(@RequestBody ProductAttributeCategory productAttributeCategory) {
         return productAttributeCategoryService.insertAndUpdateProductAttributeCategoryById(productAttributeCategory);
     }
 
@@ -179,8 +190,6 @@ public class ProductController {
         // 获取商品属性类别的下拉框
         return ResultContext.buildSuccess(null, list);
     }
-
-
 
 
 }
