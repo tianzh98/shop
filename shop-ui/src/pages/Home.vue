@@ -122,6 +122,7 @@
             handle: () => {
               this.queryParam.pageNum = 0;
               this.productList = [];
+              this.noMore = false;
               this.load();
             }
           }
