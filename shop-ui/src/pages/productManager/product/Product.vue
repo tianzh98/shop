@@ -226,8 +226,6 @@ export default {
         }
       ],
       list: {
-        userStatusCodeArrayList: [],
-        orgNameList: [],
         brandIdList: [],
         productCategoryIdList: []
       },

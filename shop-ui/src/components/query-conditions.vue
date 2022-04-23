@@ -121,6 +121,9 @@
                   : item.disable
                 : disable
             "
+            @visible-change="
+              item.visibleChange ? item.visibleChange($event) : null
+            "
             @change="item.change ? item.change(searchData[item.prop]) : null"
             filterable
           ></el-cascader>

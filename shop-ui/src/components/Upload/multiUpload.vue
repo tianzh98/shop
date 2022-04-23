@@ -22,6 +22,7 @@
 </template>
 <script>
 import { getFileById, uploadFile } from "@/http/implement/common";
+import { resolvePicFileResultContext } from "@/utils/fileUtil";
 
 export default {
   name: "multiUpload",
@@ -76,7 +77,7 @@ export default {
         this.oldPicIdListTemp.forEach(id => {
           // 添加
           getFileById({ id: id }).then(res => {
-            this.fileList.push(this.resolveRes(res));
+            this.fileList.push(resolvePicFileResultContext(res));
           });
         });
       }
@@ -112,7 +113,7 @@ export default {
       if (!this.fileList) {
         this.fileList = [];
       }
-      this.fileList.push(this.resolveRes(res));
+      this.fileList.push(resolvePicFileResultContext(res));
     },
     handleExceed() {
       this.$message({
@@ -120,25 +121,6 @@ export default {
         type: "warning",
         duration: 1000
       });
-    },
-
-    resolveRes(res) {
-      let base64String = res.data.base64String;
-      let fileType = res.data.fileType;
-      let id = res.data.id;
-      // 将base64解码为二进制
-      let decodeToBinary = Buffer.from(base64String, "base64").toString(
-        "binary"
-      );
-      let n = decodeToBinary.length;
-      let u8Arr = new Uint8Array(n);
-      while (n--) {
-        u8Arr[n] = decodeToBinary.charCodeAt(n);
-      }
-      let blob = new Blob([u8Arr], { type: fileType });
-      let url = window.URL.createObjectURL(blob);
-
-      return { id: id, url: url };
     }
   }
 };

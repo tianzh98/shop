@@ -1,5 +1,6 @@
 package com.gll.shop.entity;
 
+import com.gll.shop.entity.common.ShopFileResp;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -38,5 +39,7 @@ public class ProductDTO extends Product {
      * 上架状态 翻译 展示
      */
     private String publishStatusShow;
+
+    private ShopFileResp coverPic;
 
 }

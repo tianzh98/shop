@@ -13,6 +13,7 @@ import com.gll.shop.common.beans.ResultContext;
 import com.gll.shop.common.enums.ENProductAttributeType;
 import com.gll.shop.common.enums.ENYesOrNo;
 import com.gll.shop.entity.*;
+import com.gll.shop.entity.common.ShopFileResp;
 import com.gll.shop.mapper.*;
 import com.gll.shop.service.productManager.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,8 +74,11 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product>
         if (StrUtil.isNotBlank(po.getPicIdListStr())) {
             List<String> idListStr = Arrays.asList(po.getPicIdListStr().split(StrUtil.COMMA));
             dto.setOldPicIdList(idListStr.stream().map(Long::valueOf).collect(Collectors.toList()));
+            ShopFile shopFile = shopFileMapper.selectById(Long.valueOf(idListStr.get(0)));
+            dto.setCoverPic(ShopFileResp.convert(shopFile));
         }
         dto.setPublishStatusShow(ENYesOrNo.isYes(po.getPublishStatus()) ? "已上架" : "未上架");
+
         return dto;
     }
 
