@@ -13,6 +13,7 @@ import com.gll.shop.common.constant.Constant;
 import com.gll.shop.common.dropdown.DropDownDTO;
 import com.gll.shop.common.enums.ENGender;
 import com.gll.shop.common.enums.ENResourcesType;
+import com.gll.shop.common.enums.ENUserRole;
 import com.gll.shop.common.enums.ENUserStatus;
 import com.gll.shop.entity.SysResource;
 import com.gll.shop.entity.SysRoleRes;
@@ -116,12 +117,12 @@ public class AuthService {
         int userId = StpUtil.getLoginIdAsInt();
         // 获取该用户的角色
         List<String> roleIds = sysUserRoleMapper.selectList(Wrappers.<SysUserRole>lambdaQuery()
-                        .select(SysUserRole::getRoleId)
-                        .eq(SysUserRole::getUserId, userId))
+                .select(SysUserRole::getRoleId)
+                .eq(SysUserRole::getUserId, userId))
                 .stream().map(SysUserRole::getRoleId).collect(Collectors.toList());
         // 根据角色-资源关系表把每个角色的资源权限都查到
         List<String> resIds = sysRoleResMapper.selectList(Wrappers.<SysRoleRes>lambdaQuery()
-                        .in(SysRoleRes::getRoleId, roleIds))
+                .in(SysRoleRes::getRoleId, roleIds))
                 .stream().distinct().map(SysRoleRes::getResId).collect(Collectors.toList());
         return resIds;
     }
@@ -156,6 +157,9 @@ public class AuthService {
         // 获取资源ID
         List<String> resIds = getLoginUserResIds();
 
+        if (CollectionUtil.isEmpty(resIds)) {
+            return ResultContext.buildSuccess(null, new JSONArray());
+        }
         // 拿到所有按钮
         List<SysResource> sysResourceList = sysResourceMapper.selectList(Wrappers.<SysResource>lambdaQuery()
                 .in(SysResource::getId, resIds)
@@ -204,11 +208,11 @@ public class AuthService {
             if (e.getCause().getMessage().contains("Duplicate entry")) {
                 String msg = "账号[";
                 if (e.getCause().getMessage().contains("account")) {
-                    msg = "账号["+user.getAccount();
+                    msg = "账号[" + user.getAccount();
                 } else if (e.getCause().getMessage().contains("phone")) {
-                    msg = "电话["+user.getPhone();
+                    msg = "电话[" + user.getPhone();
                 } else {
-                    msg = "邮箱["+user.getEmail();
+                    msg = "邮箱[" + user.getEmail();
                 }
                 return ResultContext.businessFail(msg + "]已存在，请不要重复注册！");
             }
@@ -218,7 +222,7 @@ public class AuthService {
         //插入sys_user_role表
         SysUserRole sysUserRole = new SysUserRole();
         //默认是普通用户
-        sysUserRole.setRoleId("1");
+        sysUserRole.setRoleId(ENUserRole.NORMAL.getValue());
         sysUserRole.setUserId(String.valueOf(user.getId()));
         sysUserRole.setCreator("gaoll");
         sysUserRole.setCreateTime(date);

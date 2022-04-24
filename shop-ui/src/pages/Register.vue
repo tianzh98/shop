@@ -95,7 +95,10 @@ export default {
       selection: [],
       rules: {
         userName: [{ required: true, message: "请输入用户名称", trigger: "blur" }],
-        account: [{ required: true, message: "请输入账号", trigger: "blur" }]
+        account: [{ required: true, message: "请输入账号", trigger: "blur" }],
+        password: [{ required: true, message: "请输入密码", trigger: "blur" }],
+        phone: [{ required: true, message: "请输入电话号码", trigger: "blur" }],
+        email: [{ required: true, message: "请输入邮箱", trigger: "blur" }]
       },
       searchData: {
         account: "",
@@ -149,7 +152,7 @@ export default {
         let that=this;
           if (res.code === "0") {
             common.loginDo({
-                accountOrEmailOrPhone: that.searchData.phone,
+                accountOrEmailOrPhone: that.searchData.account,
                 password: that.searchData.password
               })
               .then(res => {
