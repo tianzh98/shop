@@ -190,7 +190,7 @@ export default {
         // },
         {
           label: "删除",
-          type: "primary",
+          type: "danger",
           size: "small",
           page: "productList",
           btn: "Delete",

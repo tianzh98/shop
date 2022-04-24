@@ -177,7 +177,7 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                  <el-form-item label="商品相册" prop="picFiles">
+                  <el-form-item label="商品相册" prop="newPicIdList">
                     <multi-upload
                       :old-pic-id-list="productDTO.oldPicIdList"
                       @changeNewPicIdList="changeNewPicIdList"
@@ -424,7 +424,8 @@ export default {
         subTitle: [
           { required: true, message: "请输入副标题", trigger: "blur" }
         ],
-        brandId: [{ required: true, message: "请选择品牌", trigger: "blur" }]
+        brandId: [{ required: true, message: "请选择品牌", trigger: "blur" }],
+        newPicIdList: [{type: 'array',required: true, message: "请至少上传一张图片", trigger: "blur" }]
       },
       // 下拉框可选值
       selectList: {

@@ -1,15 +1,15 @@
 <template>
   <el-container>
     <el-header>
-    <Query
-      size="mini"
-      labelWidth="80px"
-      :itemWidth="7"
-      :searchData="queryParam"
-      :searchForm="searchForm"
-      :searchHandle="searchHandle"
-      :list="dropDownList"
-    />
+      <Query
+        size="mini"
+        labelWidth="80px"
+        :itemWidth="7"
+        :searchData="queryParam"
+        :searchForm="searchForm"
+        :searchHandle="searchHandle"
+        :list="dropDownList"
+      />
     </el-header>
 
     <div
@@ -21,12 +21,12 @@
     >
       <el-row>
         <el-col
-          :span="4"
+          :span="colSpan"
           v-for="item in productList"
           :key="item.id"
           class="list-item"
         >
-          <el-card shadow="always" class="my-el-card">
+          <el-card shadow="always" @click.native=showDetail(item) class="my-el-card">
             <div class="image">
               <el-image :src="item.coverUrl"></el-image>
             </div>
@@ -36,7 +36,6 @@
 
             <div class="price">
               <span>￥{{ item.price }}</span>
-              <!--            <el-button type="text" class="button">查看详情</el-button>-->
             </div>
           </el-card>
         </el-col>
@@ -49,6 +48,38 @@
       <el-backtop target=".infinite-list"></el-backtop>
     </div>
 
+
+    <!--    商品详情弹框-->
+    <el-dialog  class="my-el-dialog" title="商品详情" v-if="showingProduct" :visible.sync="productDetailShow">
+      <div class="image">
+        <el-image :src="showingProduct.coverUrl"></el-image>
+      </div>
+      <div class="description">
+        <span>{{ showingProduct.name }}</span>
+      </div>
+
+      <div class="price">
+        <span>￥{{ showingProduct.price }}</span>
+      </div>
+      <el-form :inline="true"  class="demo-form-inline">
+<!--        <el-form-item label="活动区域">-->
+<!--          <el-select v-model="" placeholder="活动区域">-->
+<!--            <el-option label="区域一" value="shanghai"></el-option>-->
+<!--            <el-option label="区域二" value="beijing"></el-option>-->
+<!--          </el-select>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="活动区域">-->
+<!--          <el-select v-model="" placeholder="活动区域">-->
+<!--            <el-option label="区域一" value="shanghai"></el-option>-->
+<!--            <el-option label="区域二" value="beijing"></el-option>-->
+<!--          </el-select>-->
+<!--        </el-form-item>-->
+        <el-form-item>
+          <el-button type="primary" @click="addToCart">加入购物车</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
+
   </el-container>
 </template>
 
@@ -59,6 +90,15 @@
   export default {
     data() {
       return {
+        // 商品详情
+        // 是否弹出商品详情对话框
+        productDetailShow: false,
+        // 当前正在展示详情的商品信息
+        showingProduct: null,
+        cartItem: {},
+        stockList:[],
+        // el-col栅格占的格子数量。 一行总共24格，一个列占6格，那么一行可展示4个商品
+        colSpan: 6,
         searchForm: [
           {
             type: "Input",
@@ -107,7 +147,6 @@
           {
             label: "重置",
             page: "productList",
-            type: "primary",
             handle: () => {
               this.queryParam.name = '';
               this.queryParam.brandId = null;
@@ -190,6 +229,17 @@
         product.getProductCategory().then(res => {
           this.dropDownList.productCategoryIdList = res.data;
         });
+      },
+      showDetail(productDetail) {
+        this.showingProduct = productDetail;
+        // 查询stockList
+        product.getStockList({ productId: productDetail.id }).then(res => {
+          this.stockList = res.data;
+          this.productDetailShow = true;
+        });
+      },
+      addToCart(){
+
       }
     }
   };
@@ -201,38 +251,60 @@
 
   .my-el-card {
     overflow: auto;
-    height: 400px;
+    height: 420px;
     margin: 15px;
+    cursor: pointer;
   }
 
-  .image {
+  .my-el-card .image {
     overflow: scroll;
-    height: 210px;
+    height: 250px;
     width: 100%;
     display: block;
   }
 
-  .description {
+  .my-el-card .description {
     margin-top: 10px;
-    height: 100px;
+    height: 80px;
     overflow: scroll;
     text-align: left;
     font-size: 20px;
   }
 
-  .price {
+  .my-el-card .price {
     text-align: left;
     font-size: 24px;
     color: red;
   }
 
-  .bottom {
-    margin-top: 13px;
-    line-height: 12px;
+
+
+  .my-el-dialog {
+    height: calc( 80% - 10px);
+    width: 100%;
+    overflow: auto;
   }
 
-  .button {
-    padding: 0;
-    float: right;
+  .my-el-dialog .image {
+    overflow: scroll;
+    height: 250px;
+    width: 100%;
+    display: block;
   }
+
+  .my-el-dialog .description {
+    margin-top: 10px;
+    height: 80px;
+    overflow: scroll;
+    text-align: left;
+    font-size: 20px;
+  }
+
+  .my-el-dialog .price {
+    text-align: left;
+    font-size: 24px;
+    color: red;
+  }
+
+
 </style>
