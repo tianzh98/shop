@@ -6,6 +6,8 @@ import com.gll.shop.entity.ReceiveAddress;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.gll.shop.entity.RessiveAddressParam;
 
+import java.util.List;
+
 /**
 * @author 高up
 * @description 针对表【receive_address(收货地址表)】的数据库操作Service
@@ -14,4 +16,10 @@ import com.gll.shop.entity.RessiveAddressParam;
 public interface ReceiveAddressService extends IService<ReceiveAddress> {
 
     ResultContext<IPage<ReceiveAddress>> getAddressList(RessiveAddressParam param);
+
+    ResultContext<ReceiveAddress> getAddressById(Long id);
+
+    ResultContext<Void> insertAndUpdateAddress(ReceiveAddress address);
+
+    ResultContext<Void> deleteAddressById(List<Long> idList);
 }

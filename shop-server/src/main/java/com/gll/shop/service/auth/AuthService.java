@@ -10,6 +10,8 @@ import cn.hutool.json.JSONObject;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.gll.shop.common.beans.ResultContext;
 import com.gll.shop.common.constant.Constant;
+import com.gll.shop.common.dropdown.DropDownDTO;
+import com.gll.shop.common.enums.ENGender;
 import com.gll.shop.common.enums.ENResourcesType;
 import com.gll.shop.common.enums.ENUserStatus;
 import com.gll.shop.entity.SysResource;
@@ -25,6 +27,8 @@ import com.gll.shop.service.user.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -112,12 +116,12 @@ public class AuthService {
         int userId = StpUtil.getLoginIdAsInt();
         // 获取该用户的角色
         List<String> roleIds = sysUserRoleMapper.selectList(Wrappers.<SysUserRole>lambdaQuery()
-                .select(SysUserRole::getRoleId)
-                .eq(SysUserRole::getUserId, userId))
+                        .select(SysUserRole::getRoleId)
+                        .eq(SysUserRole::getUserId, userId))
                 .stream().map(SysUserRole::getRoleId).collect(Collectors.toList());
         // 根据角色-资源关系表把每个角色的资源权限都查到
         List<String> resIds = sysRoleResMapper.selectList(Wrappers.<SysRoleRes>lambdaQuery()
-                .in(SysRoleRes::getRoleId, roleIds))
+                        .in(SysRoleRes::getRoleId, roleIds))
                 .stream().distinct().map(SysRoleRes::getResId).collect(Collectors.toList());
         return resIds;
     }
@@ -182,5 +186,56 @@ public class AuthService {
 
 
         return ResultContext.buildSuccess(null, jsonArray);
+    }
+
+    public ResultContext<String> registerUser(SysUser user) {
+        Date date = new Date();
+        user.setCreateTime(date);
+        user.setUpdateTime(date);
+        //账号状态。0、正常；1、禁用
+        user.setStatus("0");
+        user.setCreator("gaoll");
+        user.setUpdater("gaoll");
+        user.setRowVersion(1);
+        //插入sys_user表
+        try {
+            int result = sysUserService.getBaseMapper().insert(user);
+        } catch (Exception e) {
+            if (e.getCause().getMessage().contains("Duplicate entry")) {
+                String msg = "账号[";
+                if (e.getCause().getMessage().contains("account")) {
+                    msg = "账号["+user.getAccount();
+                } else if (e.getCause().getMessage().contains("phone")) {
+                    msg = "电话["+user.getPhone();
+                } else {
+                    msg = "邮箱["+user.getEmail();
+                }
+                return ResultContext.businessFail(msg + "]已存在，请不要重复注册！");
+            }
+            return ResultContext.businessFail("注册发生异常，请联系管理员！");
+        }
+
+        //插入sys_user_role表
+        SysUserRole sysUserRole = new SysUserRole();
+        //默认是普通用户
+        sysUserRole.setRoleId("1");
+        sysUserRole.setUserId(String.valueOf(user.getId()));
+        sysUserRole.setCreator("gaoll");
+        sysUserRole.setCreateTime(date);
+        sysUserRole.setUpdateTime(date);
+        sysUserRole.setRowVersion(1);
+        int result1 = sysUserRoleMapper.insert(sysUserRole);
+        return ResultContext.success("成功注册用户");
+    }
+
+    public ResultContext<List<DropDownDTO>> getGender() {
+        List<DropDownDTO> dropDownDTOS = new ArrayList<>();
+        for (ENGender type : ENGender.values()) {
+            DropDownDTO downDTO = new DropDownDTO();
+            downDTO.setLabel(type.getLabel());
+            downDTO.setValue(type.getValue());
+            dropDownDTOS.add(downDTO);
+        }
+        return ResultContext.buildSuccess("获取性别下拉", dropDownDTOS);
     }
 }

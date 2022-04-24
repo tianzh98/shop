@@ -12,6 +12,15 @@ export const loginDo = data => {
     headers: { token: localCache.getCookie("token") }
   });
 };
+//注册用户
+export const registerUser = data => {
+  return hyRequest.post({ url: "/auth/registerUser", data });
+};
+//获取性别下拉
+export const getGender = data => {
+  return hyRequest.post({ url: "/auth/getGender", data });
+};
+
 /*logout */
 export const logOut = data => {
   return hyRequest.post({ url: "/auth/logOut", data });

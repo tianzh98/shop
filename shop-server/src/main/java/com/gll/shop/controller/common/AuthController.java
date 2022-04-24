@@ -5,6 +5,8 @@ import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.json.JSONArray;
 import com.gll.shop.common.beans.ResultContext;
+import com.gll.shop.common.dropdown.DropDownDTO;
+import com.gll.shop.entity.SysUser;
 import com.gll.shop.entity.auth.LoginResult;
 import com.gll.shop.service.auth.AuthService;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -63,6 +66,16 @@ public class AuthController {
         return ResultContext.success("退出登录成功！");
     }
 
+    //注册用户
+    @PostMapping("/registerUser")
+    public ResultContext<String> registerUser(@RequestBody SysUser user) {
+        return authService.registerUser(user);
+    }
+    //获取下拉性别
+    @PostMapping("/getGender")
+    public ResultContext<List<DropDownDTO>> getGender() {
+        return authService.getGender();
+    }
     @SaCheckLogin
     @PostMapping("/queryUserMenu")
     public ResultContext<JSONArray> queryUserMenu() {
@@ -74,5 +87,6 @@ public class AuthController {
     public ResultContext<JSONArray> queryUserPermission() {
         return authService.queryUserPermission();
     }
+
 
 }

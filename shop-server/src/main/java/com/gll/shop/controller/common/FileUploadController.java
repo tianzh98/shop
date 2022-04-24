@@ -4,7 +4,7 @@ import cn.hutool.json.JSONObject;
 import com.gll.shop.common.beans.ResultContext;
 import com.gll.shop.entity.ShopFile;
 import com.gll.shop.entity.common.ShopFileResp;
-import com.gll.shop.service.ShopFileService;
+import com.gll.shop.service.shopFile.ShopFileService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

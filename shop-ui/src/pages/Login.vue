@@ -34,6 +34,9 @@
           >登录</el-button
         >
       </el-form-item>
+      <el-form-item class="login-item" style="float: left;margin: 0px 50px">
+        <el-button type="text" style="text-align: left; color: red;float: left" @click="registerClick" >没有账号？去注册</el-button>
+      </el-form-item>
     </el-form>
     <!--验证码弹窗-->
   </div>
@@ -58,6 +61,12 @@ export default {
     };
   },
   methods: {
+    registerClick: function ()
+    {
+      this.$router.push({
+        path: "/Register",
+      });
+    },
     loginClick() {
       this.varifyCode();
     },

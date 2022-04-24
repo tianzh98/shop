@@ -1,4 +1,4 @@
-package com.gll.shop.service;
+package com.gll.shop.service.shopFile;
 
 import com.gll.shop.entity.ShopFile;
 import com.baomidou.mybatisplus.extension.service.IService;

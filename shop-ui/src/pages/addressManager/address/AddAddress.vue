@@ -10,12 +10,13 @@
       :searchForm="searchForm"
       :list="list"
       :rules="rules"
-      :submit="insertBrand"
+      :submit="updateOrInsertAddress"
     />
   </div>
 </template>
 <script>
 import * as product from "@/http/implement/product";
+
 
 export default {
   name: "AddAddress",
@@ -103,13 +104,13 @@ export default {
       // this.$router.go(-1)
       this.$router.back();
     },
-    insertBrand: function() {
+    updateOrInsertAddress: function() {
       this.$confirm("是否确认提交？", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "info"
       }).then(() => {
-        product.insertAndUpdateBrand(this.searchData).then(res => {
+        product.updateAndInsertAddress(this.searchData).then(res => {
           if (res.code === "0") {
             this.goBack();
           }
@@ -120,7 +121,7 @@ export default {
       // $route.query.的参数 bool会被转成string  所以这里要转换一下
       let isEdit = eval(this.$route.query.isEdit);
       if (isEdit) {
-        product.getAddressList({ id: this.$route.query.id }).then(res => {
+        product.getAddressById({ id: this.$route.query.id }).then(res => {
           this.searchData = res.data;
         });
       }

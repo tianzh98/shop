@@ -137,7 +137,15 @@ export const getStatus = data => {
 export const getAddressList = data => {
   return hyRequest.post({ url: "/address/getAddressList", data });
 };
-//获取所有地址
-// export const getAddressList = data => {
-//   return hyRequest.post({ url: "/address/getAddressList", data });
-// };
+//获取地址通过id
+export const getAddressById = data => {
+  return hyRequest.post({ url: "/address/getAddressById", data });
+};
+//更新或者插入地址
+export const updateAndInsertAddress = data => {
+  return hyRequest.post({ url: "/address/inOrUpAddress", data });
+};
+//删除地址通过id
+export const deleteAddressById = data => {
+  return hyRequest.post({ url: "/address/deleteAddressById", data });
+};

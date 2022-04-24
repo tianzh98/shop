@@ -17,6 +17,8 @@ import com.gll.shop.service.SysRole.SysUserRoleService;
 import com.gll.shop.service.address.ReceiveAddressService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
 * @author 高up
 * @description 针对表【receive_address(收货地址表)】的数据库操作Service实现
@@ -27,10 +29,12 @@ public class ReceiveAddressServiceImpl extends ServiceImpl<ReceiveAddressMapper,
     implements ReceiveAddressService{
     public final SysRoleService sysRoleService;
     public final SysUserRoleService sysUserRoleService;
+    public final ReceiveAddressMapper receiveAddressMapper;
 
-    public ReceiveAddressServiceImpl(SysRoleService sysRoleService, SysUserRoleService sysUserRoleService) {
+    public ReceiveAddressServiceImpl(SysRoleService sysRoleService, SysUserRoleService sysUserRoleService, ReceiveAddressMapper receiveAddressMapper) {
         this.sysRoleService = sysRoleService;
         this.sysUserRoleService = sysUserRoleService;
+        this.receiveAddressMapper = receiveAddressMapper;
     }
 
     @Override
@@ -60,6 +64,43 @@ public class ReceiveAddressServiceImpl extends ServiceImpl<ReceiveAddressMapper,
             ));
             return ResultContext.buildSuccess("查询地址成功",page);
         }
+    }
+
+    @Override
+    public ResultContext<ReceiveAddress> getAddressById(Long id) {
+        ReceiveAddress receiveAddress = receiveAddressMapper.selectById(id);
+        return ResultContext.buildSuccess("查询地址成功",receiveAddress);
+    }
+
+    @Override
+    public ResultContext<Void> insertAndUpdateAddress(ReceiveAddress address) {
+        Long id = address.getId();
+        int result = -1;
+        if(null == id)
+        {
+            //插入地址
+           result = receiveAddressMapper.insert(address);
+        }else
+        {
+            //更新地址
+            result = receiveAddressMapper.updateById(address);
+        }
+        if(result <= 0)
+        {
+            throw  new RuntimeException("插入或者更新地址错误");
+        }
+        return ResultContext.buildSuccess("插入或者更新地址成功",null);
+    }
+
+    @Override
+    public ResultContext<Void> deleteAddressById(List<Long> idList) {
+        int result = -1;
+        result = receiveAddressMapper.deleteBatchIds(idList);
+        if(result <= 0)
+        {
+            throw  new RuntimeException("删除地址错误");
+        }
+        return ResultContext.buildSuccess("删除地址成功",null);
     }
 }
 

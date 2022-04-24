@@ -119,10 +119,13 @@ export default {
                 cancelButtonText: "取消",
                 type: "warning"
               }).then(() => {
-                let data = {
-                  id: this.selection[0].id
-                };
-                product.deleteBrandById(data).then(res => {
+                product.deleteAddressById(
+                  //传递一个列表
+                  this.selection.map(s => {
+                    return s.id;
+                  })
+                )
+                  .then(res => {
                   this.$message.success(res.info);
                   this.getTableData();
                 });
@@ -150,10 +153,12 @@ export default {
   created() {
     this.getColumns();
     //一加载页面就运行
-    this.getTableData();
+    //this.getTableData();
   },
   watch: {},
-  activated() {},
+  activated() {
+    this.getTableData();
+    },
   methods: {
     getColumns: function() {
       this.$root.$children[0].getColumns("/address/addressList").then(res => {
