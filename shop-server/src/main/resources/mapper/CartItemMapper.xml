@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gll.shop.mapper.CartItemMapper">
+
+    <resultMap id="BaseResultMap" type="com.gll.shop.entity.CartItem">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="productId" column="product_id" jdbcType="BIGINT"/>
+            <result property="productCategoryId" column="product_category_id" jdbcType="BIGINT"/>
+            <result property="productStockId" column="product_stock_id" jdbcType="BIGINT"/>
+            <result property="productSn" column="product_sn" jdbcType="VARCHAR"/>
+            <result property="userId" column="user_id" jdbcType="BIGINT"/>
+            <result property="productBrand" column="product_brand" jdbcType="VARCHAR"/>
+            <result property="quantity" column="quantity" jdbcType="INTEGER"/>
+            <result property="price" column="price" jdbcType="DECIMAL"/>
+            <result property="mainPicId" column="main_pic_id" jdbcType="BIGINT"/>
+            <result property="productName" column="product_name" jdbcType="VARCHAR"/>
+            <result property="productSubTitle" column="product_sub_title" jdbcType="VARCHAR"/>
+            <result property="productCode" column="product_code" jdbcType="VARCHAR"/>
+            <result property="memberNickname" column="member_nickname" jdbcType="VARCHAR"/>
+            <result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
+            <result property="modifyDate" column="modify_date" jdbcType="TIMESTAMP"/>
+            <result property="deleteStatus" column="delete_status" jdbcType="INTEGER"/>
+            <result property="productAttr" column="product_attr" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,product_id,product_category_id,
+        product_stock_id,product_sn,user_id,
+        product_brand,quantity,price,
+        main_pic_id,product_name,product_sub_title,
+        product_code,member_nickname,create_date,
+        modify_date,delete_status,product_attr
+    </sql>
+</mapper>

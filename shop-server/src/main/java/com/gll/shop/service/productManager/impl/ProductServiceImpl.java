@@ -62,6 +62,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product>
                 .eq(null != param.getBrandId(), Product::getBrandId, param.getBrandId())
                 .eq(null != param.getProductCategoryId(), Product::getProductCategoryId, param.getProductCategoryId())
                 .eq(StrUtil.isNotBlank(param.getProductSn()), Product::getProductSn, param.getProductSn())
+                .eq(null != param.getPublishStatus(), Product::getPublishStatus, param.getPublishStatus())
                 .like(StrUtil.isNotBlank(param.getName()), Product::getName, param.getName()));
 
         return ResultContext.buildSuccess(null, page.convert(this::translate));

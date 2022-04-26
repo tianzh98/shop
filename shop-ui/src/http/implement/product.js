@@ -5,6 +5,16 @@ export const getProductList = data => {
   return hyRequest.post({ url: "/product/getProductList", data });
 };
 
+
+// 获取商品列表
+export const addToCart = data => {
+  return hyRequest.post({ url: "/product/addToCart", data });
+};
+
+
+
+
+
 // 保存 或者 编辑商品信息
 export const saveOrUpdateProductDetail = data => {
   return hyRequest.post({ url: "/product/saveOrUpdateProductDetail", data });

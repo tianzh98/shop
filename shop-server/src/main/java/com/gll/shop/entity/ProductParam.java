@@ -36,4 +36,9 @@ public class ProductParam extends BaseQueryParams {
      */
     private Long brandId;
 
+    /**
+     * 上架状态：0->下架；1->上架
+     */
+    private Integer publishStatus;
+
 }

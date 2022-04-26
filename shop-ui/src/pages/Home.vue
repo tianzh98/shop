@@ -50,7 +50,7 @@
 
 
     <!--    商品详情弹框-->
-    <el-dialog  class="my-el-dialog" title="商品详情" v-if="showingProduct" :visible.sync="productDetailShow">
+    <el-dialog class="my-el-dialog" title="商品详情" v-if="showingProduct" :visible.sync="productDetailShow">
       <div class="image">
         <el-image :src="showingProduct.coverUrl"></el-image>
       </div>
@@ -59,25 +59,29 @@
       </div>
 
       <div class="price">
-        <span>￥{{ showingProduct.price }}</span>
+        <span>￥{{price }}</span>
       </div>
-      <el-form :inline="true"  class="demo-form-inline">
-<!--        <el-form-item label="活动区域">-->
-<!--          <el-select v-model="" placeholder="活动区域">-->
-<!--            <el-option label="区域一" value="shanghai"></el-option>-->
-<!--            <el-option label="区域二" value="beijing"></el-option>-->
-<!--          </el-select>-->
-<!--        </el-form-item>-->
-<!--        <el-form-item label="活动区域">-->
-<!--          <el-select v-model="" placeholder="活动区域">-->
-<!--            <el-option label="区域一" value="shanghai"></el-option>-->
-<!--            <el-option label="区域二" value="beijing"></el-option>-->
-<!--          </el-select>-->
-<!--        </el-form-item>-->
-        <el-form-item>
-          <el-button type="primary" @click="addToCart">加入购物车</el-button>
-        </el-form-item>
-      </el-form>
+      <div>
+        <el-form label-width="200px">
+          <el-form-item v-for="(value,key) in productAttrList" :key="key" :label="value[0]">
+            <!--            这里需要使用@input="$forceUpdate()"，要不然选项点击不了 https://my.oschina.net/huashijun/blog/5503005-->
+            <el-radio-group @input="$forceUpdate()" v-model="selectedProductAttr[value[0]]"
+                            @change="productAttrChange()">
+              <el-radio border v-for="op in value[1]" :key="op" :label="op"></el-radio>
+
+            </el-radio-group>
+          </el-form-item>
+
+          <el-form-item label="数量">
+            <el-input-number v-model="cartItem.quantity"></el-input-number>
+
+          </el-form-item>
+          <el-form-item>
+            <el-button v-if="selectedStock.id && selectedStock.stock<=0">抱歉，库存不足！</el-button>
+            <el-button v-else type="primary" @click="addToCart">加入购物车</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
     </el-dialog>
 
   </el-container>
@@ -95,8 +99,40 @@
         productDetailShow: false,
         // 当前正在展示详情的商品信息
         showingProduct: null,
-        cartItem: {},
-        stockList:[],
+        stockList: [],
+        // 商品规格 {key,options}
+        productAttrList: new Map(),
+        // 选中的商品规格 {key,value}
+        selectedProductAttr: {},
+        // 根据选中的商品规格 从stockList拿出对应的stock库存信息
+        selectedStock: {
+          stock: 0
+        },
+        cartItem: {
+          productId: null,
+          //商品分类
+          productCategoryId: null,
+          //stock表的id
+          productStockId: null,
+          // 货号
+          productSn: null,
+          // 品牌
+          productBrand: null,
+          // 购买数量
+          quantity: 1,
+          // 添加到购物车的价格
+          price: null,
+          // 商品主图
+          mainPicId: null,
+          // 商品名称
+          productName: null,
+          //商品副标题（卖点）
+          productSubTitle: null,
+          //商品条码
+          productCode: null,
+          //商品销售属性:[{"key":"颜色","value":"颜色"},{"key":"容量","value":"4G"}]
+          productAttr: null
+        },
         // el-col栅格占的格子数量。 一行总共24格，一个列占6格，那么一行可展示4个商品
         colSpan: 6,
         searchForm: [
@@ -170,6 +206,7 @@
         loading: false,
 
         queryParam: {
+          publishStatus: 1,
           pageSize: 24,
           pageNum: 0,
           name: "",
@@ -187,6 +224,13 @@
     computed: {
       disabled() {
         return this.loading || this.noMore;
+      },
+      price() {
+        if (this.selectedStock.id) {
+          return this.selectedStock.price;
+        } else {
+          return this.showingProduct.price;
+        }
       }
     },
     created() {
@@ -232,17 +276,119 @@
       },
       showDetail(productDetail) {
         this.showingProduct = productDetail;
+        this.selectedStock = {
+          stock: 0
+        };
+        this.productAttrList = new Map();
+        this.selectedProductAttr = {};
+        this.stockList = [];
         // 查询stockList
-        product.getStockList({ productId: productDetail.id }).then(res => {
+        product.getStockList({productId: productDetail.id}).then(res => {
           this.stockList = res.data;
+
+          // 构造商品规格选项
+          if (this.stockList) {
+            this.productAttrList = new Map();
+            this.stockList.forEach(stock => {
+              let spDataList = JSON.parse(stock.spData);
+              if (spDataList) {
+                for (let i = 0; i < spDataList.length; i++) {
+                  let spData = spDataList[i];
+                  let options = this.productAttrList.get(spData.key);
+                  if (!options) {
+                    options = new Set();
+                    // 初始化可选规格列表
+                    this.productAttrList.set(spData.key, options);
+                    // 初始化 已选中的规格为 空字符串
+                    // this.selectedProductAttr.set(spData.key,"");
+                    this.selectedProductAttr[spData.key] = '';
+                  }
+                  options.add(spData.value);
+                }
+              }
+            });
+          }
           this.productDetailShow = true;
         });
       },
-      addToCart(){
+      addToCart() {
+        if (!this.selectedStock.id) {
+          this.$message.warning("请选择商品规格")
+          return;
+        }
+        // 构造cartItem信息
+        let carItem = {
+          productId: this.showingProduct.id,
+          //商品分类
+          productCategoryId: this.showingProduct.productCategoryId,
+          //stock表的id
+          productStockId: this.selectedStock.id,
+          // 货号
+          productSn: this.showingProduct.productSn,
+          // 品牌
+          productBrand: this.showingProduct.brandName,
+          // 购买数量
+          quantity: this.cartItem.quantity,
+          // 添加到购物车的价格
+          price: this.price,
+          // 商品主图
+          mainPicId: null,
+          // 商品名称
+          productName: this.showingProduct.name,
+          //商品副标题（卖点）
+          productSubTitle: this.showingProduct.subTitle,
+          //商品条码
+          productCode: this.selectedStock.productCode,
+          //商品销售属性:[{"key":"颜色","value":"颜色"},{"key":"容量","value":"4G"}]
+          productAttr: this.selectedStock.spData
+        };
+        product.addToCart(carItem).then(res => {
+          if (res.code === '0') {
+            this.$message.success(res.info);
+          } else {
+            this.$message.error(res.info);
+          }
+        });
+        // console.log(this.selectedProductAttr)
+
+      },
+      productAttrChange() {
+        // 选中了某一个规格时触发
+        // 先置空
+        this.selectedStock = {
+          stock: 0
+        };
+        for (let j = 0; j < this.stockList.length; j++) {
+          let stock = this.stockList[j];
+          let spDataList = JSON.parse(stock.spData);
+          // 校验这个spData是否和selectedProductAttr相等
+          let hit = false;
+          for (let i = 0; i < spDataList.length; i++) {
+            let spData = spDataList[i];
+            let key = spData.key;
+            let value = spData.value;
+            let selectedValue = this.selectedProductAttr[key];
+            if (value === selectedValue) {
+              hit = true;
+            } else {
+              hit = false;
+              break;
+            }
+          }
+          if (hit) {
+            this.selectedStock = stock;
+            break;
+          }
+        }
+        //
+        // // this.selectedProductAttr.set(key,option);
+        // console.log(this.selectedProductAttr)
+        // console.log(this.selectedStock)
 
       }
     }
-  };
+  }
+  ;
 </script>
 <style>
   /*::-webkit-scrollbar {*/
@@ -278,9 +424,8 @@
   }
 
 
-
   .my-el-dialog {
-    height: calc( 80% - 10px);
+    height: calc(80% - 10px);
     width: 100%;
     overflow: auto;
   }

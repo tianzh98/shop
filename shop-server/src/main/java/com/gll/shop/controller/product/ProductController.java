@@ -8,6 +8,7 @@ import com.gll.shop.common.beans.ResultContext;
 import com.gll.shop.common.dropdown.DropDownDTO;
 import com.gll.shop.entity.*;
 import com.gll.shop.entity.common.BaseQueryParams;
+import com.gll.shop.service.CartItemService;
 import com.gll.shop.service.productAttribute.ProductAttributeCategoryService;
 import com.gll.shop.service.productAttribute.ProductAttributeService;
 import com.gll.shop.service.productAttribute.ProductAttributeValueService;
@@ -40,24 +41,32 @@ public class ProductController {
     private final ProductAttributeService productAttributeService;
     private final ProductStockService productStockService;
     private final ProductAttributeValueService productAttributeValueService;
+    private final CartItemService cartItemService;
 
     //构造方法注入
     public ProductController(ProductService productService, ProductCategoryService productCategoryService,
                              ProductAttributeCategoryService productAttributeCategoryService,
                              ProductAttributeService productAttributeService,
                              ProductStockService productStockService,
-                             ProductAttributeValueService productAttributeValueService) {
+                             ProductAttributeValueService productAttributeValueService,
+                             CartItemService cartItemService) {
         this.productService = productService;
         this.productCategoryService = productCategoryService;
         this.productAttributeCategoryService = productAttributeCategoryService;
         this.productAttributeService = productAttributeService;
         this.productStockService = productStockService;
         this.productAttributeValueService = productAttributeValueService;
+        this.cartItemService = cartItemService;
     }
 
     @PostMapping("/getProductList")
     public ResultContext<IPage<ProductDTO>> getProductList(@RequestBody ProductParam param) {
         return productService.queryProductList(param);
+    }
+
+    @PostMapping("/addToCart")
+    public ResultContext<String> addToCart(@RequestBody CartItem cartItem) {
+        return cartItemService.addToCart(cartItem);
     }
 
 
