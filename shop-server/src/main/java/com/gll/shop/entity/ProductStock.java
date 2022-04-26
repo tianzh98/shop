@@ -48,29 +48,19 @@ public class ProductStock implements Serializable {
     private Integer lowStock;
 
     /**
-     * 展示图片
-     */
-    private String pic;
-
-    /**
      * 销量
      */
     private Integer sale;
 
     /**
-     * 单品促销价格
-     */
-    private BigDecimal promotionPrice;
-
-    /**
-     * 锁定库存
-     */
-    private Integer lockStock;
-
-    /**
      * 商品销售属性，json格式
      */
     private String spData;
+
+    /**
+     * 版本号
+     */
+    private Integer rowVersion;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

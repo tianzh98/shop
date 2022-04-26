@@ -9,19 +9,12 @@
             <result property="name" column="name" jdbcType="VARCHAR"/>
             <result property="firstLetter" column="first_letter" jdbcType="VARCHAR"/>
             <result property="sort" column="sort" jdbcType="INTEGER"/>
-            <result property="factoryStatus" column="factory_status" jdbcType="INTEGER"/>
             <result property="showStatus" column="show_status" jdbcType="INTEGER"/>
-            <result property="productCount" column="product_count" jdbcType="INTEGER"/>
-            <result property="productCommentCount" column="product_comment_count" jdbcType="INTEGER"/>
-            <result property="logo" column="logo" jdbcType="VARCHAR"/>
-            <result property="bigPic" column="big_pic" jdbcType="VARCHAR"/>
             <result property="brandStory" column="brand_story" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id,name,first_letter,
-        sort,factory_status,show_status,
-        product_count,product_comment_count,logo,
-        big_pic,brand_story
+        sort,show_status,brand_story
     </sql>
 </mapper>

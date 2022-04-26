@@ -8,7 +8,6 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
 
 /**
  * 商品信息
@@ -32,11 +31,6 @@ public class Product implements Serializable {
      * 
      */
     private Long productCategoryId;
-
-    /**
-     * 
-     */
-    private Long feightTemplateId;
 
     /**
      * 
@@ -69,21 +63,6 @@ public class Product implements Serializable {
     private Integer publishStatus;
 
     /**
-     * 新品状态:0->不是新品；1->新品
-     */
-    private Integer newStatus;
-
-    /**
-     * 推荐状态；0->不推荐；1->推荐
-     */
-    private Integer recommandStatus;
-
-    /**
-     * 审核状态：0->未审核；1->审核通过
-     */
-    private Integer verifyStatus;
-
-    /**
      * 排序
      */
     private Integer sort;
@@ -97,26 +76,6 @@ public class Product implements Serializable {
      * 
      */
     private BigDecimal price;
-
-    /**
-     * 促销价格
-     */
-    private BigDecimal promotionPrice;
-
-    /**
-     * 赠送的成长值
-     */
-    private Integer giftGrowth;
-
-    /**
-     * 赠送的积分
-     */
-    private Integer giftPoint;
-
-    /**
-     * 限制使用的积分数
-     */
-    private Integer usePointLimit;
 
     /**
      * 副标题
@@ -154,11 +113,6 @@ public class Product implements Serializable {
     private BigDecimal weight;
 
     /**
-     * 是否为预告商品：0->不是；1->是
-     */
-    private Integer previewStatus;
-
-    /**
      * 以逗号分割的产品服务：1->无忧退货；2->快速退款；3->免费包邮
      */
     private String serviceIds;
@@ -187,36 +141,6 @@ public class Product implements Serializable {
      * 
      */
     private String detailDesc;
-
-    /**
-     * 产品详情网页内容
-     */
-    private String detailHtml;
-
-    /**
-     * 移动端网页详情
-     */
-    private String detailMobileHtml;
-
-    /**
-     * 促销开始时间
-     */
-    private Date promotionStartTime;
-
-    /**
-     * 促销结束时间
-     */
-    private Date promotionEndTime;
-
-    /**
-     * 活动限购数量
-     */
-    private Integer promotionPerLimit;
-
-    /**
-     * 促销类型：0->没有促销使用原价;1->使用促销价；2->使用会员价；3->使用阶梯价格；4->使用满减价格；5->限时购
-     */
-    private Integer promotionType;
 
     /**
      * 品牌名称

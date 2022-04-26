@@ -73,7 +73,7 @@
           </el-form-item>
 
           <el-form-item label="数量">
-            <el-input-number v-model="cartItem.quantity"></el-input-number>
+            <el-input-number  :min="1" :max="10000" placeholder="最大输入10000" v-model="cartItem.quantity"></el-input-number>
 
           </el-form-item>
           <el-form-item>

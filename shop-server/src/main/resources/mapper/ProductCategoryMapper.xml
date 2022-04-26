@@ -11,18 +11,14 @@
             <result property="level" column="level" jdbcType="INTEGER"/>
             <result property="productCount" column="product_count" jdbcType="INTEGER"/>
             <result property="productUnit" column="product_unit" jdbcType="VARCHAR"/>
-            <result property="navStatus" column="nav_status" jdbcType="INTEGER"/>
             <result property="showStatus" column="show_status" jdbcType="INTEGER"/>
             <result property="sort" column="sort" jdbcType="INTEGER"/>
-            <result property="icon" column="icon" jdbcType="VARCHAR"/>
-            <result property="keywords" column="keywords" jdbcType="VARCHAR"/>
             <result property="description" column="description" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id,parent_id,name,
         level,product_count,product_unit,
-        nav_status,show_status,sort,
-        icon,keywords,description
+        show_status,sort,description
     </sql>
 </mapper>

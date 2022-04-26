@@ -59,24 +59,14 @@ public class SysResource implements Serializable {
     private String permission;
 
     /**
-     * 菜单组件名称
+     * 菜单图标
      */
-    private String componentName;
-
-    /**
-     * 菜单组件地址
-     */
-    private String componentPath;
+    private String icon;
 
     /**
      * 状态（0、正常；1、禁用）
      */
     private String resStatus;
-
-    /**
-     * 菜单图标
-     */
-    private String icon;
 
     /**
      * 创建时间

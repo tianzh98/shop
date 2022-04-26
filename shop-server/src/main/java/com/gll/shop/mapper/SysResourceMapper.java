@@ -1,7 +1,7 @@
 package com.gll.shop.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.gll.shop.entity.SysResource;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
  * @Entity com.gll.shop.entity.SysResource

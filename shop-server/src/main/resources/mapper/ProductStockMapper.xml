@@ -11,17 +11,14 @@
             <result property="price" column="price" jdbcType="DECIMAL"/>
             <result property="stock" column="stock" jdbcType="INTEGER"/>
             <result property="lowStock" column="low_stock" jdbcType="INTEGER"/>
-            <result property="pic" column="pic" jdbcType="VARCHAR"/>
             <result property="sale" column="sale" jdbcType="INTEGER"/>
-            <result property="promotionPrice" column="promotion_price" jdbcType="DECIMAL"/>
-            <result property="lockStock" column="lock_stock" jdbcType="INTEGER"/>
             <result property="spData" column="sp_data" jdbcType="VARCHAR"/>
+            <result property="rowVersion" column="row_version" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id,product_id,product_code,
         price,stock,low_stock,
-        pic,sale,promotion_price,
-        lock_stock,sp_data
+        sale,sp_data,row_version
     </sql>
 </mapper>

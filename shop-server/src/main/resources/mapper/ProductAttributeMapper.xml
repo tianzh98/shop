@@ -12,9 +12,6 @@
             <result property="inputType" column="input_type" jdbcType="INTEGER"/>
             <result property="inputList" column="input_list" jdbcType="VARCHAR"/>
             <result property="sort" column="sort" jdbcType="INTEGER"/>
-            <result property="filterType" column="filter_type" jdbcType="INTEGER"/>
-            <result property="searchType" column="search_type" jdbcType="INTEGER"/>
-            <result property="relatedStatus" column="related_status" jdbcType="INTEGER"/>
             <result property="handAddStatus" column="hand_add_status" jdbcType="INTEGER"/>
             <result property="type" column="type" jdbcType="INTEGER"/>
     </resultMap>
@@ -22,8 +19,7 @@
     <sql id="Base_Column_List">
         id,product_attribute_category_id,name,
         select_type,input_type,input_list,
-        sort,filter_type,search_type,
-        related_status,hand_add_status,type
+        sort,hand_add_status,type
     </sql>
     <select id="getProductTypeParam" resultType="com.gll.shop.entity.ProductAttributePO">
         SELECT pa.id,

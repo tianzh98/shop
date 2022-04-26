@@ -27,7 +27,7 @@ public class ProductCategory implements Serializable {
     private Long parentId;
 
     /**
-     * 
+     * 名称
      */
     private String name;
 
@@ -37,19 +37,14 @@ public class ProductCategory implements Serializable {
     private Integer level;
 
     /**
-     * 
+     * 商品数量
      */
     private Integer productCount;
 
     /**
-     * 
+     * 数量单位
      */
     private String productUnit;
-
-    /**
-     * 是否显示在导航栏：0->不显示；1->显示
-     */
-    private Integer navStatus;
 
     /**
      * 显示状态：0->不显示；1->显示
@@ -57,19 +52,9 @@ public class ProductCategory implements Serializable {
     private Integer showStatus;
 
     /**
-     * 
+     * 排序字段
      */
     private Integer sort;
-
-    /**
-     * 图标
-     */
-    private String icon;
-
-    /**
-     * 
-     */
-    private String keywords;
 
     /**
      * 描述
