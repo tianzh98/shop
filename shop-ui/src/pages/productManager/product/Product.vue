@@ -73,6 +73,17 @@ export default {
             this.searchData.brandId = value;
           },
           placeholder: "请选择"
+        },
+        {
+          type: "Select",
+          label: "上架/下架",
+          prop: "publishStatus",
+          multiple: false,
+          clearable: true,
+          change: value => {
+            this.searchData.publishStatus = value;
+          },
+          placeholder: "请选择"
         }
       ],
       searchHandle: [
@@ -227,7 +238,11 @@ export default {
       ],
       list: {
         brandIdList: [],
-        productCategoryIdList: []
+        productCategoryIdList: [],
+        publishStatusList: [
+          { label: "已上架", value: 1 },
+          { label: "未上架", value: 0 }
+        ]
       },
       columns: [],
       selection: [],
@@ -242,7 +257,8 @@ export default {
         productCategoryId: "",
         name: "",
         productSn: "",
-        brandId: ""
+        brandId: "",
+        publishStatus: null
       }
     };
   },

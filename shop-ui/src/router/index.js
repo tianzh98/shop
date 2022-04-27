@@ -120,7 +120,7 @@ const routes = [
         name: "addProductTypeParam",
         component: () =>
           import("@/pages/productManager/productType/AddProductTypeParam"),
-        meta: { title: "添加商品类型" },
+        meta: { title: "添加商品类型属性" },
         hidden: true
       }
     ]
