@@ -5,7 +5,6 @@ export const getProductList = data => {
   return hyRequest.post({ url: "/product/getProductList", data });
 };
 
-
 //把商品加入购物车
 export const addToCart = data => {
   return hyRequest.post({ url: "/cart/addToCart", data });

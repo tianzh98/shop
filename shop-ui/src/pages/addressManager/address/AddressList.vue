@@ -119,16 +119,17 @@ export default {
                 cancelButtonText: "取消",
                 type: "warning"
               }).then(() => {
-                product.deleteAddressById(
-                  //传递一个列表
-                  this.selection.map(s => {
-                    return s.id;
-                  })
-                )
+                product
+                  .deleteAddressById(
+                    //传递一个列表
+                    this.selection.map(s => {
+                      return s.id;
+                    })
+                  )
                   .then(res => {
-                  this.$message.success(res.info);
-                  this.getTableData();
-                });
+                    this.$message.success(res.info);
+                    this.getTableData();
+                  });
               });
             }
           }
@@ -158,7 +159,7 @@ export default {
   watch: {},
   activated() {
     this.getTableData();
-    },
+  },
   methods: {
     getColumns: function() {
       this.$root.$children[0].getColumns("/address/addressList").then(res => {

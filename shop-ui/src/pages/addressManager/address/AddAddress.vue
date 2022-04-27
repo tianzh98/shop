@@ -17,7 +17,6 @@
 <script>
 import * as product from "@/http/implement/product";
 
-
 export default {
   name: "AddAddress",
   data() {
