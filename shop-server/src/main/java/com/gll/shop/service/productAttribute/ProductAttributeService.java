@@ -14,4 +14,8 @@ import java.util.List;
 public interface ProductAttributeService extends IService<ProductAttribute> {
 
     ResultContext<List<ProductAttributeDTO>> getProductAttributeParam(ProductAttributeParam param);
+
+    ResultContext<Void> insertOrUpdateProductAttribute(ProductAttribute productAttribute);
+
+    ResultContext<Void> deleteProductAttributeById(Long id);
 }

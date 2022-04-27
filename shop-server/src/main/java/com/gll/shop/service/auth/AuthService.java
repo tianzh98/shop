@@ -218,7 +218,6 @@ public class AuthService {
             }
             return ResultContext.businessFail("注册发生异常，请联系管理员！");
         }
-
         //插入sys_user_role表
         SysUserRole sysUserRole = new SysUserRole();
         //默认是普通用户

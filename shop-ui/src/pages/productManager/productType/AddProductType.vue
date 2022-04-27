@@ -32,7 +32,7 @@ export default {
           clearable: true,
           placeholder: "请输入"
         },
-        {
+       /* {
           type: "Input",
           label: "商品属性数量",
           prop: "attributeCount",
@@ -45,7 +45,7 @@ export default {
           prop: "paramCount",
           clearable: true,
           placeholder: "请输入"
-        }
+        }*/
       ],
       rules: {
         name: [
@@ -54,8 +54,8 @@ export default {
       },
       searchData: {
         name: "",
-        attributeCount: "",
-        paramCount: ""
+       /* attributeCount: "",
+        paramCount: ""*/
       },
       list: null
     };

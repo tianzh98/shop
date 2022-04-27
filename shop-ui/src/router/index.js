@@ -113,6 +113,14 @@ const routes = [
           import("@/pages/productManager/productType/AddProductType"),
         meta: { title: "添加商品类型" },
         hidden: true
+      },
+      {
+        path: "addProductTypeParam",
+        name: "addProductTypeParam",
+        component: () =>
+          import("@/pages/productManager/productType/AddProductTypeParam"),
+        meta: { title: "添加商品类型" },
+        hidden: true
       }
     ]
   },
@@ -149,6 +157,27 @@ const routes = [
         name: "addAddress",
         component: () => import("@/pages/addressManager/address/AddAddress"),
         meta: { title: "增加地址", icon: "order-cate" }
+      }
+    ]
+  },
+  {
+    path: "/shopping",
+    component: index,
+    redirect: "/shopping/cartList",
+    name: "shopping",
+    meta: { title: "下单" },
+    children: [
+      {
+        path: "cartList",
+        name: "cartList",
+        component: () => import("@/pages/shopping/shoppingCart/CartList"),
+        meta: { title: "下单", icon: "order-cate" }
+      },
+      {
+        path: "addCart",
+        name: "addCart",
+        component: () => import("@/pages/shopping/shoppingCart/AddCart"),
+        meta: { title: "编辑订单", icon: "order-cate" }
       }
     ]
   }

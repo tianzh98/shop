@@ -8,7 +8,7 @@ import com.gll.shop.common.beans.ResultContext;
 import com.gll.shop.common.dropdown.DropDownDTO;
 import com.gll.shop.entity.*;
 import com.gll.shop.entity.common.BaseQueryParams;
-import com.gll.shop.service.CartItemService;
+import com.gll.shop.service.cartItem.CartItemService;
 import com.gll.shop.service.productAttribute.ProductAttributeCategoryService;
 import com.gll.shop.service.productAttribute.ProductAttributeService;
 import com.gll.shop.service.productAttribute.ProductAttributeValueService;
@@ -137,23 +137,36 @@ public class ProductController {
         return ResultContext.buildSuccess(null, collect);
     }
 
-    //获取所有商品类型
-    @PostMapping("/getProductAttributeList")
-    public ResultContext<IPage<ProductAttributeCategory>> getProductAttributeList(@RequestBody BaseQueryParams params) {
-        return productAttributeCategoryService.getProductAttributeList(params);
-    }
-
     //获取所有商品类型参数
     @PostMapping("/getProductAttributeParam")
     public ResultContext<List<ProductAttributeDTO>> getProductAttributeParam(@RequestBody ProductAttributeParam param) {
         return productAttributeService.getProductAttributeParam(param);
     }
 
+    //更新或者插入商品属性或者商品参数
+    @PostMapping("/inOrUpProductAttributeParam")
+    public ResultContext<Void> insertOrUpdateProductAttribute(@RequestBody ProductAttribute productAttribute)
+    {
+        return productAttributeService.insertOrUpdateProductAttribute(productAttribute);
+    }
+
+    @PostMapping("/deleteProductAttributeParamById")
+    public ResultContext<Void> deleteProductAttributeById(@RequestBody JSONObject jsonObject)
+    {
+        Long id = jsonObject.getLong("id");
+       return  productAttributeService.deleteProductAttributeById(id);
+    }
     //获取商品类型通过id
     @PostMapping("/getProductAttributeCateById")
     public ResultContext<ProductAttributeCategory> getProductAttributeCategoryById(@RequestBody JSONObject jsonObject) {
         Long id = jsonObject.getLong("id");
         return productAttributeCategoryService.getProductAttributeCategoryById(id);
+    }
+
+    //获取所有商品类型
+    @PostMapping("/getProductAttributeList")
+    public ResultContext<IPage<ProductAttributeCategory>> getProductAttributeList(@RequestBody BaseQueryParams params) {
+        return productAttributeCategoryService.getProductAttributeList(params);
     }
 
     //删除商品类型通过id

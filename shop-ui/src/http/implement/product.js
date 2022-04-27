@@ -6,14 +6,26 @@ export const getProductList = data => {
 };
 
 
-// 获取商品列表
+//把商品加入购物车
 export const addToCart = data => {
-  return hyRequest.post({ url: "/product/addToCart", data });
+  return hyRequest.post({ url: "/cart/addToCart", data });
 };
-
-
-
-
+//查询购物车里面的所有商品
+export const getCartItemList = data => {
+  return hyRequest.post({ url: "/cart/getCartItemList", data });
+};
+//删除购物车里面选中的商品
+export const deleteCartItemById = data => {
+  return hyRequest.post({ url: "/cart/deleteCartById", data });
+};
+//更新购物车里面选中的商品
+export const updateCartItemById = data => {
+  return hyRequest.post({ url: "/cart/updateCartItem", data });
+};
+//获取购物车里面选中的商品
+export const getCartItemById = data => {
+  return hyRequest.post({ url: "/cart/getCartItemById", data });
+};
 
 // 保存 或者 编辑商品信息
 export const saveOrUpdateProductDetail = data => {

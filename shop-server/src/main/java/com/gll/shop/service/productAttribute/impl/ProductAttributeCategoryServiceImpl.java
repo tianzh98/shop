@@ -36,7 +36,7 @@ public class ProductAttributeCategoryServiceImpl extends ServiceImpl<ProductAttr
         int result = getBaseMapper().deleteById(id);
         if(result <= 0)
         {
-            throw new RuntimeException("删除商品类型错误");
+            ResultContext.businessFail("删除商品类型错误");
         }
         return ResultContext.buildSuccess("删除商品类型成功",null);
     }
@@ -47,6 +47,9 @@ public class ProductAttributeCategoryServiceImpl extends ServiceImpl<ProductAttr
         int result ;
         if(null == id)
         {
+            //商品属性和商品参数默认设置为0
+            productAttributeCategory.setAttributeCount(0);
+            productAttributeCategory.setParamCount(0);
             result = getBaseMapper().insert(productAttributeCategory);
         }else
         {
@@ -54,7 +57,7 @@ public class ProductAttributeCategoryServiceImpl extends ServiceImpl<ProductAttr
         }
         if(result <= 0)
         {
-            throw new RuntimeException("删除或者更新商品类型页面错误");
+          ResultContext.businessFail("删除或者更新商品类型页面错误");
         }
         return ResultContext.buildSuccess("删除或者更新商品类型页面成功",null);
     }
