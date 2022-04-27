@@ -49,6 +49,16 @@ export default {
         },
         {
           type: "Radio",
+          label: "属性录入方式",
+          prop: "inputType",
+          clearable: true,
+          radios: [
+            { value: "0", label: "手工录入" },
+            { value: "1", label: "从列表选取" }
+          ]
+        },
+        {
+          type: "Radio",
           label: "属性选择类型",
           prop: "selectType",
           clearable: true,
@@ -56,16 +66,6 @@ export default {
             { value: "0", label: "唯一" },
             { value: "1", label: "单选" },
             { value: "2", label: "多选" }
-          ]
-        },
-        {
-          type: "Radio",
-          label: "属性录入方式",
-          prop: "inputType",
-          clearable: true,
-          radios: [
-            { value: "0", label: "手工录入" },
-            { value: "1", label: "从列表选取" }
           ]
         },
         {
@@ -102,11 +102,11 @@ export default {
       searchData: {
         name: "",
         productAttributeCategoryId: null,
-        selectType: "",
-        inputType: "",
+        selectType: "2",
+        inputType: "1",
         inputList: null,
         sort: 1,
-        handAddStatus: ""
+        handAddStatus: "1"
       } //search data
     };
   },
