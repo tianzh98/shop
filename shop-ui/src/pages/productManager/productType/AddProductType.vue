@@ -31,8 +31,8 @@ export default {
           prop: "name",
           clearable: true,
           placeholder: "请输入"
-        },
-       /* {
+        }
+        /* {
           type: "Input",
           label: "商品属性数量",
           prop: "attributeCount",
@@ -53,8 +53,8 @@ export default {
         ]
       },
       searchData: {
-        name: "",
-       /* attributeCount: "",
+        name: ""
+        /* attributeCount: "",
         paramCount: ""*/
       },
       list: null

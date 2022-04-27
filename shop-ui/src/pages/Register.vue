@@ -69,7 +69,9 @@ export default {
           clearable: true,
           change: () => {
             //转换日期格式
-            this.searchData.birthday = this.dateFormat(this.searchData.birthday);
+            this.searchData.birthday = this.dateFormat(
+              this.searchData.birthday
+            );
           },
           placeholder: "请输入"
         },
@@ -86,7 +88,7 @@ export default {
           prop: "phone",
           clearable: true,
           placeholder: "请输入"
-        },
+        }
       ],
       searchHandle: [],
       total: 0,
@@ -94,7 +96,9 @@ export default {
       sortType: "",
       selection: [],
       rules: {
-        userName: [{ required: true, message: "请输入用户名称", trigger: "blur" }],
+        userName: [
+          { required: true, message: "请输入用户名称", trigger: "blur" }
+        ],
         account: [{ required: true, message: "请输入账号", trigger: "blur" }],
         password: [{ required: true, message: "请输入密码", trigger: "blur" }],
         phone: [{ required: true, message: "请输入电话号码", trigger: "blur" }],
@@ -105,14 +109,13 @@ export default {
         userName: "",
         realName: "",
         password: "",
-        gender:"",
-        birthday:"",
-        email:"",
-        phone:"",
-
+        gender: "",
+        birthday: "",
+        email: "",
+        phone: ""
       },
       list: {
-        genderList:"",
+        genderList: ""
       }
     };
   },
@@ -124,7 +127,7 @@ export default {
   activated() {},
   methods: {
     //日期格式化（转年月日时分秒）
-    dateFormat:function(datetime){
+    dateFormat: function(datetime) {
       let date = new Date(datetime);
       let year = date.getFullYear();
       let month = date.getMonth() + 1;
@@ -132,43 +135,55 @@ export default {
       let hour = date.getHours();
       let minute = date.getMinutes();
       let second = date.getSeconds();
-      return year + "-" + this.formatTen(month) + "-" + this.formatTen(day)+ " " +this.formatTen(hour)+ ":" +this.formatTen(minute)+ ":" +this.formatTen(second);
+      return (
+        year +
+        "-" +
+        this.formatTen(month) +
+        "-" +
+        this.formatTen(day) +
+        " " +
+        this.formatTen(hour) +
+        ":" +
+        this.formatTen(minute) +
+        ":" +
+        this.formatTen(second)
+      );
     },
-    formatTen:function (num) {
-      return num > 9 ? (num + "") : ("0" + num);
+    formatTen: function(num) {
+      return num > 9 ? num + "" : "0" + num;
     },
     goBack: function() {
       // this.$router.go(-1)
       this.$router.back();
     },
-    getGender:function ()
-    {
+    getGender: function() {
       common.getGender().then(res => {
         this.list.genderList = res.data;
       });
     },
     insertUser: function() {
       common.registerUser(this.searchData).then(res => {
-        let that=this;
-          if (res.code === "0") {
-            common.loginDo({
-                accountOrEmailOrPhone: that.searchData.account,
-                password: that.searchData.password
-              })
-              .then(res => {
-                let token = res.data.token;
-                let userInfo = res.data.userInfo;
+        let that = this;
+        if (res.code === "0") {
+          common
+            .loginDo({
+              accountOrEmailOrPhone: that.searchData.account,
+              password: that.searchData.password
+            })
+            .then(res => {
+              let token = res.data.token;
+              let userInfo = res.data.userInfo;
 
-                // localCache.clearSession();
-                localCache.setCache("userInfo", userInfo);
-                // localCache.setCookie("userId", userInfo.userId);
-                localCache.setCookie("token", token, 8 * 60 * 60); //by seconds
+              // localCache.clearSession();
+              localCache.setCache("userInfo", userInfo);
+              // localCache.setCookie("userId", userInfo.userId);
+              localCache.setCookie("token", token, 8 * 60 * 60); //by seconds
 
-                that.$router.push({ path: "/" });
-              });
-          }
-    });
-    },
+              that.$router.push({ path: "/" });
+            });
+        }
+      });
+    }
   }
 };
 </script>

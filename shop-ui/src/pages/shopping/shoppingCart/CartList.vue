@@ -47,8 +47,8 @@ export default {
             this.searchData.productBrand = value;
           },
           placeholder: "请选择"
-        },
-      /*  {
+        }
+        /*  {
           type: "Input",
           label: "商品名称",
           prop: "name",
@@ -128,24 +128,24 @@ export default {
                   cancelButtonText: "取消",
                   type: "warning"
                 }
-              )
-                .then(() => {
-                  product.deleteCartItemById(
-                      this.selection.map(s => {
-                        return s.id;
-                      })
-                    )
-                    .then(res => {
-                      this.$message.success(res.info);
-                      this.getTableData();
-                    });
-                });
+              ).then(() => {
+                product
+                  .deleteCartItemById(
+                    this.selection.map(s => {
+                      return s.id;
+                    })
+                  )
+                  .then(res => {
+                    this.$message.success(res.info);
+                    this.getTableData();
+                  });
+              });
             }
           }
         }
       ],
       list: {
-        productBrandList: [],
+        productBrandList: []
       },
       columns: [],
       selection: [],
@@ -157,7 +157,7 @@ export default {
           ? parseInt(this.$route.query.pageNum)
           : 1,
         pageSize: 200,
-        productBrand:"",
+        productBrand: ""
       }
     };
   },
@@ -170,13 +170,11 @@ export default {
   },
   methods: {
     getColumns: function() {
-      this.$root.$children[0].getColumns("/shopping/cart")
-        .then(res => {
-          this.columns = this.$columns(res, true);
-        });
+      this.$root.$children[0].getColumns("/shopping/cart").then(res => {
+        this.columns = this.$columns(res, true);
+      });
     },
-    getProductBrand: function ()
-    {
+    getProductBrand: function() {
       product.getBrands().then(res => {
         res.data.forEach(x => (x.value = parseInt(x.value)));
         this.list.productBrandList = res.data;
