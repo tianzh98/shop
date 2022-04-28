@@ -58,429 +58,442 @@
   </el-header>
 </template>
 <script>
-import "@/assets/fonts/iconfont.js";
-import { base64encode } from "@/utils/common.js";
-import localCache from "@/utils/cache";
-import * as common from "@/http/implement/common";
+  import "@/assets/fonts/iconfont.js";
+  import {base64encode} from "@/utils/common.js";
+  import localCache from "@/utils/cache";
+  import * as common from "@/http/implement/common";
 
-export default {
-  name: "VHead",
-  props: {
-    name: {
-      default: "游客"
+  export default {
+    name: "VHead",
+    props: {
+      name: {
+        default: "游客"
+      },
+      collapsed: {
+        default: false
+      },
+      routeMatched: {
+        default: null
+      }
     },
-    collapsed: {
-      default: false
+    watch: {
+      name(val) {
+        this.userName = val;
+      },
+      collapsed(val) {
+        this.isCollapsed = val;
+      }
     },
-    routeMatched: {
-      default: null
-    }
-  },
-  watch: {
-    name(val) {
-      this.userName = val;
-    },
-    collapsed(val) {
-      this.isCollapsed = val;
-    }
-  },
-  data() {
-    return {
-      isLogin: false,
-      userName: "",
-      num: 0,
-      isCollapsed: this.collapsed,
-      info: {
+    data() {
+      return {
+        isLogin: false,
         userName: "",
-        realName: "",
-        email: "",
-        phone: "",
-        oldPassword: "",
-        newPassword: "",
-        surePassword: ""
-      },
-      pwd: false,
-      infoRules: {
-        oldPassword: [
-          { required: true, message: "原密码为必填项", trigger: "blur" }
-        ],
-        newPassword: [
-          { required: true, message: "新密码为必填项", trigger: "blur" },
-          /*{
-            message: "密码需要为8-20位且包含字母和数字",
-            pattern: /^(?=.*[0-9])(?=.*[a-zA-Z])(.{8,20})$/,
-            trigger: "blur"
-          }*/
-        ],
-        surePassword: [
-          { required: true, message: "确认密码为必填项", trigger: "blur" }
-        ]
-      },
-      infoForm: [
-        {
-          type: "Input",
-          label: "用户昵称",
-          prop: "userName",
-          clearable: true,
-          placeholder: "请输入"
+        num: 0,
+        isCollapsed: this.collapsed,
+        info: {
+          userName: "",
+          realName: "",
+          email: "",
+          phone: "",
+          oldPassword: "",
+          newPassword: "",
+          surePassword: ""
         },
-        {
-          type: "Input",
-          label: "真实姓名",
-          prop: "realName",
-          clearable: true,
-          placeholder: "请输入"
+        pwd: false,
+        infoRules: {
+          oldPassword: [
+            {required: true, message: "原密码为必填项", trigger: "blur"}
+          ],
+          newPassword: [
+            {required: true, message: "新密码为必填项", trigger: "blur"},
+            /*{
+              message: "密码需要为8-20位且包含字母和数字",
+              pattern: /^(?=.*[0-9])(?=.*[a-zA-Z])(.{8,20})$/,
+              trigger: "blur"
+            }*/
+          ],
+          surePassword: [
+            {required: true, message: "确认密码为必填项", trigger: "blur"}
+          ]
         },
-        {
-          type: "Input",
-          label: "用户邮箱",
-          prop: "email",
-          clearable: true,
-          placeholder: "请输入"
-        },
-        {
-          type: "Input",
-          label: "用户电话",
-          prop: "phone",
-          clearable: true,
-          placeholder: "请输入"
-        },
-        {
-          type: "Input",
-          label: "原密码",
-          prop: "oldPassword",
-          rowType: "password",
-          show: () => {
-            return this.pwd;
+        infoForm: [
+          {
+            type: "Input",
+            label: "用户昵称",
+            prop: "userName",
+            clearable: true,
+            placeholder: "请输入",
+            disable: true
           },
-          placeholder: "请输入"
-        },
-        {
-          type: "Input",
-          label: "新密码",
-          prop: "newPassword",
-          rowType: "password",
-          show: () => {
-            return this.pwd;
+          {
+            type: "Input",
+            label: "真实姓名",
+            prop: "realName",
+            clearable: true,
+            placeholder: "请输入",
+            disable: true
           },
-          placeholder: "请输入"
-        },
-        {
-          type: "Input",
-          label: "确认密码",
-          prop: "surePassword",
-          rowType: "password",
-          show: () => {
-            return this.pwd;
+          {
+            type: "Input",
+            label: "用户邮箱",
+            prop: "email",
+            clearable: true,
+            placeholder: "请输入",
+            disable: true
           },
-          handle: () => {
-            let that = this;
-            if (that.info.surePassword !== that.info.newPassword) {
-              that.info.surePassword = "";
-              that.$message.warning("两次输入的用户密码不一致，请重新输入！");
-            }
+          {
+            type: "Input",
+            label: "用户电话",
+            prop: "phone",
+            clearable: true,
+            placeholder: "请输入",
+            disable: true
           },
-          placeholder: "请输入"
-        }
-      ],
-      infoHandle: [
-        {
-          label: "修改密码",
-          type: "primary",
-          handle: () => {
-            this.pwd = true;
-            this.info.oldPassword = "";
-            this.info.newPassword = "";
-            this.info.surePassword = "";
-          }
-        }
-      ],
-      pwdForm: [
-        {
-          type: "Input",
-          label: "原密码",
-          prop: "oldPassword",
-          rowType: "password",
-          placeholder: "请输入"
-        },
-        {
-          type: "Input",
-          label: "新密码",
-          prop: "newPassword",
-          rowType: "password",
-          placeholder: "请输入"
-        },
-        {
-          type: "Input",
-          label: "确认密码",
-          prop: "surePassword",
-          rowType: "password",
-          handle: () => {
-            let that = this;
-            if (that.info.surePassword !== that.info.newPassword) {
-              that.info.surePassword = "";
-              that.$message.warning("两次输入的用户密码不一致，请重新输入！");
-            }
+          {
+            type: "Input",
+            label: "原密码",
+            prop: "oldPassword",
+            rowType: "password",
+            show: () => {
+              return this.pwd;
+            },
+            placeholder: "请输入"
           },
-          placeholder: "请输入"
-        }
-      ],
-      dialogVisible: false,
-      isFirstLogin: false
-    };
-  },
-  mounted() {
-    this.init();
-  },
-  methods: {
-    init() {
-      this.isLogin = localCache.isLogin();
-      this.isFirstLogin = localCache.getCache("userInfo")?.firstLoginFlag;
-      if (this.isFirstLogin) {
-        this.dialogVisible = true;
-      }
-    },
-    collapsedSider() {
-      this.$emit("on-collapsedSider");
-    },
-    getUserInfo() {
-      let that = this;
-      this.dialogVisible = true;
-      this.pwd = false;
-      this.$api.common.getInfo().then(res => {
-        that.info = { ...that.info, ...res.data };
-      });
-    },
-    //modifypwd pop
-    modifyPwd() {
-      let that = this;
-      if (that.info.newPassword !== that.info.surePassword) {
-        that.$message.warning("两次输入的用户密码不一致，请重新输入！");
-        that.info.surePassword = "";
-        return;
-      }
-      this.$refs.user.$children[0].validate(valid => {
-        if (valid) {
-          this.$confirm("确认修改密码？", "修改密码", {
-            callback(action) {
-              if (action === "confirm") {
-                let oldPassword = base64encode(that.info.oldPassword),
-                  newPassword = base64encode(that.info.newPassword);
-                that.$api.common
-                  .modifyPwd({ oldPassword, newPassword })
-                  .then(res => {
-                    that.dialogVisible = false;
-                    let showMessage = res.info + "，将为您跳转到登录页！";
-                    that.$message.success(showMessage);
-                    setTimeout(() => {
-                      localCache.deleteCache("userInfo");
-                      that.$router.push("/Login");
-                    }, 2000);
-                  });
+          {
+            type: "Input",
+            label: "新密码",
+            prop: "newPassword",
+            rowType: "password",
+            show: () => {
+              return this.pwd;
+            },
+            placeholder: "请输入"
+          },
+          {
+            type: "Input",
+            label: "确认密码",
+            prop: "surePassword",
+            rowType: "password",
+            show: () => {
+              return this.pwd;
+            },
+            handle: () => {
+              let that = this;
+              if (that.info.surePassword !== that.info.newPassword) {
+                that.info.surePassword = "";
+                that.$message.warning("两次输入的用户密码不一致，请重新输入！");
               }
-            }
-          });
-        } else {
-          that.$message.warning("密码必须为8-20位且包含字母和数字！");
-        }
-      });
-    },
-    // logout
-    logout: function() {
-      let that = this;
-      this.$confirm("是否确认退出登录？", "消息", {
-        callback(action) {
-          if (action === "confirm") {
-            common.logOut().then(() => {
-              localCache.deleteCache("userInfo");
-              // 清除tag信息，只保留首页，下一次登录直接进首页
-              localCache.deleteSession("tagLists");
-              localCache.deleteSession("keepList");
-              localCache.deleteSession("activeInfo");
-              that.$router.push("/Login");
-            });
+            },
+            placeholder: "请输入"
           }
-        }
-      });
+        ],
+        infoHandle: [
+          {
+            label: "修改密码",
+            type: "primary",
+            handle: () => {
+              this.pwd = true;
+              this.info.oldPassword = "";
+              this.info.newPassword = "";
+              this.info.surePassword = "";
+            }
+          }
+        ],
+        pwdForm: [
+          {
+            type: "Input",
+            label: "原密码",
+            prop: "oldPassword",
+            rowType: "password",
+            placeholder: "请输入"
+          },
+          {
+            type: "Input",
+            label: "新密码",
+            prop: "newPassword",
+            rowType: "password",
+            placeholder: "请输入"
+          },
+          {
+            type: "Input",
+            label: "确认密码",
+            prop: "surePassword",
+            rowType: "password",
+            handle: () => {
+              let that = this;
+              if (that.info.surePassword !== that.info.newPassword) {
+                that.info.surePassword = "";
+                that.$message.warning("两次输入的用户密码不一致，请重新输入！");
+              }
+            },
+            placeholder: "请输入"
+          }
+        ],
+        dialogVisible: false,
+        isFirstLogin: false
+      };
     },
-    // login
-    login: function() {
-      let that = this;
-      that.$router.push("/Login");
+    mounted() {
+      this.init();
+    },
+    methods: {
+      init() {
+        this.isLogin = localCache.isLogin();
+      },
+      collapsedSider() {
+        this.$emit("on-collapsedSider");
+      },
+      getUserInfo() {
+        this.dialogVisible = true;
+        this.pwd = false;
+
+        let cacheInfo = localCache.getCache("userInfo");
+        this.info = {
+          ...cacheInfo,
+          oldPassword: "",
+          newPassword: "",
+          surePassword: ""
+        };
+
+      },
+      //modifypwd pop
+      modifyPwd() {
+        let that = this;
+        if (that.info.newPassword !== that.info.surePassword) {
+          that.$message.warning("两次输入的用户密码不一致，请重新输入！");
+          that.info.surePassword = "";
+          return;
+        }
+        this.$refs.user.$children[0].validate(valid => {
+          if (valid) {
+            this.$confirm("确认修改密码？", "修改密码", {
+              callback(action) {
+                if (action === "confirm") {
+                  let oldPassword = base64encode(that.info.oldPassword),
+                    newPassword = base64encode(that.info.newPassword);
+
+                  common
+                    .modifyPwd({oldPassword: oldPassword, newPassword: newPassword})
+                    .then(res => {
+                      if (res.code === '0') {
+                        that.dialogVisible = false;
+                        let showMessage = res.info + "，将为您跳转到登录页！";
+                        that.$message.success(showMessage);
+                        setTimeout(() => {
+                          localCache.deleteCache("userInfo");
+                          that.$router.push("/Login");
+                        }, 2000);
+                      }
+                    });
+                }
+              }
+            });
+          } else {
+            that.$message.warning("密码必须为8-20位且包含字母和数字！");
+          }
+        });
+      },
+      // logout
+      logout: function () {
+        let that = this;
+        this.$confirm("是否确认退出登录？", "消息", {
+          callback(action) {
+            if (action === "confirm") {
+              common.logOut().then(() => {
+                localCache.deleteCache("userInfo");
+                // 清除tag信息，只保留首页，下一次登录直接进首页
+                localCache.deleteSession("tagLists");
+                localCache.deleteSession("keepList");
+                localCache.deleteSession("activeInfo");
+                that.$router.push("/Login");
+              });
+            }
+          }
+        });
+      },
+      // login
+      login: function () {
+        let that = this;
+        that.$router.push("/Login");
+      }
     }
-  }
-};
+  };
 </script>
 <style lang="less" scoped>
-.el-header.head {
-  background-color: #ffffff;
-  line-height: 46px;
-  height: 46px !important;
-  overflow: hidden;
-  text-align: left;
-  font-size: 14px;
+  .el-header.head {
+    background-color: #ffffff;
+    line-height: 46px;
+    height: 46px !important;
+    overflow: hidden;
+    text-align: left;
+    font-size: 14px;
 
-  .el-input {
-    width: 180px;
-    float: left;
-  }
+    .el-input {
+      width: 180px;
+      float: left;
+    }
 
-  .merchant-name {
-    display: contents;
-  }
+    .merchant-name {
+      display: contents;
+    }
 
-  .user-head {
-    float: right;
+    .user-head {
+      float: right;
 
-    .headUl {
-      margin: 0px;
+      .headUl {
+        margin: 0px;
 
-      li {
-        display: inline-block;
-        vertical-align: middle;
-        margin-right: 40px;
-        cursor: pointer;
-        color: #6e7680;
-
-        .user-head-icon .user-head-badge {
-          background: #f85d71;
-          color: #fff;
-          font-size: 14px;
-          line-height: 14px;
-          padding-left: 5px;
-          padding-right: 5px;
-          border-radius: 8px;
-          min-width: 20px;
-          text-align: center;
+        li {
           display: inline-block;
-        }
+          vertical-align: middle;
+          margin-right: 40px;
+          cursor: pointer;
+          color: #6e7680;
 
-        i {
-          margin: 0 5px;
+          .user-head-icon .user-head-badge {
+            background: #f85d71;
+            color: #fff;
+            font-size: 14px;
+            line-height: 14px;
+            padding-left: 5px;
+            padding-right: 5px;
+            border-radius: 8px;
+            min-width: 20px;
+            text-align: center;
+            display: inline-block;
+          }
+
+          i {
+            margin: 0 5px;
+          }
         }
       }
+
+      /deep/ .el-dropdown-menu {
+        width: 260px;
+        padding: 15px 20px;
+      }
     }
-    /deep/ .el-dropdown-menu {
-      width: 260px;
-      padding: 15px 20px;
+
+    .menuSet {
+      float: left;
+      margin-top: 0;
+      height: 30px;
+      color: #303c4a;
+      line-height: 46px;
+      text-align: left;
+      cursor: pointer;
+      font-size: 26px;
+      margin-right: 20px;
+    }
+
+    .breadcrumb {
+      float: left;
+      margin-top: 0;
+      height: 30px;
+      color: #303c4a;
+      line-height: 46px;
+      text-align: left;
+      cursor: pointer;
+      font-size: 18px;
+      margin-right: 20px;
+    }
+
+    .icon-Group:before {
+      content: "\e601";
     }
   }
-  .menuSet {
-    float: left;
-    margin-top: 0;
-    height: 30px;
-    color: #303c4a;
-    line-height: 46px;
-    text-align: left;
-    cursor: pointer;
-    font-size: 26px;
-    margin-right: 20px;
+
+  .message {
+    position: relative;
   }
 
-  .breadcrumb {
-    float: left;
-    margin-top: 0;
-    height: 30px;
-    color: #303c4a;
-    line-height: 46px;
-    text-align: left;
-    cursor: pointer;
-    font-size: 18px;
-    margin-right: 20px;
+  .message-num {
+    position: absolute;
+    top: 15px;
+    right: -5px;
+    height: 5px;
+    min-width: 5px;
+    line-height: 16px;
+    text-align: center;
+    border-radius: 50%;
+    background-color: #f94b4b;
+    color: #fff;
+    font-size: 12px;
   }
 
-  .icon-Group:before {
-    content: "\e601";
+  .msg-time {
+    float: right;
   }
-}
-.message {
-  position: relative;
-}
 
-.message-num {
-  position: absolute;
-  top: 15px;
-  right: -5px;
-  height: 5px;
-  min-width: 5px;
-  line-height: 16px;
-  text-align: center;
-  border-radius: 50%;
-  background-color: #f94b4b;
-  color: #fff;
-  font-size: 12px;
-}
-
-.msg-time {
-  float: right;
-}
-
-.msg-count {
-  display: inline-block;
-  width: 25px;
-  height: 15px;
-  line-height: 15px;
-  font-size: 14px;
-  color: #fff;
-  background: #1f82fb;
-  border-radius: 5px;
-  margin: 0 10px;
-  text-align: center;
-}
-
-.msg-title {
-  max-width: 120px;
-  text-overflow: ellipsis;
-  overflow: hidden;
-}
-
-.errMsg {
-  padding: 10px 0;
-}
-
-.errMsg-btn {
-  display: inline-block;
-}
-
-.errMsg-wrap {
-  z-index: 1999 !important;
-  width: 400px;
-
-  .el-notification__group {
-    width: 100%;
+  .msg-count {
+    display: inline-block;
+    width: 25px;
+    height: 15px;
+    line-height: 15px;
+    font-size: 14px;
+    color: #fff;
+    background: #1f82fb;
+    border-radius: 5px;
+    margin: 0 10px;
+    text-align: center;
   }
-}
-.el-select-dropdown {
-  width: 180px;
-}
 
-.el-select-dropdown__item {
-  font-size: 12px;
-}
+  .msg-title {
+    max-width: 120px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  .errMsg {
+    padding: 10px 0;
+  }
+
+  .errMsg-btn {
+    display: inline-block;
+  }
+
+  .errMsg-wrap {
+    z-index: 1999 !important;
+    width: 400px;
+
+    .el-notification__group {
+      width: 100%;
+    }
+  }
+
+  .el-select-dropdown {
+    width: 180px;
+  }
+
+  .el-select-dropdown__item {
+    font-size: 12px;
+  }
 </style>
 <style scoped lang="less">
-/deep/ .el-dialog {
-  .el-dialog__body {
-    padding: 10px 0;
+  /deep/ .el-dialog {
+    .el-dialog__body {
+      padding: 10px 0;
 
-    .el-form-item {
-      margin-bottom: 5px;
-      vertical-align: middle;
-    }
+      .el-form-item {
+        margin-bottom: 5px;
+        vertical-align: middle;
+      }
 
-    .el-form--inline .el-form-item__content {
-      vertical-align: middle;
-    }
+      .el-form--inline .el-form-item__content {
+        vertical-align: middle;
+      }
 
-    .search-button {
-      float: right;
-      margin-right: 15%;
+      .search-button {
+        float: right;
+        margin-right: 15%;
+      }
     }
   }
-}
-@media screen and (max-width: 800px) {
-  .el-header.head {
-    width: 1240px;
+
+  @media screen and (max-width: 800px) {
+    .el-header.head {
+      width: 1240px;
+    }
   }
-}
 </style>

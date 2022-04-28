@@ -49,3 +49,8 @@ export const uploadFile = data => {
 export const getFileById = data => {
   return hyRequest.post({ url: "/file/getFileById", data });
 };
+
+//
+export const modifyPwd = data => {
+  return hyRequest.post({ url: "/auth/modifyPwd", data });
+};

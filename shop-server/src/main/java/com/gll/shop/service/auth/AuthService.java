@@ -241,4 +241,26 @@ public class AuthService {
         }
         return ResultContext.buildSuccess("获取性别下拉", dropDownDTOS);
     }
+
+
+    public ResultContext<String> modifyPwd(JSONObject oldAndNewPwd) {
+        String oldPassword = oldAndNewPwd.getStr("oldPassword");
+        String newPassword = oldAndNewPwd.getStr("newPassword");
+
+        SysUser userInfo = (SysUser) StpUtil.getSession().get(Constant.SESSION_USER_KEY);
+
+        // 校验老密码是否正确
+        if (!StrUtil.equals(oldPassword, userInfo.getPassword())) {
+            return ResultContext.businessFail("原密码不正确");
+        }
+        // 修改密码
+        userInfo.setPassword(newPassword);
+
+        boolean b = sysUserService.updateById(userInfo);
+        if (b) {
+            return ResultContext.success("修改密码成功！");
+        } else {
+            return ResultContext.businessFail("修改密码失败！");
+        }
+    }
 }

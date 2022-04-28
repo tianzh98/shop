@@ -17,6 +17,7 @@
 <script>
 import * as common from "@/http/implement/common";
 import localCache from "@/utils/cache";
+import {base64encode} from "@/utils/common";
 
 export default {
   name: "Register",
@@ -162,13 +163,14 @@ export default {
       });
     },
     insertUser: function() {
+      this.searchData.password = base64encode(this.searchData.password);
       common.registerUser(this.searchData).then(res => {
         let that = this;
         if (res.code === "0") {
           common
             .loginDo({
               accountOrEmailOrPhone: that.searchData.account,
-              password: that.searchData.password
+              password: base64encode(that.searchData.password)
             })
             .then(res => {
               let token = res.data.token;

@@ -4,6 +4,7 @@ import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.json.JSONArray;
+import cn.hutool.json.JSONObject;
 import com.gll.shop.common.beans.ResultContext;
 import com.gll.shop.common.dropdown.DropDownDTO;
 import com.gll.shop.entity.SysUser;
@@ -45,7 +46,7 @@ public class AuthController {
     @PostMapping("/logIn")
     public ResultContext<LoginResult> logIn(@RequestBody Map<String, String> loginInfo) {
         //如果loginInfo为null，则抛出异常
-        Assert.notEmpty(loginInfo,"登录信息为空");
+        Assert.notEmpty(loginInfo, "登录信息为空");
 
         String accountOrEmailOrPhone = loginInfo.get("accountOrEmailOrPhone");
         String password = loginInfo.get("password");
@@ -71,11 +72,13 @@ public class AuthController {
     public ResultContext<String> registerUser(@RequestBody SysUser user) {
         return authService.registerUser(user);
     }
+
     //获取下拉性别
     @PostMapping("/getGender")
     public ResultContext<List<DropDownDTO>> getGender() {
         return authService.getGender();
     }
+
     @SaCheckLogin
     @PostMapping("/queryUserMenu")
     public ResultContext<JSONArray> queryUserMenu() {
@@ -86,6 +89,13 @@ public class AuthController {
     @PostMapping("/queryUserPermission")
     public ResultContext<JSONArray> queryUserPermission() {
         return authService.queryUserPermission();
+    }
+
+
+    @SaCheckLogin
+    @PostMapping("/modifyPwd")
+    public ResultContext<String> modifyPwd(@RequestBody JSONObject oldAndNewPwd) {
+        return authService.modifyPwd(oldAndNewPwd);
     }
 
 

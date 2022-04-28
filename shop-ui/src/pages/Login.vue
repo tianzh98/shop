@@ -50,6 +50,7 @@
 // import * as useable from "@utils/common";
 import * as common from "@/http/implement/common";
 import localCache from "@/utils/cache";
+import {base64encode} from "@/utils/common";
 export default {
   name: "login",
   data() {
@@ -82,7 +83,7 @@ export default {
       // let verificationCode = useable.base64encode(
       //   that.loginData.verificationCode
       // );
-      let verificationCode = that.loginData.verificationCode;
+      let verificationCode = base64encode(that.loginData.verificationCode);
       common
         .loginDo({
           accountOrEmailOrPhone: that.loginData.mobile,
