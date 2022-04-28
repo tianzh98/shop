@@ -76,6 +76,9 @@
                 }"
               />
             </div>
+            <div v-else-if="item.prop === 'quantity'">
+              <el-input-number v-model="scope.row[item.prop]"></el-input-number>
+            </div>
             <div v-else-if="item.prop === 'mainPicture'">
               <el-image :src="scope.row[item.prop]"></el-image>
             </div>
