@@ -136,7 +136,7 @@ const routes = [
         path: "orderList",
         name: "orderList",
         component: () => import("@/pages/orderManager/order/orderList"),
-        meta: { title: "订单管理", icon: "order-cate" }
+        meta: { title: "订单管理", }
       }
     ]
   },
@@ -162,9 +162,9 @@ const routes = [
     ]
   },
   {
-    path: "/shoppingCart",
+    path: "/cart",
     component: index,
-    redirect: "/shoppingCart/cartList",
+    redirect: "/cart/cartList",
     name: "shoppingCart",
     meta: { title: "购物车" },
     children: [
@@ -172,13 +172,13 @@ const routes = [
         path: "cartList",
         name: "cartList",
         component: () => import("@/pages/shopping/shoppingCart/CartList"),
-        meta: { title: "下单", icon: "shoppingCart-cate" }
+        meta: { title: "下单" }
       },
       {
         path: "addCart",
         name: "addCart",
         component: () => import("@/pages/shopping/shoppingCart/AddCart"),
-        meta: { title: "编辑购物车", icon: "shoppingCart-cate" }
+        meta: { title: "编辑购物车" }
       }
     ]
   }
