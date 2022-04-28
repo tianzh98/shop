@@ -50,9 +50,16 @@ export default {
           page: "AddProductTypeParam",
           btn: "Add",
           handle: () => {
+            let data =
+              {
+                type: this.$route.query.type
+              }
             this.$router.push({
               path: "/product/addProductTypeParam",
-              query: { isEdit: false }
+              query: {
+                isEdit: false,
+                type: data.type,
+              }
             });
           }
         },
@@ -63,6 +70,10 @@ export default {
           page: "AddProductTypeParam",
           btn: "Add",
           handle: () => {
+            let data =
+              {
+                type: this.$route.query.type
+              }
             if (this.selection.length !== 1) {
               this.$message.error("请选择一条记录!");
             } else {
@@ -71,7 +82,8 @@ export default {
                 path: "/product/addProductTypeParam",
                 query: {
                   isEdit: true,
-                  id: that.selection[0].id
+                  id: that.selection[0].id,
+                  type: data.type,
                 }
               });
             }
@@ -85,20 +97,20 @@ export default {
           btn: "Add",
           handle: () => {
             if (this.selection.length <= 0) {
-              this.$message.error("请选择一条或多条记录!");
+              this.$message.error("请选择一条!");//或多条记录
             } else {
               this.$confirm("此操作将永久删除已选中数据, 是否继续?", "提示", {
                 confirmButtonText: "确定",
                 cancelButtonText: "取消",
                 type: "warning"
               }).then(() => {
-                // let data = {
-                //   id: this.selection[0].id
-                // };
-                // product.deleteProductAttributeCategoryById(data).then(res => {
-                //   this.$message.success(res.info);
-                //   this.getTableData();
-                // });
+                let data = {
+                  id: this.selection[0].id
+                };
+                product.deleteProductAttributeParamById(data).then(res => {
+                  this.$message.success(res.info);
+                  this.getAttributeParam();
+                });
               });
             }
           }
@@ -126,7 +138,10 @@ export default {
       return eval(this.$route.query.isEdit);
     }
   },
-  activated() {},
+  //页面一激活就加载这个方法
+  activated() {
+    this.getAttributeParam();
+  },
   methods: {
     /*
       getTableData: function(page) {
@@ -141,7 +156,7 @@ export default {
           this.total = res.data.total;
         });
       },*/
-    getAttributeParam: function() {
+    getAttributeParam: function () {
       let data = {
         // 获取上一个页面传进来的值
         id: this.$route.query.id,
@@ -152,20 +167,20 @@ export default {
         //this.total = res.data.total;
       });
     },
-    getColumns: function() {
+    getColumns: function () {
       this.$root.$children[0]
         .getColumns("/productType/productTypeParam")
         .then(res => {
           this.columns = this.$columns(res, true);
         });
     },
-    select: function(selection) {
+    select: function (selection) {
       this.selection = selection;
     },
-    selectChange: function(selection) {
+    selectChange: function (selection) {
       this.selection = selection;
     },
-    onSelectAll: function(selection) {
+    onSelectAll: function (selection) {
       this.selection = selection;
     },
     pageChange(page) {
@@ -184,7 +199,7 @@ export default {
       this.sortType = sortType;
       this.getTableData();
     },
-    setCellStyle({ row, column }) {
+    setCellStyle({row, column}) {
       if (row && column.property === "name") {
         return {
           color: "#00BFFF"

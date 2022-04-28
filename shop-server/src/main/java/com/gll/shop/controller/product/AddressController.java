@@ -5,7 +5,7 @@ import cn.hutool.json.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.gll.shop.common.beans.ResultContext;
 import com.gll.shop.entity.ReceiveAddress;
-import com.gll.shop.entity.RessiveAddressParam;
+import com.gll.shop.entity.ReceiveAddressParam;
 import com.gll.shop.service.address.ReceiveAddressService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,7 +27,7 @@ public class AddressController {
         this.addressService = addressService;
     }
    @PostMapping("/getAddressList")
-    public ResultContext<IPage<ReceiveAddress>> getAddressList(@RequestBody RessiveAddressParam param)
+    public ResultContext<IPage<ReceiveAddress>> getAddressList(@RequestBody ReceiveAddressParam param)
     {
         return addressService.getAddressList(param);
     }

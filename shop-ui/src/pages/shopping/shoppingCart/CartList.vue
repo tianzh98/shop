@@ -39,14 +39,18 @@ export default {
     return {
       searchForm: [
         {
-          type: "Select",
+          type: "Input",
           label: "商品品牌",
           prop: "productBrand",
           multiple: false,
-          change: value => {
-            this.searchData.productBrand = value;
-          },
-          placeholder: "请选择"
+          placeholder: "请输入"
+        },
+        {
+          type: "Input",
+          label: "商品名称",
+          prop: "productName",
+          multiple: false,
+          placeholder: "请输入"
         }
         /*  {
           type: "Input",
@@ -84,7 +88,7 @@ export default {
           btn: "Add",
           handle: () => {
             this.$router.push({
-              path: "/shopping/addCart",
+              path: "/shoppingCart/addCart",
               query: { isEdit: false }
             });
           }
@@ -101,7 +105,7 @@ export default {
             } else {
               let that = this;
               this.$router.push({
-                path: "/shopping/addCart",
+                path: "/shoppingCart/addCart",
                 query: {
                   isEdit: true,
                   id: that.selection[0].id
@@ -121,7 +125,7 @@ export default {
               this.$message.error("请选择一条或多条记录!");
             } else {
               this.$confirm(
-                "此操作将永久删除已选中数据(如果是一级分类则其子分类也会被删除), 是否继续?",
+                "此操作将永久删除购物信息, 是否继续?",
                 "提示",
                 {
                   confirmButtonText: "确定",
@@ -157,7 +161,8 @@ export default {
           ? parseInt(this.$route.query.pageNum)
           : 1,
         pageSize: 200,
-        productBrand: ""
+        productBrand: "",
+        productName:"",
       }
     };
   },
@@ -172,12 +177,6 @@ export default {
     getColumns: function() {
       this.$root.$children[0].getColumns("/shopping/cart").then(res => {
         this.columns = this.$columns(res, true);
-      });
-    },
-    getProductBrand: function() {
-      product.getBrands().then(res => {
-        res.data.forEach(x => (x.value = parseInt(x.value)));
-        this.list.productBrandList = res.data;
       });
     },
     getTableData: function(page) {

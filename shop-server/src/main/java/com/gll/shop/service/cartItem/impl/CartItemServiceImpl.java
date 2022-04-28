@@ -2,6 +2,7 @@ package com.gll.shop.service.cartItem.impl;
 
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -68,7 +69,11 @@ public class CartItemServiceImpl extends ServiceImpl<CartItemMapper, CartItem>
     @Override
     public ResultContext<IPage<CartItemDTO>> getCartItemList(CartItemParam param) {
         IPage<CartItem> page = new Page<>(param.getPageNum(),param.getPageSize());
-        page = getBaseMapper().selectPage(page,Wrappers.<CartItem>lambdaQuery());
+        //商品品牌名称，商品名称
+        page = getBaseMapper().selectPage(page,Wrappers.<CartItem>lambdaQuery()
+                .like(StrUtil.isNotBlank(param.getProductBrand()),CartItem::getProductBrand, param.getProductBrand())
+                .like(StrUtil.isNotBlank(param.getProductName()),CartItem::getProductName,param.getProductName())
+              );
         return ResultContext.buildSuccess("成功得到购物车列表",page.convert(this::translation));
     }
 

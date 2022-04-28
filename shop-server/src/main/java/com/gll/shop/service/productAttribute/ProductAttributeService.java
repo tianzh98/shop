@@ -18,4 +18,6 @@ public interface ProductAttributeService extends IService<ProductAttribute> {
     ResultContext<Void> insertOrUpdateProductAttribute(ProductAttribute productAttribute);
 
     ResultContext<Void> deleteProductAttributeById(Long id);
+
+    ResultContext<ProductAttribute> getProductAttributeById(Long id);
 }

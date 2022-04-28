@@ -48,7 +48,15 @@ export default {
           prop: "name",
           multiple: false,
           clearable: true,
-          placeholder: "请输入订单编号"
+          placeholder: "请输入收货人姓名"
+        },
+        {
+          type: "Input",
+          label: "具体的地址",
+          prop: "detailAddress",
+          multiple: false,
+          clearable: true,
+          placeholder: "请输入具体的地址"
         }
       ],
       searchHandle: [
@@ -66,6 +74,7 @@ export default {
           type: "primary",
           handle: () => {
             this.searchData.name = "";
+            this.searchData.detailAddress="";
           }
         }
       ],

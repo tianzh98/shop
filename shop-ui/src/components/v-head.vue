@@ -91,10 +91,10 @@ export default {
       num: 0,
       isCollapsed: this.collapsed,
       info: {
-        insurerName: "",
         userName: "",
-        mobile: "",
-        userRole: "",
+        realName: "",
+        email: "",
+        phone: "",
         oldPassword: "",
         newPassword: "",
         surePassword: ""
@@ -106,11 +106,11 @@ export default {
         ],
         newPassword: [
           { required: true, message: "新密码为必填项", trigger: "blur" },
-          {
+          /*{
             message: "密码需要为8-20位且包含字母和数字",
             pattern: /^(?=.*[0-9])(?=.*[a-zA-Z])(.{8,20})$/,
             trigger: "blur"
-          }
+          }*/
         ],
         surePassword: [
           { required: true, message: "确认密码为必填项", trigger: "blur" }
@@ -119,30 +119,30 @@ export default {
       infoForm: [
         {
           type: "Input",
-          label: "保险公司",
-          prop: "insurerName",
-          disable: true,
-          placeholder: "请输入"
-        },
-        {
-          type: "Input",
-          label: "用户名称",
+          label: "用户昵称",
           prop: "userName",
-          disable: true,
+          clearable: true,
           placeholder: "请输入"
         },
         {
           type: "Input",
-          label: "用户账号",
-          prop: "mobile",
-          disable: true,
+          label: "真实姓名",
+          prop: "realName",
+          clearable: true,
           placeholder: "请输入"
         },
         {
           type: "Input",
-          label: "用户角色",
-          prop: "userRole",
-          disable: true,
+          label: "用户邮箱",
+          prop: "email",
+          clearable: true,
+          placeholder: "请输入"
+        },
+        {
+          type: "Input",
+          label: "用户电话",
+          prop: "phone",
+          clearable: true,
           placeholder: "请输入"
         },
         {

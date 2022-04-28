@@ -19,7 +19,7 @@ import VForm from "@/components/v-form";
 import * as product from "@/http/implement/product";
 
 export default {
-  name: "ProductAttrType",
+  name: "AddProductTypeParam",
   components: { VForm },
   data() {
     return {
@@ -91,7 +91,17 @@ export default {
             { value: "0", label: "不支持" },
             { value: "1", label: "支持" }
           ]
-        }
+        },
+       /* {
+          type: "Radio",
+          label: "是商品属性还是商品参数",
+          prop: "type",
+          clearable: true,
+          radios: [
+            { value: "0", label: "商品属性" },
+            { value: "1", label: "商品参数" }
+          ]
+        }*/
       ],
       rules: {
         name: [{ required: true, message: "请输属性名称", trigger: "blur" }]
@@ -106,14 +116,17 @@ export default {
         inputType: "1",
         inputList: null,
         sort: 1,
-        handAddStatus: "1"
+        handAddStatus: "1",
+        type:this.$route.query.type
       } //search data
     };
   },
   created() {
     this.getDetail();
   },
-  activated() {},
+  activated() {
+   // this.getProductAttributeCategoryDropDown();
+  },
   methods: {
     // 返回上一级路由
     goBack: function() {
@@ -124,7 +137,7 @@ export default {
       // $route.query.的参数 bool会被转成string  所以这里要转换一下
       let isEdit = eval(this.$route.query.isEdit);
       if (isEdit) {
-        product.getProductCateDetail({ id: this.$route.query.id }).then(res => {
+        product.getProductAttributeParamById({ id: this.$route.query.id }).then(res => {
           this.searchData = res.data;
         });
       }
@@ -138,7 +151,7 @@ export default {
       }
     },
     submit: function() {
-      product.editProductCateDetail(this.searchData).then(res => {
+      product.insertOrUpdateProductAttributeParam(this.searchData).then(res => {
         if (res.code === "0") {
           this.goBack();
         }

@@ -39,7 +39,7 @@ public class CartItemController {
         return cartItemService.addToCart(cartItem);
     }
     @PostMapping("/deleteCartById")
-    public ResultContext<Void> deleteCartItem(List<Long> ids)
+    public ResultContext<Void> deleteCartItem(@RequestBody  List<Long> ids)
     {
         return cartItemService.deleteCartItemById(ids);
     }

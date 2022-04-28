@@ -144,18 +144,25 @@ public class ProductController {
     }
 
     //更新或者插入商品属性或者商品参数
-    @PostMapping("/inOrUpProductAttributeParam")
+    @PostMapping("/inOrUpProductAttribute")
     public ResultContext<Void> insertOrUpdateProductAttribute(@RequestBody ProductAttribute productAttribute)
     {
         return productAttributeService.insertOrUpdateProductAttribute(productAttribute);
     }
-
-    @PostMapping("/deleteProductAttributeParamById")
+   //删除商品类型属性或者商品类型参数
+    @PostMapping("/deleteProductAttributeById")
     public ResultContext<Void> deleteProductAttributeById(@RequestBody JSONObject jsonObject)
     {
         Long id = jsonObject.getLong("id");
        return  productAttributeService.deleteProductAttributeById(id);
     }
+    //获取商品类型参数通过id
+    @PostMapping("/getProductAttributeById")
+    public ResultContext<ProductAttribute> getProductAttributeById(@RequestBody JSONObject jsonObject) {
+        Long id = jsonObject.getLong("id");
+        return productAttributeService.getProductAttributeById(id);
+    }
+
     //获取商品类型通过id
     @PostMapping("/getProductAttributeCateById")
     public ResultContext<ProductAttributeCategory> getProductAttributeCategoryById(@RequestBody JSONObject jsonObject) {

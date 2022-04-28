@@ -42,19 +42,17 @@ public class ProductAttributeServiceImpl extends ServiceImpl<ProductAttributeMap
             //插入
             int result = this.getBaseMapper().insert(productAttribute);
             if (result <= 0)
-                return ResultContext.businessFail("插入商品类型参数错误");
+            {return ResultContext.businessFail("插入商品类型参数错误");}
             ProductAttributeCategory productAttributeCategory = productAttributeCategoryService.getBaseMapper()
-                    .selectOne(Wrappers.<ProductAttributeCategory>lambdaQuery()
-                            .eq(ProductAttributeCategory::getId, productAttribute.getProductAttributeCategoryId()));
+                    .selectOne(Wrappers.<ProductAttributeCategory>lambdaQuery().eq(ProductAttributeCategory::getId, productAttribute.getProductAttributeCategoryId()));
             if (productAttribute.getType() == 0) {
                 //属性的类型；0->规格；1->参数
-                productAttributeCategoryService.getBaseMapper().update(productAttributeCategory, Wrappers.<ProductAttributeCategory>lambdaUpdate()
-                        .set(ProductAttributeCategory::getAttributeCount, productAttributeCategory.getAttributeCount() + 1));
+                productAttributeCategory.setAttributeCount(productAttributeCategory.getAttributeCount() + 1);
             } else {
-                productAttributeCategoryService.getBaseMapper().update(productAttributeCategory, Wrappers.<ProductAttributeCategory>lambdaUpdate()
-                        .set(ProductAttributeCategory::getParamCount, productAttributeCategory.getParamCount() + 1));
+               productAttributeCategory.setParamCount(productAttributeCategory.getParamCount()+1);
             }
-
+             //插入数据库
+            productAttributeCategoryService.getBaseMapper().updateById(productAttributeCategory);
         } else {
             //更新
             int result = this.getBaseMapper().updateById(productAttribute);
@@ -71,6 +69,11 @@ public class ProductAttributeServiceImpl extends ServiceImpl<ProductAttributeMap
             return ResultContext.businessFail("失败删除商品类型参数");
         }
         return ResultContext.success("成功删除商品类型参数");
+    }
+
+    @Override
+    public ResultContext<ProductAttribute> getProductAttributeById(Long id) {
+        return ResultContext.buildSuccess("成功得到商品类型参数",getBaseMapper().selectById(id));
     }
 
     private ProductAttributeDTO translation(ProductAttributePO productAttributePO) {

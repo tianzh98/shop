@@ -145,7 +145,7 @@ const routes = [
     component: index,
     redirect: "/address/addressList",
     name: "address",
-    meta: { title: "订单" },
+    meta: { title: "地址" },
     children: [
       {
         path: "addressList",
@@ -162,23 +162,23 @@ const routes = [
     ]
   },
   {
-    path: "/shopping",
+    path: "/shoppingCart",
     component: index,
-    redirect: "/shopping/cartList",
-    name: "shopping",
-    meta: { title: "下单" },
+    redirect: "/shoppingCart/cartList",
+    name: "shoppingCart",
+    meta: { title: "购物车" },
     children: [
       {
         path: "cartList",
         name: "cartList",
         component: () => import("@/pages/shopping/shoppingCart/CartList"),
-        meta: { title: "下单", icon: "order-cate" }
+        meta: { title: "下单", icon: "shoppingCart-cate" }
       },
       {
         path: "addCart",
         name: "addCart",
         component: () => import("@/pages/shopping/shoppingCart/AddCart"),
-        meta: { title: "编辑订单", icon: "order-cate" }
+        meta: { title: "编辑购物车", icon: "shoppingCart-cate" }
       }
     ]
   }

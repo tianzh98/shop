@@ -1,5 +1,6 @@
 import hyRequest from "../index";
 
+
 // 获取商品列表
 export const getProductList = data => {
   return hyRequest.post({ url: "/product/getProductList", data });
@@ -107,10 +108,25 @@ export const getProductAttributeCategoryList = data => {
   return hyRequest.post({ url: "/product/getProductAttributeList", data });
 };
 
-//获取商品类型列表
+//更新或者插入商品属性或者商品参数
+export const insertOrUpdateProductAttributeParam = data => {
+  return hyRequest.post({ url: "/product/inOrUpProductAttribute", data });
+};
+
+//删除商品类型属性或者商品类型参数
+export const deleteProductAttributeParamById = data => {
+  return hyRequest.post({ url: "/product/deleteProductAttributeById", data });
+};
+//获取商品类型属性或者商品类型参数通过id
+export const getProductAttributeParamById = data => {
+  return hyRequest.post({ url: "/product/getProductAttributeById", data });
+};
+//获取商品类型属性或者商品类型参数列表
 export const getProductAttributeParam = data => {
   return hyRequest.post({ url: "/product/getProductAttributeParam", data });
 };
+
+
 //获取商品类型通过id
 export const getProductAttributeCategoryById = data => {
   return hyRequest.post({ url: "/product/getProductAttributeCateById", data });
