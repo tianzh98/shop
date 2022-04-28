@@ -60,7 +60,11 @@
       :visible.sync="productDetailShow"
     >
       <div class="image">
-        <el-image :src="showingProduct.coverUrl"></el-image>
+        <el-carousel indicator-position="outside">
+          <el-carousel-item v-for="item in picUrls" :key="item.id">
+            <el-image :src="item.url"></el-image>
+          </el-carousel-item>
+        </el-carousel>
       </div>
       <div class="description">
         <span>{{ showingProduct.name }}</span>
@@ -123,7 +127,8 @@
 
 <script>
 import * as product from "@/http/implement/product";
-import { resolvePicFileRes } from "@/utils/fileUtil";
+import {getFileById} from "@/http/implement/common";
+import { resolvePicFileRes ,resolvePicFileResultContext} from "@/utils/fileUtil";
 
 export default {
   data() {
@@ -167,6 +172,9 @@ export default {
         //商品销售属性:[{"key":"颜色","value":"颜色"},{"key":"容量","value":"4G"}]
         productAttr: null
       },
+      // 商品轮播图 [{id,url},{id,url}]
+      picUrls: [],
+
       // el-col栅格占的格子数量。 一行总共24格，一个列占6格，那么一行可展示4个商品
       colSpan: 6,
       searchForm: [
@@ -341,6 +349,15 @@ export default {
             }
           });
         }
+
+        // 获取商品轮播图
+        this.picUrls = [];
+        let oldPicIdList = productDetail.oldPicIdList;
+        oldPicIdList.forEach(id => {
+          getFileById({ id: id }).then(res => {
+            this.picUrls.push(resolvePicFileResultContext(res)) ;
+          });
+        });
         this.productDetailShow = true;
       });
     },
@@ -365,7 +382,7 @@ export default {
         // 添加到购物车的价格
         price: this.price,
         // 商品主图
-        mainPicId: null,
+        mainPicId: this.picUrls[0].id,
         // 商品名称
         productName: this.showingProduct.name,
         //商品副标题（卖点）

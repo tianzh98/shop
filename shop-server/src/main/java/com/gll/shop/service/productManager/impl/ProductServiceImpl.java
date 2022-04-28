@@ -12,10 +12,12 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.gll.shop.common.beans.ResultContext;
 import com.gll.shop.common.enums.ENProductAttributeType;
 import com.gll.shop.common.enums.ENYesOrNo;
+import com.gll.shop.common.utils.ConvertUtil;
 import com.gll.shop.entity.*;
 import com.gll.shop.entity.common.ShopFileResp;
 import com.gll.shop.mapper.*;
 import com.gll.shop.service.productManager.ProductService;
+import com.gll.shop.service.shopFile.ShopFileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +25,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  *
@@ -39,17 +44,21 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product>
     private final ProductStockMapper productStockMapper;
     private final BrandMapper brandMapper;
 
+    private final ShopFileService shopFileService;
+
     @Autowired
     public ProductServiceImpl(ProductMapper productMapper,
                               ShopFileMapper shopFileMapper,
                               ProductAttributeValueMapper productAttributeValueMapper,
                               ProductStockMapper productStockMapper,
-                              BrandMapper brandMapper) {
+                              BrandMapper brandMapper,
+                              ShopFileService shopFileService) {
         this.productMapper = productMapper;
         this.shopFileMapper = shopFileMapper;
         this.productAttributeValueMapper = productAttributeValueMapper;
         this.productStockMapper = productStockMapper;
         this.brandMapper = brandMapper;
+        this.shopFileService = shopFileService;
     }
 
     @Override
@@ -65,7 +74,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product>
                 .eq(null != param.getPublishStatus(), Product::getPublishStatus, param.getPublishStatus())
                 .like(StrUtil.isNotBlank(param.getName()), Product::getName, param.getName()));
 
-        return ResultContext.buildSuccess(null, page.convert(this::translate));
+        return ResultContext.buildSuccess(null, ConvertUtil.convert(page, this::translate));
     }
 
     //翻译，把product转换为productDTO
@@ -75,14 +84,16 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product>
         if (StrUtil.isNotBlank(po.getPicIdListStr())) {
             List<String> idListStr = Arrays.asList(po.getPicIdListStr().split(StrUtil.COMMA));
             dto.setOldPicIdList(idListStr.stream().map(Long::valueOf).collect(Collectors.toList()));
-            ShopFile shopFile = shopFileMapper.selectById(Long.valueOf(idListStr.get(0)));
-            dto.setCoverPic(ShopFileResp.convert(shopFile));
+
+
+//            ShopFile shopFile = shopFileMapper.selectById(Long.valueOf(idListStr.get(0)));
+
+            dto.setCoverPic(shopFileService.getFileById(Long.valueOf(idListStr.get(0))));
         }
         dto.setPublishStatusShow(ENYesOrNo.isYes(po.getPublishStatus()) ? "已上架" : "未上架");
 
         return dto;
     }
-
 
     @Override
     @Transactional(rollbackFor = Throwable.class)

@@ -1,9 +1,12 @@
 package com.gll.shop.entity.common;
 
+import cn.hutool.core.img.ImgUtil;
 import cn.hutool.core.lang.Assert;
 import com.gll.shop.entity.ShopFile;
 import lombok.Data;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.Serializable;
 
 /**
@@ -20,14 +23,5 @@ public class ShopFileResp implements Serializable {
 
     private String fileType;
 
-    public static ShopFileResp convert(ShopFile shopFile) {
-        Assert.notNull(shopFile);
-        String base64 = new String(shopFile.getFileBase64());
 
-        ShopFileResp resp = new ShopFileResp();
-        resp.setBase64String(base64);
-        resp.setId(shopFile.getId());
-        resp.setFileType(shopFile.getFileType());
-        return resp;
-    }
 }
