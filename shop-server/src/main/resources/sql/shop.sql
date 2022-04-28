@@ -11,7 +11,7 @@
  Target Server Version : 80016
  File Encoding         : 65001
 
- Date: 29/04/2022 01:11:40
+ Date: 29/04/2022 01:29:53
 */
 
 SET NAMES utf8mb4;
@@ -75,12 +75,7 @@ CREATE TABLE `cart_item`  (
 -- ----------------------------
 -- Records of cart_item
 -- ----------------------------
-INSERT INTO `cart_item` VALUES (27, 27, 19, 98, '7437788', 1, '小米', 11, 2699.00, NULL, '小米8 全面屏游戏智能手机 6GB+64GB 黑色 全网通4G 双卡双待', '骁龙845处理器，红外人脸解锁，AI变焦双摄，AI语音助手小米6X低至1299，点击抢购', '201808270027001', NULL, NULL, NULL, 0, '[{\"key\":\"颜色\",\"value\":\"黑色\"},{\"key\":\"容量\",\"value\":\"32G\"}]');
-INSERT INTO `cart_item` VALUES (28, 27, 19, 99, '7437788', 1, '小米', 1, 2999.00, NULL, '小米8 全面屏游戏智能手机 6GB+64GB 黑色 全网通4G 双卡双待', '骁龙845处理器，红外人脸解锁，AI变焦双摄，AI语音助手小米6X低至1299，点击抢购', '201808270027002', NULL, NULL, NULL, 0, '[{\"key\":\"颜色\",\"value\":\"黑色\"},{\"key\":\"容量\",\"value\":\"64G\"}]');
-INSERT INTO `cart_item` VALUES (29, 35, 29, 173, '6799342', 1, 'NIKE', 1, 202.00, NULL, '耐克NIKE 男子 休闲鞋 ROSHE RUN 运动鞋 511881-010黑色41码', '耐克NIKE 男子 休闲鞋 ROSHE RUN 运动鞋 511881-010黑色41码', '202002250035003', NULL, NULL, NULL, 0, '[{\"key\":\"颜色\",\"value\":\"红色\"},{\"key\":\"尺寸\",\"value\":\"39\"},{\"key\":\"风格\",\"value\":\"夏季\"}]');
-INSERT INTO `cart_item` VALUES (30, 1, 7, 179, 'No86577', 1, '七匹狼', 9, 12.00, NULL, '银色星芒刺绣网纱底裤', '111', 'a68eb57e447248aea2d560f1ef695c60', NULL, NULL, NULL, 0, '[{\"key\":\"尺寸\",\"value\":\"X\"}]');
-INSERT INTO `cart_item` VALUES (31, 1, 7, 180, 'No86577', 1, '七匹狼', 2, 12.00, NULL, '银色星芒刺绣网纱底裤', '111', '8cf65d232ff040078233882b82e3190e', NULL, NULL, NULL, 0, '[{\"key\":\"尺寸\",\"value\":\"XL\"}]');
-INSERT INTO `cart_item` VALUES (32, 1, 7, 181, 'No86577', 1, '七匹狼', 3, 12.00, NULL, '银色星芒刺绣网纱底裤', '111', 'dfb2de4f475f42119258c72a1f299102', NULL, NULL, NULL, 0, '[{\"key\":\"尺寸\",\"value\":\"M\"}]');
+INSERT INTO `cart_item` VALUES (33, 1, 7, 180, 'No86577', 1, '七匹狼', 3, 12.00, 24, '银色星芒刺绣网纱底裤', '111', '8cf65d232ff040078233882b82e3190e', NULL, NULL, NULL, 0, '[{\"key\":\"尺寸\",\"value\":\"XL\"}]');
 
 -- ----------------------------
 -- Table structure for order
@@ -670,7 +665,7 @@ INSERT INTO `sys_default_table_config` VALUES (41, '/shopping/cart', 'userName',
 INSERT INTO `sys_default_table_config` VALUES (42, '/shopping/cart', 'productBrand', '商品品牌', '1', 1, NULL);
 INSERT INTO `sys_default_table_config` VALUES (43, '/shopping/cart', 'quantity', '购买数量', '1', 1, NULL);
 INSERT INTO `sys_default_table_config` VALUES (44, '/shopping/cart', 'price', '价格', '1', 1, NULL);
-INSERT INTO `sys_default_table_config` VALUES (45, '/shopping/cart', 'mainPicture', '商品主图', '1', 1, NULL);
+INSERT INTO `sys_default_table_config` VALUES (45, '/shopping/cart', 'mainPicture', '商品主图', '1', -1, NULL);
 INSERT INTO `sys_default_table_config` VALUES (46, '/shopping/cart', 'productName', '商品名称', '1', 1, NULL);
 INSERT INTO `sys_default_table_config` VALUES (47, '/shopping/cart', 'productSubTitle', '商品副标题', '1', 1, NULL);
 

@@ -76,6 +76,9 @@
                 }"
               />
             </div>
+            <div v-else-if="item.prop === 'mainPicture'">
+              <el-image :src="scope.row[item.prop]"></el-image>
+            </div>
             <div v-else>
               <span>{{ scope.row[item.prop] }}</span>
             </div>
