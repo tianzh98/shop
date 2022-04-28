@@ -61,7 +61,7 @@
             :label="item.label"
             :width="isDialog ? null : item.width"
             :min-width="item.minWidth"
-            :show-overflow-tooltip="item.tooltip ? item.tooltip : true"
+            :show-overflow-tooltip="item.tooltip ? item.tooltip : false"
             :sortable="item.sort ? item.sort : false"
             :formatter="item.format ? item.format : null"
             :resizable="item.resize ? item.resize : true"
