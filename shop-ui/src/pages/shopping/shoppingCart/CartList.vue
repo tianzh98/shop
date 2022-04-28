@@ -182,6 +182,7 @@
         });
       },
       getTableData: function (page) {
+        this.tableData = [];
         this.searchData.pageNum = page ? page : 1;
         product.getCartItemList(this.searchData).then(res => {
           let records = res.data.records;
@@ -189,12 +190,12 @@
             for (let i = 0; i < records.length; i++) {
               getFileById({id: records[i].mainPicId}).then(res => {
                 records[i].mainPicture = resolvePicFileResultContext(res).url;
+                // 处理好一条数据 就 push一条
+                this.tableData.push(records[i]);
               });
             }
 
           }
-          this.tableData = records;
-
           this.total = res.data.total;
         });
       },
