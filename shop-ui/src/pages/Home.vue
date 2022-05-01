@@ -127,8 +127,11 @@
 
 <script>
 import * as product from "@/http/implement/product";
-import {getFileById} from "@/http/implement/common";
-import { resolvePicFileRes ,resolvePicFileResultContext} from "@/utils/fileUtil";
+import { getFileById } from "@/http/implement/common";
+import {
+  resolvePicFileRes,
+  resolvePicFileResultContext
+} from "@/utils/fileUtil";
 
 export default {
   data() {
@@ -355,7 +358,7 @@ export default {
         let oldPicIdList = productDetail.oldPicIdList;
         oldPicIdList.forEach(id => {
           getFileById({ id: id }).then(res => {
-            this.picUrls.push(resolvePicFileResultContext(res)) ;
+            this.picUrls.push(resolvePicFileResultContext(res));
           });
         });
         this.productDetailShow = true;

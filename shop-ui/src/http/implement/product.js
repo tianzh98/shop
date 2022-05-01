@@ -1,6 +1,5 @@
 import hyRequest from "../index";
 
-
 // 获取商品列表
 export const getProductList = data => {
   return hyRequest.post({ url: "/product/getProductList", data });
@@ -125,7 +124,6 @@ export const getProductAttributeParamById = data => {
 export const getProductAttributeParam = data => {
   return hyRequest.post({ url: "/product/getProductAttributeParam", data });
 };
-
 
 //获取商品类型通过id
 export const getProductAttributeCategoryById = data => {

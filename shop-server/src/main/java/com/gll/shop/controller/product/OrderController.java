@@ -1,10 +1,12 @@
 package com.gll.shop.controller.product;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
+import cn.hutool.json.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.gll.shop.common.beans.ResultContext;
 import com.gll.shop.common.dropdown.DropDownDTO;
 import com.gll.shop.entity.OrderDTO;
+import com.gll.shop.entity.OrderDetail;
 import com.gll.shop.entity.OrderParam;
 import com.gll.shop.service.order.OrderService;
 import lombok.extern.slf4j.Slf4j;
@@ -28,18 +30,17 @@ public class OrderController {
     }
 
     @PostMapping("/getOrderList")
-    public ResultContext<IPage<OrderDTO>> getOrderLists(@RequestBody OrderParam param)
-    {
+    public ResultContext<IPage<OrderDTO>> getOrderLists(@RequestBody OrderParam param) {
         return orderService.getOrderList(param);
     }
+
     @PostMapping("/getPayType")
-    public ResultContext<List<DropDownDTO>> getPayTypes()
-    {
+    public ResultContext<List<DropDownDTO>> getPayTypes() {
         return orderService.getPayType();
     }
+
     @PostMapping("/getStatus")
-    public ResultContext<List<DropDownDTO>> getStatuses()
-    {
+    public ResultContext<List<DropDownDTO>> getStatuses() {
         return orderService.getStatus();
     }
 
@@ -48,5 +49,12 @@ public class OrderController {
     {
         return orderService.insertOrder;
     }*/
+
+
+    @PostMapping("/getOrderDetail")
+    public ResultContext<OrderDetail> getOrderDetail(@RequestBody JSONObject param) {
+        Long id = param.getLong("id");
+        return orderService.getOrderDetail(id);
+    }
 
 }

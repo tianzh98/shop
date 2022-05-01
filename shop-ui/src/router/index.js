@@ -136,7 +136,13 @@ const routes = [
         path: "orderList",
         name: "orderList",
         component: () => import("@/pages/orderManager/order/orderList"),
-        meta: { title: "订单管理", }
+        meta: { title: "订单列表" }
+      },
+      {
+        path: "orderDetail",
+        name: "orderDetail",
+        component: () => import("@/pages/orderManager/order/orderDetail"),
+        meta: { title: "订单详情" }
       }
     ]
   },

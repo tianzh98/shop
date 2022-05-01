@@ -74,7 +74,7 @@ export default {
           type: "primary",
           handle: () => {
             this.searchData.name = "";
-            this.searchData.detailAddress="";
+            this.searchData.detailAddress = "";
           }
         }
       ],

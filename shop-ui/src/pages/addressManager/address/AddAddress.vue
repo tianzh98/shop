@@ -43,26 +43,39 @@ export default {
           clearable: true,
           placeholder: "请输入"
         },
+        // {
+        //   type: "Input",
+        //   label: "省份",
+        //   prop: "province",
+        //   clearable: true,
+        //   placeholder: "请输入"
+        // },
+        // {
+        //   type: "Input",
+        //   label: "城市",
+        //   prop: "city",
+        //   clearable: true,
+        //   placeholder: "请输入"
+        // },
+        // {
+        //   type: "Input",
+        //   label: "地区",
+        //   prop: "region",
+        //   clearable: true,
+        //   placeholder: "请输入"
+        // },
         {
-          type: "Input",
-          label: "省份",
-          prop: "province",
+          type: "distpicker",
+          label: "所在区域",
+          province: "province",
+          city: "city",
+          area: "region",
           clearable: true,
-          placeholder: "请输入"
-        },
-        {
-          type: "Input",
-          label: "城市",
-          prop: "city",
-          clearable: true,
-          placeholder: "请输入"
-        },
-        {
-          type: "Input",
-          label: "地区",
-          prop: "region",
-          clearable: true,
-          placeholder: "请输入"
+          onSelectRegion: (data) => {
+            this.searchData.province = data.province.value;
+            this.searchData.city = data.city.value;
+            this.searchData.region = data.area.value;
+          }
         },
         {
           type: "Input",
@@ -89,7 +102,7 @@ export default {
         region: "",
         detailAddress: ""
       },
-      list: ""
+      list: {}
     };
   },
   created() {

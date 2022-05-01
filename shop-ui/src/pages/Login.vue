@@ -50,7 +50,7 @@
 // import * as useable from "@utils/common";
 import * as common from "@/http/implement/common";
 import localCache from "@/utils/cache";
-import {base64encode} from "@/utils/common";
+import { base64encode } from "@/utils/common";
 export default {
   name: "login",
   data() {

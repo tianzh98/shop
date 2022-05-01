@@ -6,6 +6,7 @@ import com.gll.shop.common.beans.ResultContext;
 import com.gll.shop.common.dropdown.DropDownDTO;
 import com.gll.shop.entity.Order;
 import com.gll.shop.entity.OrderDTO;
+import com.gll.shop.entity.OrderDetail;
 import com.gll.shop.entity.OrderParam;
 
 import java.util.List;
@@ -22,4 +23,9 @@ public interface OrderService extends IService<Order> {
     ResultContext<List<DropDownDTO>> getPayType();
 
     ResultContext<List<DropDownDTO>> getStatus();
+
+
+    ResultContext<OrderDetail> getOrderDetail(Long id);
+
+
 }

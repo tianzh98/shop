@@ -229,6 +229,14 @@
                 v-model="searchData[item.prop]"
               ></multi-upload>
 
+              <v-distpicker
+                v-if="item.type === 'distpicker'"
+                :province="searchData[item.province]"
+                :city="searchData[item.city]"
+                :area="searchData[item.area]"
+                @selected="item.onSelectRegion"
+              ></v-distpicker>
+
               <span v-if="item.type === 'UploadImg'">
                 <img :src="searchData[item.prop]" />
               </span>
@@ -264,10 +272,10 @@
 <script>
 import SingleUpload from "@/components/Upload/singleUpload";
 import MultiUpload from "@/components/Upload/multiUpload";
-
+import VDistpicker from "v-distpicker";
 export default {
   name: "VForm",
-  components: { SingleUpload, MultiUpload },
+  components: { SingleUpload, MultiUpload ,VDistpicker},
   props: {
     isHandle: {
       type: Boolean,

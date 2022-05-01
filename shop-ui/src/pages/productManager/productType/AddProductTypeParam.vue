@@ -91,8 +91,8 @@ export default {
             { value: "0", label: "不支持" },
             { value: "1", label: "支持" }
           ]
-        },
-       /* {
+        }
+        /* {
           type: "Radio",
           label: "是商品属性还是商品参数",
           prop: "type",
@@ -117,7 +117,7 @@ export default {
         inputList: null,
         sort: 1,
         handAddStatus: "1",
-        type:this.$route.query.type
+        type: this.$route.query.type
       } //search data
     };
   },
@@ -125,7 +125,7 @@ export default {
     this.getDetail();
   },
   activated() {
-   // this.getProductAttributeCategoryDropDown();
+    // this.getProductAttributeCategoryDropDown();
   },
   methods: {
     // 返回上一级路由
@@ -137,9 +137,11 @@ export default {
       // $route.query.的参数 bool会被转成string  所以这里要转换一下
       let isEdit = eval(this.$route.query.isEdit);
       if (isEdit) {
-        product.getProductAttributeParamById({ id: this.$route.query.id }).then(res => {
-          this.searchData = res.data;
-        });
+        product
+          .getProductAttributeParamById({ id: this.$route.query.id })
+          .then(res => {
+            this.searchData = res.data;
+          });
       }
     },
     getProductAttributeCategoryDropDown: function(visible) {
