@@ -181,6 +181,21 @@
           this.columns = this.$columns(res, true);
         });
       },
+      getProductAttrShowFromSpData: function (spData)
+      {
+        let productAttrShow = '';
+        let spDataList = JSON.parse(spData);
+        for (let i = 0; i < spDataList.length; i++) {
+          let key = spDataList[i].key;
+          let value = spDataList[i].value;
+          if (i  === 0) {
+            productAttrShow += (key + ':' + value) ;
+          } else {
+            productAttrShow += ',' + (key + ':' + value) ;
+          }
+        }
+        return productAttrShow;
+      },
       getTableData: function (page) {
         this.tableData = [];
         this.searchData.pageNum = page ? page : 1;
@@ -188,6 +203,7 @@
           let records = res.data.records;
           if (records && records.length > 0) {
             for (let i = 0; i < records.length; i++) {
+              records[i].productAttrShow = this.getProductAttrShowFromSpData(records[i].productAttr);
               getFileById({id: records[i].mainPicId}).then(res => {
                 records[i].mainPicture = resolvePicFileResultContext(res).url;
                 // 处理好一条数据 就 push一条
