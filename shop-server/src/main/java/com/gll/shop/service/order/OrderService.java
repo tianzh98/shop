@@ -4,10 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.gll.shop.common.beans.ResultContext;
 import com.gll.shop.common.dropdown.DropDownDTO;
-import com.gll.shop.entity.Order;
-import com.gll.shop.entity.OrderDTO;
-import com.gll.shop.entity.OrderDetail;
-import com.gll.shop.entity.OrderParam;
+import com.gll.shop.entity.*;
 
 import java.util.List;
 
@@ -28,4 +25,11 @@ public interface OrderService extends IService<Order> {
     ResultContext<OrderDetail> getOrderDetail(Long id);
 
 
+    ResultContext<String> closeOrder(List<Long> ids);
+
+    ResultContext<String> deliveryOrder(List<Long> ids);
+
+    ResultContext<String> deleteOrder(List<Long> ids);
+
+    ResultContext<String> changeReceiveInfo(ReceiverInfo receiverInfo);
 }

@@ -2,6 +2,7 @@ package com.gll.shop.service.order.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -110,6 +111,56 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
 
         orderDetail.setOrderItemList(orderItemDTOList);
         return ResultContext.buildSuccess(null, orderDetail);
+    }
+
+    @Override
+    public ResultContext<String> closeOrder(List<Long> ids) {
+        for(Long id:ids)
+        {
+            //将待付款状态订单的状态改为关闭状态
+            LambdaUpdateWrapper<Order> lambdaUpdateWrapper = Wrappers.<Order>lambdaUpdate()
+                    .set(Order::getStatus, ENStatus.CLOSED.getValue())
+                    .eq(Order::getId, id)
+                    .eq(Order::getStatus,ENStatus.WAITEPAY.getValue());
+            this.update(lambdaUpdateWrapper);
+        }
+        return ResultContext.success("成功关闭订单");
+    }
+
+    @Override
+    public ResultContext<String> deliveryOrder(List<Long> ids) {
+
+        for(Long id:ids)
+        {
+            //将代发货状态的订单改为已发货状态
+            LambdaUpdateWrapper<Order> lambdaUpdateWrapper = Wrappers.<Order>lambdaUpdate()
+                    .set(Order::getStatus, ENStatus.DELIVERY.getValue())
+                    .eq(Order::getId, id)
+                    .eq(Order::getStatus,ENStatus.NOTDELIVERY.getValue());
+            this.update(lambdaUpdateWrapper);
+        }
+        return ResultContext.success("成功发货订单");
+    }
+
+    @Override
+    public ResultContext<String> deleteOrder(List<Long> ids) {
+        getBaseMapper().deleteBatchIds(ids);
+        return ResultContext.success("成功删除订单");
+    }
+
+    @Override
+    public ResultContext<String> changeReceiveInfo(ReceiverInfo receiverInfo) {
+        Order order = new Order();
+        order.setId(receiverInfo.getOrderId());
+        order.setReceiverName(receiverInfo.getReceiverName());
+        order.setReceiverPhone(receiverInfo.getReceiverPhone());
+        order.setReceiverPostCode(receiverInfo.getReceiverPostCode());
+        order.setReceiverProvince(receiverInfo.getReceiverProvince());
+        order.setReceiverCity(receiverInfo.getReceiverCity());
+        order.setReceiverRegion(receiverInfo.getReceiverRegion());
+        order.setReceiverDetailAddress(receiverInfo.getReceiverDetailAddress());
+        getBaseMapper().updateById(order);
+        return ResultContext.success("成功更新收货人信息");
     }
 }
 

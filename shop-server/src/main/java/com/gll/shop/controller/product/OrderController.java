@@ -8,6 +8,7 @@ import com.gll.shop.common.dropdown.DropDownDTO;
 import com.gll.shop.entity.OrderDTO;
 import com.gll.shop.entity.OrderDetail;
 import com.gll.shop.entity.OrderParam;
+import com.gll.shop.entity.ReceiverInfo;
 import com.gll.shop.service.order.OrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -44,17 +45,30 @@ public class OrderController {
         return orderService.getStatus();
     }
 
-   /* @PostMapping("/insertOrder")
-    public ResultContext<String> insertOrder()
-    {
-        return orderService.insertOrder;
-    }*/
+    @PostMapping("/closeOrder")
+    public ResultContext<String> closeOrder(@RequestBody List<Long> ids) {
+        return orderService.closeOrder(ids);
+    }
+
+    @PostMapping("/deliveryOrder")
+    public ResultContext<String> deliveryOrder(@RequestBody List<Long> ids) {
+        return orderService.deliveryOrder(ids);
+    }
 
 
     @PostMapping("/getOrderDetail")
     public ResultContext<OrderDetail> getOrderDetail(@RequestBody JSONObject param) {
         Long id = param.getLong("id");
         return orderService.getOrderDetail(id);
+    }
+
+    @PostMapping("/deleteOrder")
+    public ResultContext<String> getOrderDetail(@RequestBody List<Long> ids) {
+        return orderService.deleteOrder(ids);
+    }
+    @PostMapping("/changeReceiveInfo")
+    public ResultContext<String> changeReceiveInfoOrder(@RequestBody ReceiverInfo receiverInfo) {
+        return orderService.changeReceiveInfo(receiverInfo);
     }
 
 }

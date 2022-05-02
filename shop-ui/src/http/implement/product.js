@@ -155,6 +155,7 @@ export const getProductAttributeValueList = data => {
   return hyRequest.post({ url: "/product/getProductAttributeValueList", data });
 };
 
+/*
 //获取订单列表
 export const getOrderList = data => {
   return hyRequest.post({ url: "/order/getOrderList", data });
@@ -167,6 +168,19 @@ export const getPayType = data => {
 export const getStatus = data => {
   return hyRequest.post({ url: "/order/getStatus", data });
 };
+//关闭订单
+export const closeOrder = data => {
+  return hyRequest.post({ url: "/order/closeOrder", data });
+};
+//删除订单
+export const deleteOrder = data => {
+  return hyRequest.post({ url: "/order/deleteOrder", data });
+};
+//订单发货
+export const deliveryOrder = data => {
+  return hyRequest.post({ url: "/order/deliveryOrder", data });
+};
+*/
 
 //获取所有地址
 export const getAddressList = data => {

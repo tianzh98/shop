@@ -692,7 +692,7 @@ export default {
               type: "success",
               message: "修改成功!"
             });
-            getOrderDetail(this.id).then(res => {
+            getOrderDetail({id:this.id}).then(res => {
               this.order = res.data;
             });
           }
