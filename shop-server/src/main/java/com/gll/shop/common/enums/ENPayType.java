@@ -31,4 +31,7 @@ public enum ENPayType {
         return null;
     }
 
+    public Integer getIntValue() {
+        return Integer.parseInt(value);
+    }
 }

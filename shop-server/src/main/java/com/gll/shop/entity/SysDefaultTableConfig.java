@@ -4,9 +4,8 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.Data;
-
 import java.io.Serializable;
+import lombok.Data;
 
 /**
  * 
@@ -50,6 +49,11 @@ public class SysDefaultTableConfig implements Serializable {
      * 排序字段（数据库表字段名）
      */
     private String orderBy;
+
+    /**
+     * 字段类型。例如：可编辑，数字输入框，图片等。为空则默认文本类型
+     */
+    private String type;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

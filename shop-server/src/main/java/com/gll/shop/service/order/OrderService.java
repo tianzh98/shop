@@ -1,10 +1,12 @@
 package com.gll.shop.service.order;
 
+import cn.hutool.json.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.gll.shop.common.beans.ResultContext;
 import com.gll.shop.common.dropdown.DropDownDTO;
 import com.gll.shop.entity.*;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -32,4 +34,12 @@ public interface OrderService extends IService<Order> {
     ResultContext<String> deleteOrder(List<Long> ids);
 
     ResultContext<String> changeReceiveInfo(ReceiverInfo receiverInfo);
+
+
+    ResultContext<Long> submitOrder(OrderSubmitReq orderSubmitReq);
+
+    ResultContext<String> payOrder(JSONObject param);
+
+    void returnProductStock(Long orderId);
+
 }

@@ -1,5 +1,6 @@
 package com.gll.shop.entity;
 
+import com.gll.shop.entity.common.ShopFileResp;
 import lombok.Data;
 
 @Data
@@ -13,5 +14,5 @@ public class CartItemDTO extends  CartItem{
     /**
      * 商品图片
      */
-    private byte[] mainPicture;
+    private ShopFileResp mainPictureFile;
 }

@@ -3,19 +3,20 @@ package com.gll.shop.controller.product;
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.hutool.json.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.gll.shop.common.beans.ResultContext;
 import com.gll.shop.common.dropdown.DropDownDTO;
-import com.gll.shop.entity.OrderDTO;
-import com.gll.shop.entity.OrderDetail;
-import com.gll.shop.entity.OrderParam;
-import com.gll.shop.entity.ReceiverInfo;
+import com.gll.shop.common.enums.ENStatus;
+import com.gll.shop.entity.*;
 import com.gll.shop.service.order.OrderService;
+import com.sun.org.apache.xpath.internal.operations.Or;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -66,9 +67,19 @@ public class OrderController {
     public ResultContext<String> getOrderDetail(@RequestBody List<Long> ids) {
         return orderService.deleteOrder(ids);
     }
+
     @PostMapping("/changeReceiveInfo")
     public ResultContext<String> changeReceiveInfoOrder(@RequestBody ReceiverInfo receiverInfo) {
         return orderService.changeReceiveInfo(receiverInfo);
     }
 
+    @PostMapping("/submitOrder")
+    public ResultContext<Long> submitOrder(@RequestBody OrderSubmitReq orderSubmitReq) {
+        return orderService.submitOrder(orderSubmitReq);
+    }
+
+    @PostMapping("/payOrder")
+    public ResultContext<String> payOrder(@RequestBody JSONObject param) {
+        return orderService.payOrder(param);
+    }
 }

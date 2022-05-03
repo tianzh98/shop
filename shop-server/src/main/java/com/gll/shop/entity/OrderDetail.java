@@ -15,7 +15,12 @@ import java.util.List;
 public class OrderDetail extends OrderDTO {
 
     /**
-     * 订单是商品信息
+     * 订单商品信息
      */
     private List<OrderItemDTO> orderItemList;
+
+    /**
+     * 订单剩余时间，单位秒
+     */
+    private Long orderRemainingTime;
 }

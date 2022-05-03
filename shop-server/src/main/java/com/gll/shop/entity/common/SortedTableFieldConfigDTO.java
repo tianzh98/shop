@@ -32,7 +32,10 @@ public class SortedTableFieldConfigDTO implements Serializable {
      * 字段名字典：英文名->页面显示的中文名
      */
     private Map<String, String> fieldNameDictionary;
-
+    /**
+     * 字段名字典：英文名->页面显示的中文名
+     */
+    private Map<String, String> fieldTypeDictionary;
 
     /**
      * 前端点击列名的排序字段名称，和mybatis查询语句的字段别名对应。字段为空或无改值时，表示该字段不支持排序

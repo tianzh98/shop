@@ -52,3 +52,11 @@ export const deleteOrder = data => {
 export const deliveryOrder = data => {
   return hyRequest.post({ url: "/order/deliveryOrder", data });
 };
+// 提交订单
+export const submitOrder = data => {
+  return hyRequest.post({ url: "/order/submitOrder", data });
+};
+// 提交订单
+export const payOrder = data => {
+  return hyRequest.post({ url: "/order/payOrder", data });
+};

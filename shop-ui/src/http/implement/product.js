@@ -198,3 +198,8 @@ export const updateAndInsertAddress = data => {
 export const deleteAddressById = data => {
   return hyRequest.post({ url: "/address/deleteAddressById", data });
 };
+
+// 获取地址下拉列表
+export const getReceiveAddressDropDown = data => {
+  return hyRequest.post({ url: "/address/getReceiveAddressDropDown", data });
+};

@@ -8,6 +8,8 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.gll.shop.common.beans.ResultContext;
+import com.gll.shop.common.dropdown.DropDownDTO;
+import com.gll.shop.common.enums.ENUserRole;
 import com.gll.shop.entity.ReceiveAddress;
 import com.gll.shop.entity.ReceiveAddressParam;
 import com.gll.shop.entity.SysUser;
@@ -17,6 +19,7 @@ import com.gll.shop.service.SysRole.SysUserRoleService;
 import com.gll.shop.service.address.ReceiveAddressService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -50,7 +53,7 @@ public class ReceiveAddressServiceImpl extends ServiceImpl<ReceiveAddressMapper,
         String roleName = sysRoleService.getBaseMapper().selectById(roleId).getRoleName();
 
         IPage<ReceiveAddress> page = new Page<>(param.getPageNum(), param.getPageSize());
-        if (roleName.equals("管理员")) {
+        if (roleName.equals(ENUserRole.ADMIN.getLabel())) {
             page = getBaseMapper().selectPage(page, Wrappers.<ReceiveAddress>lambdaQuery()
                     .like(StrUtil.isNotBlank(param.getName()), ReceiveAddress::getName, param.getName())
                     .like(StrUtil.isNotBlank(param.getDetailAddress()), ReceiveAddress::getDetailAddress, param.getDetailAddress())
@@ -95,6 +98,34 @@ public class ReceiveAddressServiceImpl extends ServiceImpl<ReceiveAddressMapper,
             throw new RuntimeException("删除地址错误");
         }
         return ResultContext.buildSuccess("删除地址成功", null);
+    }
+
+    @Override
+    public ResultContext<List<DropDownDTO>> getReceiveAddressDropDown() {
+        long userId = StpUtil.getLoginIdAsLong();
+        List<ReceiveAddress> receiveAddressList = getBaseMapper().selectList(Wrappers.<ReceiveAddress>lambdaQuery()
+                .eq(ReceiveAddress::getUserId, userId)
+                .orderByDesc(ReceiveAddress::getDefaultStatus));
+        List<DropDownDTO> result = new ArrayList<>(receiveAddressList.size());
+        receiveAddressList.forEach(receiveAddress -> {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("收货人：" + receiveAddress.getName());
+            stringBuilder.append(StrUtil.COMMA);
+            stringBuilder.append("电话：" + receiveAddress.getPhoneNumber());
+            stringBuilder.append(receiveAddress.getProvince());
+            stringBuilder.append(StrUtil.COMMA);
+            stringBuilder.append(receiveAddress.getCity());
+            stringBuilder.append(StrUtil.COMMA);
+            stringBuilder.append(receiveAddress.getRegion());
+            stringBuilder.append(StrUtil.COMMA);
+            stringBuilder.append(receiveAddress.getDetailAddress());
+
+            DropDownDTO dropDownDTO = new DropDownDTO();
+            dropDownDTO.setLabel(stringBuilder.toString());
+            dropDownDTO.setValue(String.valueOf(receiveAddress.getId()));
+            result.add(dropDownDTO);
+        });
+        return ResultContext.buildSuccess(null, result);
     }
 }
 

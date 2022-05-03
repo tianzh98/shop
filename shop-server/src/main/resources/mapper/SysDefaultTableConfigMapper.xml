@@ -12,11 +12,12 @@
             <result property="isShow" column="is_show" jdbcType="CHAR"/>
             <result property="sortNum" column="sort_num" jdbcType="INTEGER"/>
             <result property="orderBy" column="order_by" jdbcType="VARCHAR"/>
+            <result property="type" column="type" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id,table_page_name,field_name,
         show_name,is_show,sort_num,
-        order_by
+        order_by,type
     </sql>
 </mapper>

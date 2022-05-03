@@ -4,6 +4,7 @@ import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.hutool.json.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.gll.shop.common.beans.ResultContext;
+import com.gll.shop.common.dropdown.DropDownDTO;
 import com.gll.shop.entity.ReceiveAddress;
 import com.gll.shop.entity.ReceiveAddressParam;
 import com.gll.shop.service.address.ReceiveAddressService;
@@ -47,4 +48,12 @@ public class AddressController {
     {
         return addressService.deleteAddressById(idList);
     }
+
+    @PostMapping("/getReceiveAddressDropDown")
+    public ResultContext<List<DropDownDTO>> getReceiveAddressDropDown()
+    {
+        return addressService.getReceiveAddressDropDown();
+    }
+
+
 }

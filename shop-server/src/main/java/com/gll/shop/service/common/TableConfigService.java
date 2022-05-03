@@ -37,6 +37,8 @@ public class TableConfigService {
         List<String> showFields = new ArrayList<>();
         List<String> notShowFields = new ArrayList<>();
         Map<String, String> fieldNameDictionary = new HashMap<>();
+        Map<String, String> fieldTypeDictionary = new HashMap<>();
+
         Map<String, String> orderByDictionary = new HashMap<>();
         Map<String, String> userCustomizeWidthDictionary = new HashMap<>();
         sysDefaultTableConfigList.forEach(sysDefaultTableConfig -> {
@@ -46,6 +48,7 @@ public class TableConfigService {
                 notShowFields.add(sysDefaultTableConfig.getFieldName());
             }
             fieldNameDictionary.put(sysDefaultTableConfig.getFieldName(), sysDefaultTableConfig.getShowName());
+            fieldTypeDictionary.put(sysDefaultTableConfig.getFieldName(), sysDefaultTableConfig.getType());
             if (StrUtil.isNotBlank(sysDefaultTableConfig.getOrderBy())) {
                 orderByDictionary.put(sysDefaultTableConfig.getFieldName(), sysDefaultTableConfig.getOrderBy());
             }
@@ -54,6 +57,7 @@ public class TableConfigService {
         sortedTableFieldConfigDTO.setShowFields(showFields);
         sortedTableFieldConfigDTO.setNotShowFields(notShowFields);
         sortedTableFieldConfigDTO.setFieldNameDictionary(fieldNameDictionary);
+        sortedTableFieldConfigDTO.setFieldTypeDictionary(fieldTypeDictionary);
         sortedTableFieldConfigDTO.setOrderByDictionary(orderByDictionary);
         sortedTableFieldConfigDTO.setUserId(StpUtil.getLoginIdAsString());
         sortedTableFieldConfigDTO.setTablePageName(tablePageName);

@@ -4,7 +4,7 @@ const columns = (data, hasWidth = false) => {
     let column = {};
     column.label = data.fieldNameDictionary[item];
     column.prop = item;
-
+    column.type = data.fieldTypeDictionary[item]
     // 对应列的最小宽度，与 width 的区别是 width 是固定的，min-width 会把剩余宽度按比例分配给设置了 min-width 的列
     column.minWidth =
       data.userCustomizeWidthDictionary &&

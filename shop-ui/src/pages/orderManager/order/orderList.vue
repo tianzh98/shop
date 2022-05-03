@@ -32,16 +32,24 @@
         @on-row-dblclick="goToDetail"
       ></r-table>
     </el-main>
+    <pay-dialog :pay-dialog-visible="payDialogVisible" :order-id="orderId" @updatePayDialogVisible="updatePayDialogVisible"></pay-dialog>
+
   </div>
 </template>
 
 <script>
 import * as order from "@/http/implement/order";
+import PayDialog from "@/pages/orderManager/components/PayDialog";
 
 export default {
   name: "orderList",
+  components: { PayDialog},
+
   data() {
     return {
+      payDialogVisible: false,
+      orderId: null,
+
       searchForm: [
         {
           type: "Input",
@@ -124,7 +132,7 @@ export default {
           label: "关闭订单",
           type: "primary",
           size: "small",
-          page: "productList",
+          page: "orderList",
           btn: "Add",
           handle: () => {
             if (this.selection.length <= 0) {
@@ -168,7 +176,7 @@ export default {
           label: "订单发货",
           type: "primary",
           size: "small",
-          page: "productList",
+          page: "orderList",
           btn: "Add",
           handle: () => {
             if (this.selection.length <= 0) {
@@ -201,24 +209,26 @@ export default {
             }
           }
         },
-      /*  {
-          label: "订单跟踪",
+        {
+          label: "支付订单",
           type: "primary",
           size: "small",
-          page: "productList",
-          btn: "Add",
+          page: "orderList",
+          btn: "Pay",
           handle: () => {
-            this.$router.push({
-              path: "/product/productDetail",
-              query: {isEdit: false}
-            });
+            if (this.selection.length !== 1) {
+              this.$message.error("请选择一条记录!");
+            } else {
+              this.orderId = this.selection[0].id;
+              this.payDialogVisible = true;
+            }
           }
-        },*/
+        },
         {
           label: "删除",
           type: "danger",
           size: "small",
-          page: "productList",
+          page: "orderList",
           btn: "Add",
           handle: () => {
             if (this.selection.length <= 0) {
@@ -320,6 +330,9 @@ export default {
           id: row.id
         }
       });
+    },
+    updatePayDialogVisible: function(payDialogVisible){
+      this.payDialogVisible = payDialogVisible;
     },
     select: function (selection) {
       this.selection = selection;

@@ -13,8 +13,8 @@ public enum ENCacheKey implements LabelAndValue<String> {
     IMAGE_WIDTH("IMAGE:width", "返回给前端图片统一宽度", 350),
     IMAGE_HEIGHT("IMAGE:height", "返回给前端图片统一高度", 400),
     IMAGE_TYPE("IMAGE:type", "返回给前端图片统一类型", ImgUtil.IMAGE_TYPE_JPG),
-    ShopFileResp("ShopFileRespMap", "ShopFileRespMap,key是图片表的id", null);
-
+    ShopFileResp("ShopFileRespMap", "ShopFileRespMap,key是图片表的id", null),
+    ORDER("ORDER:", "订单缓存，用于订单过期功能.结构：ORDER:id", null);
 
     private final String value;
     private final String label;

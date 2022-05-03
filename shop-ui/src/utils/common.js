@@ -1,5 +1,5 @@
 //生成唯一标识符uuid
-export const getuuid = function() {
+export const getuuid = function () {
   function S4() {
     return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
   }
@@ -15,7 +15,7 @@ function change(t) {
   }
 }
 
-export const formatDate = function(date, type) {
+export const formatDate = function (date, type) {
   let year = date.getFullYear();
   let month = change(date.getMonth() + 1);
   let day = change(date.getDate());
@@ -31,7 +31,7 @@ export const formatDate = function(date, type) {
   }
 };
 //默认一年后结束
-export const getEndDate = function(date) {
+export const getEndDate = function (date) {
   if (date.getDate() > 1)
     return (
       date.getFullYear() +
@@ -79,7 +79,7 @@ export const getEndDate = function(date) {
     return date.getFullYear() + "-" + 12 + "-" + 31;
 };
 //格式化hh:mm:ss
-export const getStartDate = function(date, type) {
+export const getStartDate = function (date, type) {
   if (date.split(" ").length > 1) {
     return date;
   } else {
@@ -88,18 +88,18 @@ export const getStartDate = function(date, type) {
 };
 
 //文件转换成base64格式
-export const getBase64 = function(file) {
+export const getBase64 = function (file) {
   return new Promise((resolve, reject) => {
     let reader = new FileReader();
     let fileResult = "";
     reader.readAsDataURL(file);
-    reader.onload = function() {
+    reader.onload = function () {
       fileResult = reader.result;
     };
-    reader.onerror = function(error) {
+    reader.onerror = function (error) {
       reject(error);
     };
-    reader.onloadend = function() {
+    reader.onloadend = function () {
       resolve(fileResult);
     };
   });
@@ -139,8 +139,8 @@ export const base64encode = str => {
 };
 
 //json数组字符串字段排序
-export const sort = function(objArr, keyArr, type) {
-  let arr = objArr.sort(function(objA, objB) {
+export const sort = function (objArr, keyArr, type) {
+  let arr = objArr.sort(function (objA, objB) {
     for (let i = 0; i < keyArr.length; i++) {
       var key = keyArr[i];
       if (objA[key] === objB[key]) {
@@ -156,7 +156,7 @@ export const sort = function(objArr, keyArr, type) {
   return arr;
 };
 //金额格式化
-export const formatAmount = function(amount) {
+export const formatAmount = function (amount) {
   amount = parseFloat(amount).toFixed(2) / 100 + "";
   let parts = amount.split(".");
   parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -167,7 +167,7 @@ export const formatAmount = function(amount) {
     : "00";
   return parts.join(".");
 };
-export const formatRate = function(rate) {
+export const formatRate = function (rate) {
   if (rate.split(".")[1]) {
     return rate.split(".")[1].length < 4 && !!parseFloat(rate)
       ? parseFloat(rate).toFixed(4) + ""
@@ -176,7 +176,7 @@ export const formatRate = function(rate) {
     return !!parseFloat(rate) ? parseFloat(rate).toFixed(4) + "" : rate;
   }
 };
-export const getTitle = function(menuList) {
+export const getTitle = function (menuList) {
   let title = {};
   const deepGet = node => {
     for (let i = 0; i < node.length; i++) {
@@ -190,14 +190,45 @@ export const getTitle = function(menuList) {
   return title;
 };
 //横杆转驼峰
-export const camelize = function(str) {
-  return str.replace(/-(\w)/g, function(_, c) {
+export const camelize = function (str) {
+  return str.replace(/-(\w)/g, function (_, c) {
     return c ? c.toUpperCase() : "";
   });
 };
 //首字母转大写
-export const ftoup = function(str) {
-  return str.replace(/\b(\w)|\s(\w)/g, function(c) {
+export const ftoup = function (str) {
+  return str.replace(/\b(\w)|\s(\w)/g, function (c) {
     return c.toUpperCase();
   });
+};
+
+export const formatSeconds = function (value) {
+  var theTime = parseInt(value);// 秒
+  var theTime1 = 0;// 分
+  var theTime2 = 0;// 小时
+  if (theTime > 60) {
+    theTime1 = parseInt(theTime / 60);
+    theTime = parseInt(theTime % 60);
+    if (theTime1 > 60) {
+      theTime2 = parseInt(theTime1 / 60);
+      theTime1 = parseInt(theTime1 % 60);
+    }
+  }
+
+  var result = "" + parseInt(theTime);//秒
+  if (10 > theTime > 0) {
+    result = "0" + parseInt(theTime) + "秒";//秒
+  } else {
+    result = "" + parseInt(theTime)+ "秒";//秒
+  }
+
+  if (10 > theTime1 > 0) {
+    result = "0" + parseInt(theTime1) + "分:" + result;//分，不足两位数，首位补充0，
+  } else {
+    result = "" + parseInt(theTime1) + "分:" + result;//分
+  }
+  if (theTime2 > 0) {
+    result = "" + parseInt(theTime2) + "时:" + result;//时
+  }
+  return result;
 };

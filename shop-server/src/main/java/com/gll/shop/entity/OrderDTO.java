@@ -1,10 +1,7 @@
 package com.gll.shop.entity;
 
-import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.List;
 
 @Getter
 @Setter

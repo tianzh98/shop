@@ -2,6 +2,7 @@ package com.gll.shop.service.address;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.gll.shop.common.beans.ResultContext;
+import com.gll.shop.common.dropdown.DropDownDTO;
 import com.gll.shop.entity.ReceiveAddress;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.gll.shop.entity.ReceiveAddressParam;
@@ -22,4 +23,8 @@ public interface ReceiveAddressService extends IService<ReceiveAddress> {
     ResultContext<Void> insertAndUpdateAddress(ReceiveAddress address);
 
     ResultContext<Void> deleteAddressById(List<Long> idList);
+
+
+    ResultContext<List<DropDownDTO>> getReceiveAddressDropDown();
+
 }
