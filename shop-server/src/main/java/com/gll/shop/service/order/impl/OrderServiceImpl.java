@@ -6,6 +6,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -17,8 +18,11 @@ import com.gll.shop.common.dropdown.DropDownDTO;
 import com.gll.shop.common.enums.ENCacheKey;
 import com.gll.shop.common.enums.ENPayType;
 import com.gll.shop.common.enums.ENStatus;
+import com.gll.shop.common.enums.ENUserRole;
 import com.gll.shop.entity.*;
 import com.gll.shop.mapper.*;
+import com.gll.shop.service.SysRole.SysRoleService;
+import com.gll.shop.service.SysRole.SysUserRoleService;
 import com.gll.shop.service.order.OrderService;
 import com.gll.shop.service.shopFile.ShopFileService;
 import lombok.extern.slf4j.Slf4j;
@@ -49,6 +53,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
     private final CartItemMapper cartItemMapper;
     private final RedisTemplate<String, Object> redisTemplate;
     private final ProductStockMapper productStockMapper;
+    private final SysUserRoleService sysUserRoleService;
+    private final SysRoleService sysRoleService;
 
     public OrderServiceImpl(OrderMapper orderMapper,
                             OrderItemMapper orderItemMapper,
@@ -56,7 +62,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
                             ReceiveAddressMapper receiveAddressMapper,
                             CartItemMapper cartItemMapper,
                             RedisTemplate<String, Object> redisTemplate,
-                            ProductStockMapper productStockMapper) {
+                            ProductStockMapper productStockMapper,
+                            SysUserRoleService sysUserRoleService,
+                            SysRoleService sysRoleService) {
         this.orderMapper = orderMapper;
         this.orderItemMapper = orderItemMapper;
         this.shopFileService = shopFileService;
@@ -64,17 +72,31 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
         this.cartItemMapper = cartItemMapper;
         this.redisTemplate = redisTemplate;
         this.productStockMapper = productStockMapper;
+        this.sysUserRoleService = sysUserRoleService;
+        this.sysRoleService = sysRoleService;
     }
 
     @Override
     public ResultContext<IPage<OrderDTO>> getOrderList(OrderParam param) {
         Page<Order> page = new Page<>(param.getPageNum(), param.getPageSize());
-        page = orderMapper.selectPage(page, Wrappers.<Order>lambdaQuery()
+        // 获取session
+        SaSession session = StpUtil.getSession();
+        SysUser userInfo = (SysUser) session.get(Constant.SESSION_USER_KEY);
+        //得到用户id
+        Integer id = userInfo.getId();
+        //得到角色id
+        String roleId = sysUserRoleService.getRoleIdByUserId(String.valueOf(id));
+        //根据roleId得到 用户的身份
+        String roleName = sysRoleService.getBaseMapper().selectById(roleId).getRoleName();
+        LambdaQueryWrapper<Order> orderLambdaQueryWrapper = Wrappers.<Order>lambdaQuery()
                 .like(StrUtil.isNotBlank(param.getOrderSn()), Order::getOrderSn, param.getOrderSn())
                 .eq(StrUtil.isNotBlank(param.getMemberUsername()), Order::getMemberUsername, param.getMemberUsername())
                 .eq(null != param.getPayType(), Order::getPayType, param.getPayType())
-                .eq(null != param.getStatus(), Order::getStatus, param.getStatus())
-        );
+                .eq(null != param.getStatus(), Order::getStatus, param.getStatus());
+        if (!StrUtil.equals(roleName, ENUserRole.ADMIN.getLabel())) {
+            orderLambdaQueryWrapper.eq(Order::getMemberId,userInfo.getId());
+        }
+        page = orderMapper.selectPage(page, orderLambdaQueryWrapper);
         return ResultContext.buildSuccess("查询订单列表成功", page.convert(this::translation));
     }
 
@@ -140,10 +162,12 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
 
     @Override
     public ResultContext<String> closeOrder(List<Long> ids) {
+        Date date = new Date();
         for (Long id : ids) {
             //将待付款状态订单的状态改为关闭状态
             LambdaUpdateWrapper<Order> lambdaUpdateWrapper = Wrappers.<Order>lambdaUpdate()
                     .set(Order::getStatus, ENStatus.CLOSED.getValue())
+                    .set(Order::getModifyTime,date)
                     .eq(Order::getId, id)
                     .eq(Order::getStatus, ENStatus.WAITEPAY.getValue());
             this.update(lambdaUpdateWrapper);
@@ -153,16 +177,34 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
 
     @Override
     public ResultContext<String> deliveryOrder(List<Long> ids) {
-
+        Date date = new Date();
         for (Long id : ids) {
             //将代发货状态的订单改为已发货状态
             LambdaUpdateWrapper<Order> lambdaUpdateWrapper = Wrappers.<Order>lambdaUpdate()
                     .set(Order::getStatus, ENStatus.DELIVERY.getValue())
+                    .set(Order::getModifyTime,date)
+                    .set(Order::getDeliveryTime,date)
                     .eq(Order::getId, id)
                     .eq(Order::getStatus, ENStatus.NOTDELIVERY.getValue());
             this.update(lambdaUpdateWrapper);
         }
         return ResultContext.success("成功发货订单");
+    }
+
+    @Override
+    public ResultContext<String> confirmOrder(List<Long> ids) {
+        Date date = new Date();
+        for (Long id : ids) {
+            //将代发货状态的订单改为已发货状态
+            LambdaUpdateWrapper<Order> lambdaUpdateWrapper = Wrappers.<Order>lambdaUpdate()
+                    .set(Order::getStatus, ENStatus.FINISHED.getValue())
+                    .set(Order::getModifyTime,date)
+                    .set(Order::getReceiveTime,date)
+                    .eq(Order::getId, id)
+                    .eq(Order::getStatus, ENStatus.DELIVERY.getValue());
+            this.update(lambdaUpdateWrapper);
+        }
+        return ResultContext.success("成功确认收货");
     }
 
     @Override

@@ -40,6 +40,7 @@
 <script>
 import * as order from "@/http/implement/order";
 import PayDialog from "@/pages/orderManager/components/PayDialog";
+import {confirmOrder} from "@/http/implement/order";
 
 export default {
   name: "orderList",
@@ -173,11 +174,12 @@ export default {
           }
         },
         {
+          perm: true,
           label: "订单发货",
           type: "primary",
           size: "small",
           page: "orderList",
-          btn: "Add",
+          btn: "Delivery",
           handle: () => {
             if (this.selection.length <= 0) {
               this.$message.error("请选择一条或多条记录!");
@@ -210,6 +212,7 @@ export default {
           }
         },
         {
+          perm: true,
           label: "支付订单",
           type: "primary",
           size: "small",
@@ -221,6 +224,43 @@ export default {
             } else {
               this.orderId = this.selection[0].id;
               this.payDialogVisible = true;
+            }
+          }
+        },
+        {
+          label: "确认收货",
+          type: "primary",
+          size: "small",
+          page: "orderList",
+          btn: "Delivery",
+          handle: () => {
+            if (this.selection.length <= 0) {
+              this.$message.error("请选择一条或多条记录!");
+            } else {
+              // 校验选中的数据的订单状态是否一致
+              let orderStatus = this.selection[0].status;
+              if (orderStatus !== 2) {
+                this.$message.error("请选择已发货状态的订单");
+                return;
+              }
+              for (let i = 0; i < this.selection.length; i++) {
+                if (orderStatus !== this.selection[i].status) {
+                  this.$message.error("请选择相同已发货状态的记录!");
+                  return;
+                }
+              }
+              this.$confirm("是否确认收货?", "提示", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
+                type: "warning"
+              }).then(() => {
+                order.confirmOrder(this.selection.map(s => {
+                  return s.id;
+                })).then(res => {
+                  this.$message.success(res.info);
+                  this.getTableData();
+                });
+              });
             }
           }
         },
@@ -298,8 +338,8 @@ export default {
     //一加载页面就运行
     this.getTableData();
   },
-  watch: {},
   activated() {
+    this.getTableData();
   },
   methods: {
     getColumns: function () {

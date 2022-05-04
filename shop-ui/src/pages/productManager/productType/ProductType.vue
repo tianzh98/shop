@@ -44,7 +44,7 @@ export default {
       searchHandle: [],
       tableHandles: [
         {
-          label: "商品属性查询",
+          label: "商品规格查询",
           type: "primary",
           size: "small",
           page: "productType",

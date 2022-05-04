@@ -23,10 +23,10 @@
           title="确认收货"
           :description="formatTime(order.receiveTime)"
         ></el-step>
-        <el-step
-          title="完成评价"
-          :description="formatTime(order.commentTime)"
-        ></el-step>
+<!--        <el-step-->
+<!--          title="完成评价"-->
+<!--          :description="formatTime(order.commentTime)"-->
+<!--        ></el-step>-->
       </el-steps>
     </div>
     <el-card shadow="never" style="margin-top: 15px">

@@ -3,20 +3,16 @@ package com.gll.shop.controller.product;
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.hutool.json.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.gll.shop.common.beans.ResultContext;
 import com.gll.shop.common.dropdown.DropDownDTO;
-import com.gll.shop.common.enums.ENStatus;
 import com.gll.shop.entity.*;
 import com.gll.shop.service.order.OrderService;
-import com.sun.org.apache.xpath.internal.operations.Or;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -55,7 +51,10 @@ public class OrderController {
     public ResultContext<String> deliveryOrder(@RequestBody List<Long> ids) {
         return orderService.deliveryOrder(ids);
     }
-
+    @PostMapping("/confirmOrder")
+    public ResultContext<String> confirmOrder(@RequestBody List<Long> ids) {
+        return orderService.confirmOrder(ids);
+    }
 
     @PostMapping("/getOrderDetail")
     public ResultContext<OrderDetail> getOrderDetail(@RequestBody JSONObject param) {

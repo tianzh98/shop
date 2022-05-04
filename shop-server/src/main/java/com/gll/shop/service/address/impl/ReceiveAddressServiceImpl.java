@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.gll.shop.common.beans.ResultContext;
+import com.gll.shop.common.constant.Constant;
 import com.gll.shop.common.dropdown.DropDownDTO;
 import com.gll.shop.common.enums.ENUserRole;
 import com.gll.shop.entity.ReceiveAddress;
@@ -44,7 +45,7 @@ public class ReceiveAddressServiceImpl extends ServiceImpl<ReceiveAddressMapper,
     public ResultContext<IPage<ReceiveAddress>> getAddressList(ReceiveAddressParam param) {
         // 获取session
         SaSession session = StpUtil.getSession();
-        SysUser userInfo = (SysUser) session.get("UserInfo");
+        SysUser userInfo = (SysUser) session.get(Constant.SESSION_USER_KEY);
         //得到用户id
         Integer id = userInfo.getId();
         //得到角色id
@@ -79,6 +80,9 @@ public class ReceiveAddressServiceImpl extends ServiceImpl<ReceiveAddressMapper,
         int result = -1;
         if (null == id) {
             //插入地址
+            // 新增地址需要指定userId
+            Long userId = StpUtil.getLoginIdAsLong();
+            address.setUserId(userId);
             result = receiveAddressMapper.insert(address);
         } else {
             //更新地址

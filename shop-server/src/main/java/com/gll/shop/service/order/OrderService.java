@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.gll.shop.common.beans.ResultContext;
 import com.gll.shop.common.dropdown.DropDownDTO;
 import com.gll.shop.entity.*;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -30,6 +29,8 @@ public interface OrderService extends IService<Order> {
     ResultContext<String> closeOrder(List<Long> ids);
 
     ResultContext<String> deliveryOrder(List<Long> ids);
+
+    ResultContext<String> confirmOrder(List<Long> ids);
 
     ResultContext<String> deleteOrder(List<Long> ids);
 
