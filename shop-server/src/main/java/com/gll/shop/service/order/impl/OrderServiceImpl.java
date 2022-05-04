@@ -21,6 +21,7 @@ import com.gll.shop.entity.*;
 import com.gll.shop.mapper.*;
 import com.gll.shop.service.order.OrderService;
 import com.gll.shop.service.shopFile.ShopFileService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +38,7 @@ import java.util.stream.Collectors;
  * @createDate 2022-04-18 14:26:40
  */
 @Service
+@Slf4j
 public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
         implements OrderService {
 
@@ -364,7 +366,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
             if (updateById != 1) {
                 log.error("订单库存归还失败");
             } else {
-                log.error("订单库存归还成功");
+                log.info("订单库存归还成功");
             }
         }
     }
