@@ -32,19 +32,21 @@
         @on-row-dblclick="goToDetail"
       ></r-table>
     </el-main>
-    <pay-dialog :pay-dialog-visible="payDialogVisible" :order-id="orderId" @updatePayDialogVisible="updatePayDialogVisible"></pay-dialog>
-
+    <pay-dialog
+      :pay-dialog-visible="payDialogVisible"
+      :order-id="orderId"
+      @updatePayDialogVisible="updatePayDialogVisible"
+    ></pay-dialog>
   </div>
 </template>
 
 <script>
 import * as order from "@/http/implement/order";
 import PayDialog from "@/pages/orderManager/components/PayDialog";
-import {confirmOrder} from "@/http/implement/order";
 
 export default {
   name: "orderList",
-  components: { PayDialog},
+  components: { PayDialog },
 
   data() {
     return {
@@ -163,12 +165,16 @@ export default {
                      //orderStatus: this.selection[i].status
                    });
                  }*/
-                order.closeOrder(this.selection.map(s => {
-                  return s.id;
-                })).then(res => {
-                  this.$message.success(res.info);
-                  this.getTableData();
-                });
+                order
+                  .closeOrder(
+                    this.selection.map(s => {
+                      return s.id;
+                    })
+                  )
+                  .then(res => {
+                    this.$message.success(res.info);
+                    this.getTableData();
+                  });
               });
             }
           }
@@ -201,12 +207,16 @@ export default {
                 cancelButtonText: "取消",
                 type: "warning"
               }).then(() => {
-                order.deliveryOrder(this.selection.map(s => {
-                  return s.id;
-                })).then(res => {
-                  this.$message.success(res.info);
-                  this.getTableData();
-                });
+                order
+                  .deliveryOrder(
+                    this.selection.map(s => {
+                      return s.id;
+                    })
+                  )
+                  .then(res => {
+                    this.$message.success(res.info);
+                    this.getTableData();
+                  });
               });
             }
           }
@@ -254,12 +264,16 @@ export default {
                 cancelButtonText: "取消",
                 type: "warning"
               }).then(() => {
-                order.confirmOrder(this.selection.map(s => {
-                  return s.id;
-                })).then(res => {
-                  this.$message.success(res.info);
-                  this.getTableData();
-                });
+                order
+                  .confirmOrder(
+                    this.selection.map(s => {
+                      return s.id;
+                    })
+                  )
+                  .then(res => {
+                    this.$message.success(res.info);
+                    this.getTableData();
+                  });
               });
             }
           }
@@ -291,16 +305,20 @@ export default {
                 cancelButtonText: "取消",
                 type: "warning"
               }).then(() => {
-               order.deleteOrder(this.selection.map(s => {
-                  return s.id;
-                })).then(res => {
-                  this.$message.success(res.info);
-                  this.getTableData();
-                });
+                order
+                  .deleteOrder(
+                    this.selection.map(s => {
+                      return s.id;
+                    })
+                  )
+                  .then(res => {
+                    this.$message.success(res.info);
+                    this.getTableData();
+                  });
               });
             }
           }
-        },
+        }
       ],
       tableData: [],
       total: 0,
@@ -342,12 +360,12 @@ export default {
     this.getTableData();
   },
   methods: {
-    getColumns: function () {
+    getColumns: function() {
       this.$root.$children[0].getColumns("/order/orderList").then(res => {
         this.columns = this.$columns(res, true);
       });
     },
-    getTableData: function (page) {
+    getTableData: function(page) {
       this.searchData.pageNum = page ? page : 1;
       order.getOrderList(this.searchData).then(res => {
         this.tableData = res.data.records;
@@ -371,16 +389,16 @@ export default {
         }
       });
     },
-    updatePayDialogVisible: function(payDialogVisible){
+    updatePayDialogVisible: function(payDialogVisible) {
       this.payDialogVisible = payDialogVisible;
     },
-    select: function (selection) {
+    select: function(selection) {
       this.selection = selection;
     },
-    selectChange: function (selection) {
+    selectChange: function(selection) {
       this.selection = selection;
     },
-    onSelectAll: function (selection) {
+    onSelectAll: function(selection) {
       this.selection = selection;
     },
     pageChange(page) {
@@ -399,7 +417,7 @@ export default {
       this.sortType = sortType;
       this.getTableData();
     },
-    setCellStyle({row, column}) {
+    setCellStyle({ row, column }) {
       if (row && column.property === "name") {
         return {
           color: "#00BFFF"

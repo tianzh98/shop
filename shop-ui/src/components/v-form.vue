@@ -275,7 +275,7 @@ import MultiUpload from "@/components/Upload/multiUpload";
 import VDistpicker from "v-distpicker";
 export default {
   name: "VForm",
-  components: { SingleUpload, MultiUpload ,VDistpicker},
+  components: { SingleUpload, MultiUpload, VDistpicker },
   props: {
     isHandle: {
       type: Boolean,

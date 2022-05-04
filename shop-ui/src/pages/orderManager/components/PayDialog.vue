@@ -1,13 +1,9 @@
 <template>
-  <el-dialog
-    title="支付订单"
-    :visible.sync="visible"
-    width="500px"
-  >
+  <el-dialog title="支付订单" :visible.sync="visible" width="500px">
     <div v-if="orderRemainingTime > 0">
       <el-row>订单提交成功!</el-row>
-      <el-row>请在 [{{orderRemainingTimeShow}}] 内完成支付!</el-row>
-      <el-row>支付金额:￥{{needPayAmount}}</el-row>
+      <el-row>请在 [{{ orderRemainingTimeShow }}] 内完成支付!</el-row>
+      <el-row>支付金额:￥{{ needPayAmount }}</el-row>
       <el-form label-width="100px">
         <el-form-item label="支付方式" prop="payType">
           <el-radio-group v-model="payType">
@@ -27,67 +23,65 @@
 </template>
 
 <script>
-  import {getOrderDetail, payOrder} from "@/http/implement/order";
-  import {formatSeconds} from "@/utils/common"
+import { getOrderDetail, payOrder } from "@/http/implement/order";
+import { formatSeconds } from "@/utils/common";
 
-  export default {
-    name: "PayDialog",
-    props: {
-      payDialogVisible: Boolean,
-      orderId: Number
-    },
-    created() {
-      // this.getOrderPayDetail();
-    },
-    activated() {
-    },
-    computed: {
-      visible: {
-        get() {
-          return this.payDialogVisible;
-        },
-        set(visible) {
-          this.$emit('updatePayDialogVisible', visible);
-        }
-      }
-    },
-    data() {
-      return {
-        // 订单剩余支付时间，秒
-        orderRemainingTime: null,
-        orderRemainingTimeShow: null,
-        // 支付金额
-        needPayAmount: null,
-        payType: '1'
-      };
-    },
-    watch: {
-      payDialogVisible(newVal) {
-        if (newVal === true) {
-          this.getOrderPayDetail();
-        }
-      }
-    },
-    methods: {
-      getOrderPayDetail: function () {
-        getOrderDetail({id: this.orderId}).then(res => {
-          this.orderRemainingTime = res.data.orderRemainingTime;
-          this.orderRemainingTimeShow = formatSeconds(res.data.orderRemainingTime);
-          this.needPayAmount = res.data.payAmount +
-            res.data.freightAmount -
-            res.data.discountAmount;
-        });
+export default {
+  name: "PayDialog",
+  props: {
+    payDialogVisible: Boolean,
+    orderId: Number
+  },
+  created() {
+    // this.getOrderPayDetail();
+  },
+  activated() {},
+  computed: {
+    visible: {
+      get() {
+        return this.payDialogVisible;
       },
-      pay: function () {
-        payOrder({id: this.orderId,payType: this.payType}).then(res => {
-          this.$message.success(res.info);
-          this.visible = false;
-        });
+      set(visible) {
+        this.$emit("updatePayDialogVisible", visible);
       }
     }
+  },
+  data() {
+    return {
+      // 订单剩余支付时间，秒
+      orderRemainingTime: null,
+      orderRemainingTimeShow: null,
+      // 支付金额
+      needPayAmount: null,
+      payType: "1"
+    };
+  },
+  watch: {
+    payDialogVisible(newVal) {
+      if (newVal === true) {
+        this.getOrderPayDetail();
+      }
+    }
+  },
+  methods: {
+    getOrderPayDetail: function() {
+      getOrderDetail({ id: this.orderId }).then(res => {
+        this.orderRemainingTime = res.data.orderRemainingTime;
+        this.orderRemainingTimeShow = formatSeconds(
+          res.data.orderRemainingTime
+        );
+        this.needPayAmount =
+          res.data.payAmount + res.data.freightAmount - res.data.discountAmount;
+      });
+    },
+    pay: function() {
+      payOrder({ id: this.orderId, payType: this.payType }).then(res => {
+        this.$message.success(res.info);
+        this.visible = false;
+      });
+    }
   }
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

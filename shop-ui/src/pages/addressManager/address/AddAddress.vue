@@ -71,7 +71,7 @@ export default {
           city: "city",
           area: "region",
           clearable: true,
-          onSelectRegion: (data) => {
+          onSelectRegion: data => {
             this.searchData.province = data.province.value;
             this.searchData.city = data.city.value;
             this.searchData.region = data.area.value;
