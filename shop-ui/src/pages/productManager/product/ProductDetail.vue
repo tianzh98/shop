@@ -265,7 +265,8 @@
                             </div>
                           </el-checkbox-group>
                           <el-input
-                            v-model="addProductAttrValue"
+                            v-model="addProductAttrValue[idx]"
+                            @input="$forceUpdate()"
                             style="width: 160px;margin-left: 10px"
                             clearable
                           ></el-input>
@@ -413,7 +414,7 @@ export default {
       // 商品所具有的属性(编辑模式下获取商品原来具有的属性)
       productAttributeValueList: [],
       // 增加自定义的属性值(临时变量，不需要传给后端)
-      addProductAttrValue: null,
+      addProductAttrValue: [null, null, null],
 
       // 表单校验规则
       rules: {
@@ -721,8 +722,8 @@ export default {
     handleAddProductAttrValue(idx) {
       let options = this.selectProductAttr[idx].options;
       if (
-        this.addProductAttrValue === null ||
-        this.addProductAttrValue === ""
+        this.addProductAttrValue[idx] === null ||
+        this.addProductAttrValue[idx] === ""
       ) {
         this.$message({
           message: "属性值不能为空",
@@ -731,7 +732,7 @@ export default {
         });
         return;
       }
-      if (options.indexOf(this.addProductAttrValue) !== -1) {
+      if (options.indexOf(this.addProductAttrValue[idx]) !== -1) {
         this.$message({
           message: "属性值不能重复",
           type: "warning",
@@ -739,8 +740,8 @@ export default {
         });
         return;
       }
-      this.selectProductAttr[idx].options.push(this.addProductAttrValue);
-      this.addProductAttrValue = null;
+      this.selectProductAttr[idx].options.push(this.addProductAttrValue[idx]);
+      this.addProductAttrValue[idx] = null;
     },
     handleRefreshProductSkuList() {
       this.$confirm("刷新列表将导致sku信息重新生成，是否要刷新?", "提示", {

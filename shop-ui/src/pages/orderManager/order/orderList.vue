@@ -238,11 +238,12 @@ export default {
           }
         },
         {
+          perm: true,
           label: "确认收货",
           type: "primary",
           size: "small",
           page: "orderList",
-          btn: "Delivery",
+          btn: "confirm",
           handle: () => {
             if (this.selection.length <= 0) {
               this.$message.error("请选择一条或多条记录!");

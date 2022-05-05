@@ -163,6 +163,7 @@ export default {
       });
     },
     insertUser: function() {
+      // 密码加密
       this.searchData.password = base64encode(this.searchData.password);
       common.registerUser(this.searchData).then(res => {
         let that = this;
@@ -170,7 +171,7 @@ export default {
           common
             .loginDo({
               accountOrEmailOrPhone: that.searchData.account,
-              password: base64encode(that.searchData.password)
+              password: this.searchData.password
             })
             .then(res => {
               let token = res.data.token;
