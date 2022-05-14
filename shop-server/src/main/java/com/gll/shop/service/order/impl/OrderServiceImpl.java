@@ -94,7 +94,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
                 .eq(null != param.getPayType(), Order::getPayType, param.getPayType())
                 .eq(null != param.getStatus(), Order::getStatus, param.getStatus());
         if (!StrUtil.equals(roleName, ENUserRole.ADMIN.getLabel())) {
-            orderLambdaQueryWrapper.eq(Order::getMemberId,userInfo.getId());
+            orderLambdaQueryWrapper.eq(Order::getMemberId, userInfo.getId());
         }
         page = orderMapper.selectPage(page, orderLambdaQueryWrapper);
         return ResultContext.buildSuccess("查询订单列表成功", page.convert(this::translation));
@@ -167,10 +167,14 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
             //将待付款状态订单的状态改为关闭状态
             LambdaUpdateWrapper<Order> lambdaUpdateWrapper = Wrappers.<Order>lambdaUpdate()
                     .set(Order::getStatus, ENStatus.CLOSED.getValue())
-                    .set(Order::getModifyTime,date)
+                    .set(Order::getModifyTime, date)
                     .eq(Order::getId, id)
                     .eq(Order::getStatus, ENStatus.WAITEPAY.getValue());
-            this.update(lambdaUpdateWrapper);
+            boolean update = this.update(lambdaUpdateWrapper);
+            if (update) {
+                // 归还库存
+                this.returnProductStock(id);
+            }
         }
         return ResultContext.success("成功关闭订单");
     }
@@ -182,8 +186,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
             //将代发货状态的订单改为已发货状态
             LambdaUpdateWrapper<Order> lambdaUpdateWrapper = Wrappers.<Order>lambdaUpdate()
                     .set(Order::getStatus, ENStatus.DELIVERY.getValue())
-                    .set(Order::getModifyTime,date)
-                    .set(Order::getDeliveryTime,date)
+                    .set(Order::getModifyTime, date)
+                    .set(Order::getDeliveryTime, date)
                     .eq(Order::getId, id)
                     .eq(Order::getStatus, ENStatus.NOTDELIVERY.getValue());
             this.update(lambdaUpdateWrapper);
@@ -198,8 +202,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
             //将代发货状态的订单改为已发货状态
             LambdaUpdateWrapper<Order> lambdaUpdateWrapper = Wrappers.<Order>lambdaUpdate()
                     .set(Order::getStatus, ENStatus.FINISHED.getValue())
-                    .set(Order::getModifyTime,date)
-                    .set(Order::getReceiveTime,date)
+                    .set(Order::getModifyTime, date)
+                    .set(Order::getReceiveTime, date)
                     .eq(Order::getId, id)
                     .eq(Order::getStatus, ENStatus.DELIVERY.getValue());
             this.update(lambdaUpdateWrapper);
