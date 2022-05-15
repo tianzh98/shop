@@ -751,6 +751,8 @@ export default {
       })
         .then(() => {
           // this.refreshProductAttrPics();
+          // 清空原始组合信息
+          this.stockList = [];
           this.refreshProductSkuList();
         })
         .catch(() => {});
