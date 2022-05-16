@@ -45,7 +45,8 @@ public class CartItemServiceImpl extends ServiceImpl<CartItemMapper, CartItem>
         // 检查购物车是否有相同商品 商品id和商品库存id
         CartItem cartItem = getBaseMapper().selectOne(Wrappers.<CartItem>lambdaQuery()
                 .eq(CartItem::getProductId, param.getProductId())
-                .eq(CartItem::getProductStockId, param.getProductStockId()));
+                .eq(CartItem::getProductStockId, param.getProductStockId())
+                .eq(CartItem::getUserId,StpUtil.getLoginIdAsLong()));
 
         // 如果有 则 更新数量，价格
         if (cartItem != null) {

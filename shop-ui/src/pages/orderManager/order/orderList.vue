@@ -36,6 +36,7 @@
       :pay-dialog-visible="payDialogVisible"
       :order-id="orderId"
       @updatePayDialogVisible="updatePayDialogVisible"
+      @getTableData="getTableData"
     ></pay-dialog>
   </div>
 </template>
