@@ -32,7 +32,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: "jdbc:mysql://localhost:3306/shop?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC"
     username: root
-    password: 1999
+    password: 2010tttt
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
       # 连接池的配置信息
