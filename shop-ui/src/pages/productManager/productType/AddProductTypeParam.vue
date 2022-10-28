@@ -36,6 +36,7 @@ export default {
           label: "商品类型",
           prop: "productAttributeCategoryId",
           multiple: false,
+          // disable: true,
           change: value => {
             this.searchData.productAttributeCategoryId = value;
           },
@@ -53,8 +54,8 @@ export default {
           prop: "inputType",
           clearable: true,
           radios: [
-            { value: "0", label: "手工录入" },
-            { value: "1", label: "从列表选取" }
+            { value: 0, label: "手工录入" },
+            { value: 1, label: "从列表选取" }
           ]
         },
         {
@@ -63,9 +64,9 @@ export default {
           prop: "selectType",
           clearable: true,
           radios: [
-            { value: "0", label: "唯一" },
-            { value: "1", label: "单选" },
-            { value: "2", label: "多选" }
+            { value: 0, label: "唯一" },
+            { value: 1, label: "单选" },
+            { value: 2, label: "多选" }
           ]
         },
         {
@@ -88,8 +89,8 @@ export default {
           prop: "handAddStatus",
           clearable: true,
           radios: [
-            { value: "0", label: "不支持" },
-            { value: "1", label: "支持" }
+            { value: 0, label: "不支持" },
+            { value: 1, label: "支持" }
           ]
         }
         /* {
@@ -112,20 +113,22 @@ export default {
       searchData: {
         name: "",
         productAttributeCategoryId: null,
-        selectType: "2",
-        inputType: "1",
+        selectType: 2,
+        inputType: 1,
         inputList: null,
         sort: 1,
-        handAddStatus: "1",
+        handAddStatus: 1,
         type: this.$route.query.type
-      } //search data
+      }, //search data
+      productAttributeCategoryIdShow: null
     };
   },
   created() {
+    this.getProductAttributeCategoryDropDown();
     this.getDetail();
   },
   activated() {
-    // this.getProductAttributeCategoryDropDown();
+    this.getProductAttributeCategoryDropDown();
   },
   methods: {
     // 返回上一级路由

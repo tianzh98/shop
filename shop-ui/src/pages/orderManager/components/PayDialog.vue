@@ -78,6 +78,7 @@ export default {
       payOrder({ id: this.orderId, payType: this.payType }).then(res => {
         this.$message.success(res.info);
         this.visible = false;
+        this.$emit("getTableData");
       });
     }
   }

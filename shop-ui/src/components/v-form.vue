@@ -138,6 +138,7 @@
               <el-radio-group
                 v-if="item.type === 'Radio'"
                 v-model="searchData[item.prop]"
+                @input="$forceUpdate()"
                 :disabled="item.disable ? item.disable : disable"
               >
                 <el-radio

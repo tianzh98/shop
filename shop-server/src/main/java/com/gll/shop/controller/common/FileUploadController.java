@@ -1,8 +1,5 @@
 package com.gll.shop.controller.common;
 
-import cn.hutool.core.img.ImgUtil;
-import cn.hutool.core.lang.Assert;
-import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.json.JSONObject;
 import com.gll.shop.common.beans.ResultContext;
 import com.gll.shop.entity.ShopFile;
@@ -16,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Base64;
 
@@ -41,6 +36,7 @@ public class FileUploadController {
     public ResultContext<ShopFileResp> upload(@RequestBody MultipartFile file) throws IOException {
 
 
+        // 使用base64编码器，对文件的byte数组编码成base64 byte数组
         byte[] fileBase64 = Base64.getEncoder().encode(file.getBytes());
         ShopFile shopFile = new ShopFile();
         shopFile.setFileType(file.getContentType());

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="goBack">
-      <el-page-header @back="goBack" content="添加品牌" title="返回" />
+      <el-page-header @back="goBack" content="添加或者编辑品牌" title="返回" />
     </div>
     <v-form
       labelWidth="80px"

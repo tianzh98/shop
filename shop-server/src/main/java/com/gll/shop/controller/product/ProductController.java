@@ -64,12 +64,6 @@ public class ProductController {
         return productService.queryProductList(param);
     }
 
-    @PostMapping("/addToCart")
-    public ResultContext<String> addToCart(@RequestBody CartItem cartItem) {
-        return cartItemService.addToCart(cartItem);
-    }
-
-
     @PostMapping("/saveOrUpdateProductDetail")
     public ResultContext<String> saveOrUpdateProductDetail(@RequestBody ProductDTO productDTO) {
         return productService.saveOrUpdateProductDetail(productDTO);
@@ -80,12 +74,10 @@ public class ProductController {
         return productService.deleteProductByIds(idList);
     }
 
-
     @PostMapping("/updateProduct")
     public ResultContext<String> updateProduct(@RequestBody List<Product> productList) {
         return productService.updateProduct(productList);
     }
-
 
     @PostMapping("/getProductCateList")
     public ResultContext<IPage<ProductCategoryDTO>> getProductCateList(@RequestBody BaseQueryParams param) {
@@ -145,17 +137,17 @@ public class ProductController {
 
     //更新或者插入商品属性或者商品参数
     @PostMapping("/inOrUpProductAttribute")
-    public ResultContext<Void> insertOrUpdateProductAttribute(@RequestBody ProductAttribute productAttribute)
-    {
+    public ResultContext<Void> insertOrUpdateProductAttribute(@RequestBody ProductAttribute productAttribute) {
         return productAttributeService.insertOrUpdateProductAttribute(productAttribute);
     }
-   //删除商品类型属性或者商品类型参数
+
+    //删除商品类型属性或者商品类型参数
     @PostMapping("/deleteProductAttributeById")
-    public ResultContext<Void> deleteProductAttributeById(@RequestBody JSONObject jsonObject)
-    {
+    public ResultContext<Void> deleteProductAttributeById(@RequestBody JSONObject jsonObject) {
         Long id = jsonObject.getLong("id");
-       return  productAttributeService.deleteProductAttributeById(id);
+        return productAttributeService.deleteProductAttributeById(id);
     }
+
     //获取商品类型参数通过id
     @PostMapping("/getProductAttributeById")
     public ResultContext<ProductAttribute> getProductAttributeById(@RequestBody JSONObject jsonObject) {
